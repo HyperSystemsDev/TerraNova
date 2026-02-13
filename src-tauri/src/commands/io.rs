@@ -78,7 +78,7 @@ pub fn list_directory(path: String) -> Result<Vec<DirectoryEntry>, String> {
     DirectoryEntry::scan(&dir_path).map_err(|e| e.to_string())
 }
 
-/// Create a blank project (empty directory).
+/// Create a blank project with the minimal HytaleGenerator folder structure.
 #[tauri::command]
 pub fn create_blank_project(target_path: String) -> Result<(), String> {
     let target = Path::new(&target_path);
@@ -90,7 +90,75 @@ pub fn create_blank_project(target_path: String) -> Result<(), String> {
     {
         return Err("Target directory is not empty".into());
     }
-    fs::create_dir_all(target).map_err(|e| e.to_string())
+
+    let gen = target.join("HytaleGenerator");
+
+    // Create subdirectories
+    for sub in &["Biomes", "Settings", "WorldStructures"] {
+        fs::create_dir_all(gen.join(sub)).map_err(|e| e.to_string())?;
+    }
+
+    // Settings/Settings.json
+    let settings = serde_json::json!({
+        "CustomConcurrency": -1,
+        "BufferCapacityFactor": 0.3,
+        "TargetViewDistance": 512.0,
+        "TargetPlayerCount": 3.0,
+        "StatsCheckpoints": []
+    });
+    fs::write(
+        gen.join("Settings/Settings.json"),
+        serde_json::to_string_pretty(&settings).unwrap(),
+    )
+    .map_err(|e| e.to_string())?;
+
+    // WorldStructures/MainWorld.json
+    let world = serde_json::json!({
+        "Type": "NoiseRange",
+        "DefaultBiome": "default_biome",
+        "DefaultTransitionDistance": 16,
+        "MaxBiomeEdgeDistance": 32,
+        "Biomes": [
+            { "Biome": "default_biome", "Min": -1.0, "Max": 1.0 }
+        ],
+        "Density": {
+            "Type": "SimplexNoise2D",
+            "Lacunarity": 2.0,
+            "Persistence": 0.5,
+            "Scale": 256.0,
+            "Octaves": 1,
+            "Seed": "main"
+        },
+        "Framework": {}
+    });
+    fs::write(
+        gen.join("WorldStructures/MainWorld.json"),
+        serde_json::to_string_pretty(&world).unwrap(),
+    )
+    .map_err(|e| e.to_string())?;
+
+    // Biomes/DefaultBiome.json
+    let biome = serde_json::json!({
+        "Name": "default_biome",
+        "Terrain": {
+            "Type": "DAOTerrain",
+            "Density": { "Type": "Constant", "Value": 0.0 }
+        },
+        "MaterialProvider": {
+            "Type": "Constant",
+            "Material": { "Solid": "stone", "Fluid": "", "SolidBottomUp": false }
+        },
+        "Props": [],
+        "EnvironmentProvider": { "Type": "Constant", "Environment": "default" },
+        "TintProvider": { "Type": "Constant", "Color": "#7CFC00" }
+    });
+    fs::write(
+        gen.join("Biomes/DefaultBiome.json"),
+        serde_json::to_string_pretty(&biome).unwrap(),
+    )
+    .map_err(|e| e.to_string())?;
+
+    Ok(())
 }
 
 /// Create a new project from a bundled template.
