@@ -3,6 +3,7 @@ import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { densityInput, densityOutput } from "@/nodes/shared/handles";
 import type { RangeDouble } from "@/schema/types";
+import { safeDisplay } from "@/nodes/shared/displayUtils";
 
 const INPUT_OUTPUT_HANDLES = [densityInput("Input", "Input"), densityOutput()];
 const AB_INPUT_HANDLES = [densityInput("Inputs[0]", "Input A"), densityInput("Inputs[1]", "Input B"), densityOutput()];
@@ -38,11 +39,11 @@ export const ClampToIndexNode = memo(function ClampToIndexNode(props: TypedNodeP
       <div className="space-y-1">
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Min</span>
-          <span>{data.fields.Min ?? 0}</span>
+          <span>{safeDisplay(data.fields.Min, 0)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Max</span>
-          <span>{data.fields.Max ?? 255}</span>
+          <span>{safeDisplay(data.fields.Max, 255)}</span>
         </div>
       </div>
     </BaseNode>
@@ -111,7 +112,7 @@ export const RangeChoiceNode = memo(function RangeChoiceNode(props: TypedNodePro
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Threshold</span>
-        <span>{data.fields.Threshold ?? 0.5}</span>
+        <span>{safeDisplay(data.fields.Threshold, 0.5)}</span>
       </div>
     </BaseNode>
   );
@@ -128,11 +129,11 @@ export const LinearTransformNode = memo(function LinearTransformNode(props: Type
       <div className="space-y-1">
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Scale</span>
-          <span>{data.fields.Scale ?? 1}</span>
+          <span>{safeDisplay(data.fields.Scale, 1)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Offset</span>
-          <span>{data.fields.Offset ?? 0}</span>
+          <span>{safeDisplay(data.fields.Offset, 0)}</span>
         </div>
       </div>
     </BaseNode>
@@ -158,15 +159,15 @@ export const SmoothClampNode = memo(function SmoothClampNode(props: TypedNodePro
       <div className="space-y-1">
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Min</span>
-          <span>{data.fields.Min ?? 0}</span>
+          <span>{safeDisplay(data.fields.Min, 0)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Max</span>
-          <span>{data.fields.Max ?? 1}</span>
+          <span>{safeDisplay(data.fields.Max, 1)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Smooth</span>
-          <span>{data.fields.Smoothness ?? 0.1}</span>
+          <span>{safeDisplay(data.fields.Smoothness, 0.1)}</span>
         </div>
       </div>
     </BaseNode>
@@ -196,11 +197,11 @@ export const SmoothFloorNode = memo(function SmoothFloorNode(props: TypedNodePro
       <div className="space-y-1">
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Threshold</span>
-          <span>{data.fields.Threshold ?? 0}</span>
+          <span>{safeDisplay(data.fields.Threshold, 0)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Smooth</span>
-          <span>{data.fields.Smoothness ?? 0.1}</span>
+          <span>{safeDisplay(data.fields.Smoothness, 0.1)}</span>
         </div>
       </div>
     </BaseNode>
@@ -214,11 +215,11 @@ export const SmoothCeilingNode = memo(function SmoothCeilingNode(props: TypedNod
       <div className="space-y-1">
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Threshold</span>
-          <span>{data.fields.Threshold ?? 1}</span>
+          <span>{safeDisplay(data.fields.Threshold, 1)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Smooth</span>
-          <span>{data.fields.Smoothness ?? 0.1}</span>
+          <span>{safeDisplay(data.fields.Smoothness, 0.1)}</span>
         </div>
       </div>
     </BaseNode>
@@ -231,7 +232,7 @@ export const SmoothMinNode = memo(function SmoothMinNode(props: TypedNodeProps) 
     <BaseNode {...props} category={AssetCategory.Density} handles={AB_INPUT_HANDLES}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Smooth</span>
-        <span>{data.fields.Smoothness ?? 0.1}</span>
+        <span>{safeDisplay(data.fields.Smoothness, 0.1)}</span>
       </div>
     </BaseNode>
   );
@@ -243,7 +244,7 @@ export const SmoothMaxNode = memo(function SmoothMaxNode(props: TypedNodeProps) 
     <BaseNode {...props} category={AssetCategory.Density} handles={AB_INPUT_HANDLES}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Smooth</span>
-        <span>{data.fields.Smoothness ?? 0.1}</span>
+        <span>{safeDisplay(data.fields.Smoothness, 0.1)}</span>
       </div>
     </BaseNode>
   );

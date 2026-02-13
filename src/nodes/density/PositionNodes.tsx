@@ -2,6 +2,7 @@ import { memo } from "react";
 import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { densityOutput, vectorInput } from "@/nodes/shared/handles";
+import { safeDisplay } from "@/nodes/shared/displayUtils";
 
 const OUTPUT_ONLY_HANDLES = [densityOutput()];
 const VECTOR_INPUT_HANDLES = [vectorInput("VectorProvider", "Vector"), densityOutput()];
@@ -52,7 +53,7 @@ export const DistanceFromAxisNode = memo(function DistanceFromAxisNode(props: Ty
     <BaseNode {...props} category={AssetCategory.Density} handles={OUTPUT_ONLY_HANDLES}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Axis</span>
-        <span>{data.fields.Axis ?? "Y"}</span>
+        <span>{safeDisplay(data.fields.Axis, "Y")}</span>
       </div>
     </BaseNode>
   );

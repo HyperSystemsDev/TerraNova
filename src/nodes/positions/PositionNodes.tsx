@@ -2,6 +2,7 @@ import { memo } from "react";
 import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { positionInput, positionOutput, densityInput } from "@/nodes/shared/handles";
+import { safeDisplay } from "@/nodes/shared/displayUtils";
 
 // ── Hoisted handle arrays ───────────────────────────────────────────────
 const POSITION_OUTPUT_HANDLES = [positionOutput()];
@@ -54,11 +55,11 @@ export const Mesh2DPositionNode = memo(function Mesh2DPositionNode(props: TypedN
       <div className="space-y-1">
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Resolution</span>
-          <span>{data.fields.Resolution ?? 16}</span>
+          <span>{safeDisplay(data.fields.Resolution, 16)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Jitter</span>
-          <span>{data.fields.Jitter ?? 0}</span>
+          <span>{safeDisplay(data.fields.Jitter, 0)}</span>
         </div>
       </div>
     </BaseNode>
@@ -72,11 +73,11 @@ export const Mesh3DPositionNode = memo(function Mesh3DPositionNode(props: TypedN
       <div className="space-y-1">
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Resolution</span>
-          <span>{data.fields.Resolution ?? 16}</span>
+          <span>{safeDisplay(data.fields.Resolution, 16)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Jitter</span>
-          <span>{data.fields.Jitter ?? 0}</span>
+          <span>{safeDisplay(data.fields.Jitter, 0)}</span>
         </div>
       </div>
     </BaseNode>
@@ -93,7 +94,7 @@ export const FieldFunctionPositionNode = memo(function FieldFunctionPositionNode
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Threshold</span>
-        <span>{data.fields.Threshold ?? 0.5}</span>
+        <span>{safeDisplay(data.fields.Threshold, 0.5)}</span>
       </div>
     </BaseNode>
   );
@@ -109,7 +110,7 @@ export const OccurrencePositionNode = memo(function OccurrencePositionNode(props
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Chance</span>
-        <span>{data.fields.Chance ?? 0.5}</span>
+        <span>{safeDisplay(data.fields.Chance, 0.5)}</span>
       </div>
     </BaseNode>
   );
@@ -150,11 +151,11 @@ export const SimpleHorizontalPositionNode = memo(function SimpleHorizontalPositi
       <div className="space-y-1">
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Spacing</span>
-          <span>{data.fields.Spacing ?? 16}</span>
+          <span>{safeDisplay(data.fields.Spacing, 16)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Jitter</span>
-          <span>{data.fields.Jitter ?? 0}</span>
+          <span>{safeDisplay(data.fields.Jitter, 0)}</span>
         </div>
       </div>
     </BaseNode>
@@ -183,7 +184,7 @@ export const ConditionalPositionNode = memo(function ConditionalPositionNode(pro
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Threshold</span>
-        <span>{data.fields.Threshold ?? 0.5}</span>
+        <span>{safeDisplay(data.fields.Threshold, 0.5)}</span>
       </div>
     </BaseNode>
   );
@@ -199,7 +200,7 @@ export const DensityBasedPositionNode = memo(function DensityBasedPositionNode(p
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Threshold</span>
-        <span>{data.fields.Threshold ?? 0.5}</span>
+        <span>{safeDisplay(data.fields.Threshold, 0.5)}</span>
       </div>
     </BaseNode>
   );
@@ -223,7 +224,7 @@ export const ImportedPositionNode = memo(function ImportedPositionNode(props: Ty
     <BaseNode {...props} category={AssetCategory.PositionProvider} handles={POSITION_OUTPUT_HANDLES}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Name</span>
-        <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
       </div>
     </BaseNode>
   );
@@ -239,7 +240,7 @@ export const ExportedPositionNode = memo(function ExportedPositionNode(props: Ty
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Name</span>
-        <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
       </div>
     </BaseNode>
   );

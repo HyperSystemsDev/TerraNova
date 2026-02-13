@@ -2,6 +2,7 @@ import { memo } from "react";
 import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { assignmentInput, assignmentOutput, densityInput, propInput } from "@/nodes/shared/handles";
+import { safeDisplay } from "@/nodes/shared/displayUtils";
 
 // ── Hoisted handle arrays ───────────────────────────────────────────────
 const CONSTANT_ASSIGNMENT_HANDLES = [propInput("Prop", "Prop"), assignmentOutput()];
@@ -45,7 +46,7 @@ export const FieldFunctionAssignmentNode = memo(function FieldFunctionAssignment
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Threshold</span>
-        <span>{data.fields.Threshold ?? 0.5}</span>
+        <span>{safeDisplay(data.fields.Threshold, 0.5)}</span>
       </div>
     </BaseNode>
   );
@@ -81,7 +82,7 @@ export const ImportedAssignmentNode = memo(function ImportedAssignmentNode(props
     <BaseNode {...props} category={AssetCategory.Assignment} handles={ASSIGNMENT_OUTPUT_HANDLES}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Name</span>
-        <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
       </div>
     </BaseNode>
   );

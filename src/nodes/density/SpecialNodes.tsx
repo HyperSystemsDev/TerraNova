@@ -2,6 +2,7 @@ import { memo } from "react";
 import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { densityInput, densityOutput } from "@/nodes/shared/handles";
+import { safeDisplay } from "@/nodes/shared/displayUtils";
 
 const INPUT_OUTPUT_HANDLES = [densityInput("Input", "Input"), densityOutput()];
 const OUTPUT_ONLY_HANDLES = [densityOutput()];
@@ -12,7 +13,7 @@ export const DebugNode = memo(function DebugNode(props: TypedNodeProps) {
     <BaseNode {...props} category={AssetCategory.Density} handles={INPUT_OUTPUT_HANDLES}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Label</span>
-        <span className="truncate max-w-[120px]">{data.fields.Label ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Label, "")}</span>
       </div>
     </BaseNode>
   );
@@ -25,11 +26,11 @@ export const YGradientNode = memo(function YGradientNode(props: TypedNodeProps) 
       <div className="space-y-1">
         <div className="flex justify-between">
           <span className="text-tn-text-muted">From Y</span>
-          <span>{data.fields.FromY ?? 0}</span>
+          <span>{safeDisplay(data.fields.FromY, 0)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-tn-text-muted">To Y</span>
-          <span>{data.fields.ToY ?? 256}</span>
+          <span>{safeDisplay(data.fields.ToY, 256)}</span>
         </div>
       </div>
     </BaseNode>
@@ -67,7 +68,7 @@ export const ExportedDensityNode = memo(function ExportedDensityNode(props: Type
       <div className="space-y-1">
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Name</span>
-          <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+          <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
         </div>
         {data.fields.SingleInstance && (
           <div className="text-[10px] text-tn-text-muted">Single instance</div>

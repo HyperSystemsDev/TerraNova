@@ -3,6 +3,7 @@ import { useEdges } from "@xyflow/react";
 import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { materialInput, materialOutput, densityInput } from "@/nodes/shared/handles";
+import { safeDisplay } from "@/nodes/shared/displayUtils";
 
 /* ── Hoisted static handle arrays ──────────────────────────────────── */
 
@@ -58,7 +59,7 @@ export const ConstantMaterialNode = memo(function ConstantMaterialNode(props: Ty
     <BaseNode {...props} category={AssetCategory.MaterialProvider} handles={HANDLES_MAT_OUT}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Material</span>
-        <span className="truncate max-w-[120px]">{data.fields.Material ?? "stone"}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Material, "stone")}</span>
       </div>
     </BaseNode>
   );
@@ -108,7 +109,7 @@ export const SpaceAndDepthMaterialNode = memo(function SpaceAndDepthMaterialNode
           </div>
           <div className="flex justify-between">
             <span className="text-tn-text-muted">Max Depth</span>
-            <span>{data.fields.MaxExpectedDepth ?? 16}</span>
+            <span>{safeDisplay(data.fields.MaxExpectedDepth, 16)}</span>
           </div>
         </div>
       </BaseNode>
@@ -128,7 +129,7 @@ export const SpaceAndDepthMaterialNode = memo(function SpaceAndDepthMaterialNode
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Depth</span>
-        <span>{data.fields.DepthThreshold ?? 3}</span>
+        <span>{safeDisplay(data.fields.DepthThreshold, 3)}</span>
       </div>
     </BaseNode>
   );
@@ -156,7 +157,7 @@ export const ConditionalMaterialNode = memo(function ConditionalMaterialNode(pro
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Threshold</span>
-        <span>{data.fields.Threshold ?? 0.5}</span>
+        <span>{safeDisplay(data.fields.Threshold, 0.5)}</span>
       </div>
     </BaseNode>
   );
@@ -204,11 +205,11 @@ export const NoiseSelectorMaterialNode = memo(function NoiseSelectorMaterialNode
       <div className="space-y-1">
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Freq</span>
-          <span>{data.fields.Frequency ?? 0.01}</span>
+          <span>{safeDisplay(data.fields.Frequency, 0.01)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Threshold</span>
-          <span>{data.fields.Threshold ?? 0.5}</span>
+          <span>{safeDisplay(data.fields.Threshold, 0.5)}</span>
         </div>
       </div>
     </BaseNode>
@@ -221,7 +222,7 @@ export const SolidMaterialNode = memo(function SolidMaterialNode(props: TypedNod
     <BaseNode {...props} category={AssetCategory.MaterialProvider} handles={HANDLES_MAT_OUT}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Material</span>
-        <span className="truncate max-w-[120px]">{data.fields.Material ?? "stone"}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Material, "stone")}</span>
       </div>
     </BaseNode>
   );
@@ -269,7 +270,7 @@ export const ClusterMaterialNode = memo(function ClusterMaterialNode(props: Type
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Radius</span>
-        <span>{data.fields.Radius ?? 3}</span>
+        <span>{safeDisplay(data.fields.Radius, 3)}</span>
       </div>
     </BaseNode>
   );
@@ -281,7 +282,7 @@ export const ImportedMaterialNode = memo(function ImportedMaterialNode(props: Ty
     <BaseNode {...props} category={AssetCategory.MaterialProvider} handles={HANDLES_MAT_OUT}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Name</span>
-        <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
       </div>
     </BaseNode>
   );
@@ -297,7 +298,7 @@ export const ExportedMaterialNode = memo(function ExportedMaterialNode(props: Ty
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Name</span>
-        <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
       </div>
     </BaseNode>
   );
@@ -315,7 +316,7 @@ export const ConstantThicknessNode = memo(function ConstantThicknessNode(props: 
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Thickness</span>
-        <span>{data.fields.Thickness ?? 0}</span>
+        <span>{safeDisplay(data.fields.Thickness, 0)}</span>
       </div>
     </BaseNode>
   );
@@ -344,7 +345,7 @@ export const RangeThicknessNode = memo(function RangeThicknessNode(props: TypedN
       <div className="space-y-1">
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Range</span>
-          <span>{data.fields.RangeMin ?? 0}–{data.fields.RangeMax ?? 0}</span>
+          <span>{safeDisplay(data.fields.RangeMin, 0)}–{safeDisplay(data.fields.RangeMax, 0)}</span>
         </div>
         {data.fields.Seed != null ? (
           <div className="flex justify-between">

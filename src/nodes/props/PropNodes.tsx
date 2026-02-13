@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
+import { safeDisplay } from "@/nodes/shared/displayUtils";
 import {
   propInput,
   propOutput,
@@ -68,7 +69,7 @@ export const BoxPropNode = memo(function BoxPropNode(props: TypedNodeProps) {
         </div>
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Material</span>
-          <span className="truncate max-w-[100px]">{data.fields.Material ?? "stone"}</span>
+          <span className="truncate max-w-[100px]">{safeDisplay(data.fields.Material, "stone")}</span>
         </div>
       </div>
     </BaseNode>
@@ -82,11 +83,11 @@ export const ColumnPropNode = memo(function ColumnPropNode(props: TypedNodeProps
       <div className="space-y-1">
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Height</span>
-          <span>{data.fields.Height ?? 4}</span>
+          <span>{safeDisplay(data.fields.Height, 4)}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Material</span>
-          <span className="truncate max-w-[100px]">{data.fields.Material ?? "stone"}</span>
+          <span className="truncate max-w-[100px]">{safeDisplay(data.fields.Material, "stone")}</span>
         </div>
       </div>
     </BaseNode>
@@ -143,7 +144,7 @@ export const PrefabPropNode = memo(function PrefabPropNode(props: TypedNodeProps
         ) : (
           <div className="flex justify-between">
             <span className="text-tn-text-muted">Path</span>
-            <span className="truncate max-w-[120px]">{data.fields.Path ?? ""}</span>
+            <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Path, "")}</span>
           </div>
         )}
         {weightedPaths && weightedPaths.length > 3 && (
@@ -173,7 +174,7 @@ export const ConditionalPropNode = memo(function ConditionalPropNode(props: Type
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Threshold</span>
-        <span>{data.fields.Threshold ?? 0.5}</span>
+        <span>{safeDisplay(data.fields.Threshold, 0.5)}</span>
       </div>
     </BaseNode>
   );
@@ -221,7 +222,7 @@ export const ImportedPropNode = memo(function ImportedPropNode(props: TypedNodeP
     <BaseNode {...props} category={AssetCategory.Prop} handles={PROP_OUTPUT_HANDLES}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Name</span>
-        <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
       </div>
     </BaseNode>
   );
@@ -237,7 +238,7 @@ export const ExportedPropNode = memo(function ExportedPropNode(props: TypedNodeP
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Name</span>
-        <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
       </div>
     </BaseNode>
   );

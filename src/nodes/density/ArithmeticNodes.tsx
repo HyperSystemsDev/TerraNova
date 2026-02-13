@@ -2,6 +2,7 @@ import { memo } from "react";
 import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { densityInput, densityOutput } from "@/nodes/shared/handles";
+import { safeDisplay } from "@/nodes/shared/displayUtils";
 
 const INPUT_OUTPUT_HANDLES = [densityInput("Input", "Input"), densityOutput()];
 const TWO_INPUT_HANDLES = [densityInput("Inputs[0]", "Input 0"), densityInput("Inputs[1]", "Input 1"), densityOutput()];
@@ -20,7 +21,7 @@ export const SumSelfNode = memo(function SumSelfNode(props: TypedNodeProps) {
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Count</span>
-        <span>{data.fields.Count ?? 2}</span>
+        <span>{safeDisplay(data.fields.Count, 2)}</span>
       </div>
     </BaseNode>
   );
@@ -128,7 +129,7 @@ export const OffsetConstantNode = memo(function OffsetConstantNode(props: TypedN
     <BaseNode {...props} category={AssetCategory.Density} handles={INPUT_OUTPUT_HANDLES}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Value</span>
-        <span>{data.fields.Value ?? 0}</span>
+        <span>{safeDisplay(data.fields.Value, 0)}</span>
       </div>
     </BaseNode>
   );
@@ -156,7 +157,7 @@ export const ModuloNode = memo(function ModuloNode(props: TypedNodeProps) {
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Divisor</span>
-        <span>{data.fields.Divisor ?? 1}</span>
+        <span>{safeDisplay(data.fields.Divisor, 1)}</span>
       </div>
     </BaseNode>
   );
@@ -168,7 +169,7 @@ export const ImportedValueNode = memo(function ImportedValueNode(props: TypedNod
     <BaseNode {...props} category={AssetCategory.Density} handles={OUTPUT_ONLY_HANDLES}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Name</span>
-        <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
       </div>
     </BaseNode>
   );
@@ -180,7 +181,7 @@ export const AmplitudeConstantNode = memo(function AmplitudeConstantNode(props: 
     <BaseNode {...props} category={AssetCategory.Density} handles={INPUT_OUTPUT_HANDLES}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Value</span>
-        <span>{data.fields.Value ?? 1}</span>
+        <span>{safeDisplay(data.fields.Value, 1)}</span>
       </div>
     </BaseNode>
   );
@@ -192,7 +193,7 @@ export const PowNode = memo(function PowNode(props: TypedNodeProps) {
     <BaseNode {...props} category={AssetCategory.Density} handles={INPUT_OUTPUT_HANDLES}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Exp</span>
-        <span>{data.fields.Exponent ?? 2}</span>
+        <span>{safeDisplay(data.fields.Exponent, 2)}</span>
       </div>
     </BaseNode>
   );

@@ -2,6 +2,7 @@ import { memo } from "react";
 import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { densityInput, densityOutput, vectorInput } from "@/nodes/shared/handles";
+import { safeDisplay } from "@/nodes/shared/displayUtils";
 
 const INPUT_OUTPUT_HANDLES = [densityInput("Input", "Input"), densityOutput()];
 const ROTATED_HANDLES = [densityInput("Input", "Input"), vectorInput("NewYAxis", "Y Axis"), densityOutput()];
@@ -60,7 +61,7 @@ export const RotatedPositionNode = memo(function RotatedPositionNode(props: Type
     <BaseNode {...props} category={AssetCategory.Density} handles={ROTATED_HANDLES}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Angle</span>
-        <span>{data.fields.AngleDegrees ?? 0}°</span>
+        <span>{safeDisplay(data.fields.AngleDegrees, 0)}°</span>
       </div>
     </BaseNode>
   );
@@ -72,7 +73,7 @@ export const MirroredPositionNode = memo(function MirroredPositionNode(props: Ty
     <BaseNode {...props} category={AssetCategory.Density} handles={INPUT_OUTPUT_HANDLES}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Axis</span>
-        <span>{data.fields.Axis ?? "X"}</span>
+        <span>{safeDisplay(data.fields.Axis, "X")}</span>
       </div>
     </BaseNode>
   );
@@ -84,7 +85,7 @@ export const QuantizedPositionNode = memo(function QuantizedPositionNode(props: 
     <BaseNode {...props} category={AssetCategory.Density} handles={INPUT_OUTPUT_HANDLES}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Step</span>
-        <span>{data.fields.StepSize ?? 1}</span>
+        <span>{safeDisplay(data.fields.StepSize, 1)}</span>
       </div>
     </BaseNode>
   );

@@ -2,6 +2,7 @@ import { memo } from "react";
 import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { vectorInput, vectorOutput, densityInput } from "@/nodes/shared/handles";
+import { safeDisplay } from "@/nodes/shared/displayUtils";
 
 // ── Hoisted handle arrays ───────────────────────────────────────────────
 const VECTOR_OUTPUT_HANDLES = [vectorOutput()];
@@ -63,7 +64,7 @@ export const ExportedVectorNode = memo(function ExportedVectorNode(props: TypedN
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Name</span>
-        <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
       </div>
     </BaseNode>
   );
@@ -75,7 +76,7 @@ export const ImportedVectorNode = memo(function ImportedVectorNode(props: TypedN
     <BaseNode {...props} category={AssetCategory.VectorProvider} handles={VECTOR_OUTPUT_HANDLES}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Name</span>
-        <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
       </div>
     </BaseNode>
   );

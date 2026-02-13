@@ -2,6 +2,7 @@ import { memo } from "react";
 import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { densityOutput } from "@/nodes/shared/handles";
+import { safeDisplay } from "@/nodes/shared/displayUtils";
 
 const OUTPUT_ONLY_HANDLES = [densityOutput()];
 
@@ -19,7 +20,7 @@ function NoiseNodeBody({ data, fields }: { data: { fields: Record<string, any> }
       {fields.map((f) => (
         <div key={f} className="flex justify-between">
           <span className="text-tn-text-muted">{labels[f] ?? f}</span>
-          <span>{typeof data.fields[f] === "object" ? JSON.stringify(data.fields[f]) : (data.fields[f] ?? "—")}</span>
+          <span>{safeDisplay(data.fields[f])}</span>
         </div>
       ))}
     </div>

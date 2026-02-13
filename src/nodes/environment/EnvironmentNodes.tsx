@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
+import { safeDisplay } from "@/nodes/shared/displayUtils";
 import {
   environmentOutput,
   environmentInput,
@@ -45,7 +46,7 @@ export const BiomeEnvironmentNode = memo(function BiomeEnvironmentNode(props: Ty
     <BaseNode {...props} category={AssetCategory.EnvironmentProvider} handles={HANDLES_ENV_OUT}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Biome</span>
-        <span className="truncate max-w-[120px]">{data.fields.BiomeId ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.BiomeId, "")}</span>
       </div>
     </BaseNode>
   );
@@ -57,7 +58,7 @@ export const ImportedEnvironmentNode = memo(function ImportedEnvironmentNode(pro
     <BaseNode {...props} category={AssetCategory.EnvironmentProvider} handles={HANDLES_ENV_OUT}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Name</span>
-        <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
       </div>
     </BaseNode>
   );
@@ -73,7 +74,7 @@ export const ExportedEnvironmentNode = memo(function ExportedEnvironmentNode(pro
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Name</span>
-        <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
       </div>
     </BaseNode>
   );
@@ -92,7 +93,7 @@ export const ConstantTintNode = memo(function ConstantTintNode(props: TypedNodeP
             className="w-3 h-3 rounded-sm border border-tn-border"
             style={{ backgroundColor: data.fields.Color ?? "#ffffff" }}
           />
-          <span>{data.fields.Color ?? "#ffffff"}</span>
+          <span>{safeDisplay(data.fields.Color, "#ffffff")}</span>
         </div>
       </div>
     </BaseNode>
@@ -111,7 +112,7 @@ export const GradientTintNode = memo(function GradientTintNode(props: TypedNodeP
               className="w-3 h-3 rounded-sm border border-tn-border"
               style={{ backgroundColor: data.fields.From ?? "#ffffff" }}
             />
-            <span>{data.fields.From ?? "#ffffff"}</span>
+            <span>{safeDisplay(data.fields.From, "#ffffff")}</span>
           </div>
         </div>
         <div className="flex justify-between items-center">
@@ -121,7 +122,7 @@ export const GradientTintNode = memo(function GradientTintNode(props: TypedNodeP
               className="w-3 h-3 rounded-sm border border-tn-border"
               style={{ backgroundColor: data.fields.To ?? "#000000" }}
             />
-            <span>{data.fields.To ?? "#000000"}</span>
+            <span>{safeDisplay(data.fields.To, "#000000")}</span>
           </div>
         </div>
       </div>
@@ -135,7 +136,7 @@ export const ImportedTintNode = memo(function ImportedTintNode(props: TypedNodeP
     <BaseNode {...props} category={AssetCategory.TintProvider} handles={HANDLES_TINT_OUT}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Name</span>
-        <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
       </div>
     </BaseNode>
   );
@@ -151,7 +152,7 @@ export const ExportedTintNode = memo(function ExportedTintNode(props: TypedNodeP
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Name</span>
-        <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
       </div>
     </BaseNode>
   );
@@ -181,7 +182,7 @@ export const SingleBlockMaskNode = memo(function SingleBlockMaskNode(props: Type
     <BaseNode {...props} category={AssetCategory.BlockMask} handles={HANDLES_BLOCKMASK_OUT}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Block</span>
-        <span className="truncate max-w-[120px]">{data.fields.BlockType ?? "stone"}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.BlockType, "stone")}</span>
       </div>
     </BaseNode>
   );
@@ -207,7 +208,7 @@ export const ImportedBlockMaskNode = memo(function ImportedBlockMaskNode(props: 
     <BaseNode {...props} category={AssetCategory.BlockMask} handles={HANDLES_BLOCKMASK_OUT}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Name</span>
-        <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
       </div>
     </BaseNode>
   );
@@ -257,7 +258,7 @@ export const StaticDirectionalityNode = memo(function StaticDirectionalityNode(p
     <BaseNode {...props} category={AssetCategory.Directionality} handles={HANDLES_DIR_OUT}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Rotation</span>
-        <span>{data.fields.Rotation ?? 0}°</span>
+        <span>{safeDisplay(data.fields.Rotation, 0)}°</span>
       </div>
     </BaseNode>
   );
@@ -269,7 +270,7 @@ export const ImportedDirectionalityNode = memo(function ImportedDirectionalityNo
     <BaseNode {...props} category={AssetCategory.Directionality} handles={HANDLES_DIR_OUT}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Name</span>
-        <span className="truncate max-w-[120px]">{data.fields.Name ?? ""}</span>
+        <span className="truncate max-w-[120px]">{safeDisplay(data.fields.Name, "")}</span>
       </div>
     </BaseNode>
   );
@@ -307,7 +308,7 @@ export const RandomDirectionalityNode = memo(function RandomDirectionalityNode(p
     <BaseNode {...props} category={AssetCategory.Directionality} handles={HANDLES_DIR_OUT}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Seed</span>
-        <span>{data.fields.Seed ?? "A"}</span>
+        <span>{safeDisplay(data.fields.Seed, "A")}</span>
       </div>
     </BaseNode>
   );
@@ -320,11 +321,11 @@ export const PatternDirectionalityNode = memo(function PatternDirectionalityNode
       <div className="space-y-1">
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Direction</span>
-          <span>{data.fields.InitialDirection ?? "NORTH"}</span>
+          <span>{safeDisplay(data.fields.InitialDirection, "NORTH")}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-tn-text-muted">Seed</span>
-          <span>{data.fields.Seed ?? "A"}</span>
+          <span>{safeDisplay(data.fields.Seed, "A")}</span>
         </div>
       </div>
     </BaseNode>

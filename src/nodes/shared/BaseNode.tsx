@@ -1,4 +1,5 @@
-import { Fragment, memo } from "react";
+import { Component, Fragment, memo } from "react";
+import type { ErrorInfo, ReactNode } from "react";
 import { Handle, useStore, type NodeProps, type Node } from "@xyflow/react";
 import type { HandleDef } from "./handles";
 import { getHandleColor, INPUT_HANDLE_COLOR } from "./handles";
@@ -15,6 +16,21 @@ import { useSettingsStore } from "@/stores/settingsStore";
 import { getDensityAccentColor } from "@/schema/densitySubcategories";
 import { HANDLE_REGISTRY } from "@/nodes/handleRegistry";
 import { isLegacyTypeKey } from "@/nodes/shared/legacyTypes";
+
+/** Tiny error boundary scoped to a single node body.  Prevents one
+ *  bad field value (e.g. object rendered as React child) from crashing
+ *  the entire React tree. */
+class NodeBodyBoundary extends Component<{ children: ReactNode }, { error: string | null }> {
+  state: { error: string | null } = { error: null };
+  static getDerivedStateFromError(err: Error) { return { error: err.message }; }
+  componentDidCatch(err: Error, info: ErrorInfo) { console.error("Node render error:", err, info.componentStack); }
+  render() {
+    if (this.state.error) {
+      return <div className="text-[10px] text-red-400 px-1 py-0.5 break-words">{this.state.error}</div>;
+    }
+    return this.props.children;
+  }
+}
 
 const CATEGORY_LABELS: Partial<Record<AssetCategory, string>> = {
   [AssetCategory.Density]: "Density",
@@ -296,7 +312,7 @@ export const BaseNode = memo(function BaseNode({ id, data, selected, category, h
             borderTop: maxRows > 0 ? `1px solid ${effectiveColor}33` : undefined,
           }}
         >
-          {children}
+          <NodeBodyBoundary>{children}</NodeBodyBoundary>
         </div>
       )}
 

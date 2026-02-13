@@ -2,6 +2,7 @@ import { memo } from "react";
 import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { densityInput, densityOutput, curveInput } from "@/nodes/shared/handles";
+import { safeDisplay } from "@/nodes/shared/displayUtils";
 
 const CONDITIONAL_HANDLES = [
   densityInput("Condition", "Condition"),
@@ -35,7 +36,7 @@ export const ConditionalNode = memo(function ConditionalNode(props: TypedNodePro
     >
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Threshold</span>
-        <span>{data.fields.Threshold ?? 0}</span>
+        <span>{safeDisplay(data.fields.Threshold, 0)}</span>
       </div>
     </BaseNode>
   );
