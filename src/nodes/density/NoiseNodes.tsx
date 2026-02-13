@@ -19,7 +19,7 @@ function NoiseNodeBody({ data, fields }: { data: { fields: Record<string, any> }
       {fields.map((f) => (
         <div key={f} className="flex justify-between">
           <span className="text-tn-text-muted">{labels[f] ?? f}</span>
-          <span>{data.fields[f] ?? "—"}</span>
+          <span>{typeof data.fields[f] === "object" ? JSON.stringify(data.fields[f]) : (data.fields[f] ?? "—")}</span>
         </div>
       ))}
     </div>
