@@ -1,0 +1,22 @@
+{
+  "Type": "NoiseRange",
+  "DefaultBiome": "void_biome",
+  "DefaultTransitionDistance": 16,
+  "MaxBiomeEdgeDistance": 32,
+  "Biomes": [
+    {
+      "Biome": "void_biome",
+      "Min": -1.0,
+      "Max": 1.0
+    }
+  ],
+  "Density": {
+    "Type": "SimplexNoise2D",
+    "Lacunarity": 2.0,
+    "Persistence": 0.5,
+    "Scale": 256.0,
+    "Octaves": 1,
+    "Seed": "main"
+  },
+  "Framework": {}
+}

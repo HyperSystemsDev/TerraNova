@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+/* Scrollbar styling for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: theme("colors.tn.bg");
+}
+
+::-webkit-scrollbar-thumb {
+  background: theme("colors.tn.border");
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: theme("colors.tn.text-muted");
+}
+
+/* Override xyflow default node styles that cause white box artifacts */
+.react-flow__node {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.react-flow__node.selected {
+  box-shadow: none !important;
+}
+
+/* Edge selection styling */
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #b5924c !important;
+  stroke-width: 2.5 !important;
+}
+
+.react-flow__edge {
+  cursor: pointer;
+}
+
+.react-flow__edge path {
+  transition: stroke 0.15s ease, stroke-width 0.15s ease, opacity 0.15s ease;
+}
+
+/* Handle hover states + zoom-responsive scaling */
+.react-flow__handle {
+  border-radius: 50% !important;
+  transform: scale(var(--handle-scale, 1));
+  transform-origin: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.react-flow__handle:hover {
+  transform: scale(calc(var(--handle-scale, 1) * 1.25));
+  outline: 2px solid rgba(232, 226, 217, 0.35);
+  outline-offset: -2px;
+}
+
+/* Selection box styling */
+.react-flow__selection {
+  background: rgba(245, 158, 11, 0.06) !important;
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
+  border-radius: 4px;
+}
+
+.react-flow__nodesselection-rect {
+  background: transparent !important;
+  border: none !important;
+}

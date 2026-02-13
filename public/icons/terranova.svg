@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Background -->
+  <rect width="64" height="64" rx="12" fill="#1c1a17"/>
+
+  <!-- Subtle radial glow behind peaks -->
+  <circle cx="32" cy="30" r="22" fill="#b5924c" opacity="0.06"/>
+
+  <!-- Back mountain range — dark muted stone -->
+  <path d="M4 48 L14 28 L22 36 L30 22 L38 34 L46 26 L56 38 L60 48 Z" fill="#3d3730" opacity="0.9"/>
+
+  <!-- Mid mountain range — warm brown -->
+  <path d="M4 48 L16 30 L24 38 L34 24 L44 36 L54 30 L60 48 Z" fill="#6B5B3E" opacity="0.85"/>
+
+  <!-- Front mountain — accent gold, the hero peak -->
+  <path d="M8 48 L22 34 L28 40 L38 26 L48 38 L56 48 Z" fill="#b5924c"/>
+
+  <!-- Snow cap / highlight on the tallest peak -->
+  <path d="M34 26 L38 26 L36 30 Z" fill="#e8e2d9" opacity="0.7"/>
+
+  <!-- Ground line -->
+  <path d="M4 48 H60" stroke="#4a4438" stroke-width="1"/>
+
+  <!-- Terrain contour lines — topographic feel -->
+  <path d="M12 44 Q24 38 36 42 Q48 46 56 42" stroke="#b5924c" stroke-width="0.6" opacity="0.3" fill="none"/>
+  <path d="M8 46 Q22 41 34 44 Q48 47 58 44" stroke="#b5924c" stroke-width="0.5" opacity="0.2" fill="none"/>
+
+  <!-- Compass dot / north star -->
+  <circle cx="50" cy="12" r="2" fill="#b5924c" opacity="0.5"/>
+  <circle cx="50" cy="12" r="1" fill="#e8e2d9" opacity="0.7"/>
+</svg>

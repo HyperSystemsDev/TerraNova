@@ -1,0 +1,15 @@
+{
+  "identifier": "default",
+  "description": "Default capabilities for TerraNova",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-close",
+    "core:window:allow-destroy",
+    "dialog:allow-open",
+    "dialog:allow-save",
+    "dialog:allow-message",
+    "dialog:allow-ask",
+    "fs:default"
+  ]
+}

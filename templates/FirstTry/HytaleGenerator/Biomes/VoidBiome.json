@@ -1,0 +1,176 @@
+{
+  "$NodeId": "Biome-ca5ad661-e03d-4a9e-a853-d325b1b85b12",
+  "EnvironmentProvider": {
+    "$NodeId": "Default.EnvironmentProvider-25aa2171-ba00-42a3-addc-eb6d3c699356",
+    "Environment": "default",
+    "Type": "Constant"
+  },
+  "MaterialProvider": {
+    "$NodeId": "SolidityMaterialProvider-3c370831-49fb-459b-8fb9-d2d0543f03d2",
+    "Empty": {
+      "$NodeId": "QueueMaterialProvider-bef265cf-d256-4ced-b6f9-151509e023ed",
+      "Queue": [
+        {
+          "$NodeId": "ConstantMaterialProvider-c5d10b35-1b31-4b55-91a1-90ec851557b3",
+          "Material": {
+            "$NodeId": "Material-c3aa88a6-b2df-4a1b-ac3d-b53bfeeb8f51",
+            "Solid": "Empty"
+          },
+          "Type": "Constant"
+        }
+      ],
+      "Type": "Queue"
+    },
+    "Solid": {
+      "$DisconnectedTrees": [
+        {
+          "Material": "Rock_Stone",
+          "Type": "Constant"
+        }
+      ],
+      "$NodeId": "SpaceAndDepthMaterialProvider-31a4a10b-7927-4d5d-83d1-5b8448afee09",
+      "LayerContext": "DEPTH_INTO_FLOOR",
+      "Layers": [
+        {
+          "$NodeId": "ConstantThickness.Layer-64436067-9383-4e2b-aa9c-d673901bcb32",
+          "Thickness": 2,
+          "Type": "ConstantThickness"
+        },
+        {
+          "$NodeId": "ConstantThickness.Layer-209c6774-7413-46bc-9a68-5514a601be50",
+          "Thickness": 14,
+          "Type": "ConstantThickness"
+        }
+      ],
+      "MaxExpectedDepth": 16,
+      "Skip": false,
+      "Type": "SpaceAndDepth"
+    },
+    "Type": "Solidity"
+  },
+  "Name": "void_biome",
+  "Props": [],
+  "Terrain": {
+    "$NodeId": "Terrain-d34ad0cd-5abb-4b67-8bcb-27e01e8d676e",
+    "Density": {
+      "$NodeId": "ClampDensityNode-b3aa55b9-e952-4814-a513-2abfa1a511d2",
+      "Inputs": [
+        {
+          "$NodeId": "Cache.Density-2e3b70ae-afc7-4a9e-bcac-7b1ebf50e66b",
+          "Capacity": 1,
+          "Inputs": [
+            {
+              "$NodeId": "MultiplierDensityNode-d69c2c68-a618-4d05-a6a0-bb04a2e985ff",
+              "Inputs": [
+                {
+                  "$NodeId": "ClampDensityNode-f64ddd23-0d5e-4ad9-9ec1-bd13970626d8",
+                  "Inputs": [
+                    {
+                      "$NodeId": "AmplitudeConstantDensityNode-0fbef48a-4600-4c78-b8de-b41e9aaff29d",
+                      "Inputs": [
+                        {
+                          "$NodeId": "SumDensityNode-636c566a-f157-4fa0-86d7-9ea13866cb22",
+                          "Inputs": [
+                            {
+                              "$NodeId": "AmplitudeConstantDensityNode-f5140261-ecfe-4915-a435-5a438f19a6a5",
+                              "Inputs": [
+                                {
+                                  "$NodeId": "SimplexNoise2DDensityNode-ed6bd163-2f7a-469c-b6ff-2f8800546492",
+                                  "Lacunarity": 2,
+                                  "Octaves": 2,
+                                  "Persistence": 0.5,
+                                  "Scale": 333,
+                                  "Seed": "height_variation",
+                                  "Skip": false,
+                                  "Type": "SimplexNoise2D"
+                                }
+                              ],
+                              "Skip": false,
+                              "Type": "AmplitudeConstant",
+                              "Value": 39.87
+                            },
+                            {
+                              "$NodeId": "ConstantDensityNode-4d82ce5f-1264-4da4-838f-33e8fd028ded",
+                              "Skip": false,
+                              "Type": "Constant",
+                              "Value": 110
+                            }
+                          ],
+                          "Skip": false,
+                          "Type": "Sum"
+                        }
+                      ],
+                      "Skip": false,
+                      "Type": "AmplitudeConstant",
+                      "Value": 0.067
+                    }
+                  ],
+                  "Skip": false,
+                  "Type": "Clamp",
+                  "WallA": 0,
+                  "WallB": 1
+                },
+                {
+                  "$NodeId": "SumDensityNode-93eaa8d6-466a-4d80-a248-fda2106734f3",
+                  "Inputs": [
+                    {
+                      "$NodeId": "AmplitudeConstantDensityNode-8b55cb07-f416-418b-9ae8-383d135b6c56",
+                      "Inputs": [
+                        {
+                          "$NodeId": "FastGradientWarp.Density-a12936e9-a7e4-4183-bd0d-4a847120c039",
+                          "Inputs": [
+                            {
+                              "$NodeId": "CellNoise2DDensityNode-639467f7-818d-4884-8352-7cc8a0234b65",
+                              "ScaleX": 125,
+                              "ScaleZ": 125,
+                              "Seed": "A",
+                              "Skip": false,
+                              "Type": "CellNoise2D"
+                            }
+                          ],
+                          "Seed": "A",
+                          "Skip": false,
+                          "Type": "FastGradientWarp",
+                          "WarpFactor": 1,
+                          "WarpLacunarity": 2,
+                          "WarpOctaves": 1,
+                          "WarpPersistence": 0.5,
+                          "WarpScale": 1
+                        }
+                      ],
+                      "Skip": false,
+                      "Type": "AmplitudeConstant",
+                      "Value": -1.5
+                    },
+                    {
+                      "$NodeId": "ConstantDensityNode-6886f027-4c9b-4816-8b0e-94ce417e46b9",
+                      "Skip": false,
+                      "Type": "Constant",
+                      "Value": 0.8
+                    }
+                  ],
+                  "Skip": false,
+                  "Type": "Sum"
+                }
+              ],
+              "Skip": false,
+              "Type": "Multiplier"
+            }
+          ],
+          "Skip": false,
+          "Type": "Cache"
+        }
+      ],
+      "Skip": false,
+      "Type": "Clamp",
+      "WallA": -1,
+      "WallB": 1
+    },
+    "Type": "DAOTerrain"
+  },
+  "TintProvider": {
+    "$NodeId": "Constant.TintProvider-ef330397-5290-47e9-89aa-f00fe4600f80",
+    "Color": "#7CFC00",
+    "Type": "Constant"
+  }
+}

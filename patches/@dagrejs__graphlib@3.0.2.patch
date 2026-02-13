@@ -1,0 +1,13 @@
+diff --git a/dist/graphlib.d.ts b/dist/graphlib.d.ts
+index aa3cc62daf9d8cc3df0bbc5c01a934462e402369..d21ff73db784878e83a6e7ee027c41847504e67e 100644
+--- a/dist/graphlib.d.ts
++++ b/dist/graphlib.d.ts
+@@ -486,7 +486,7 @@ export namespace alg {
+     graph: Graph,
+     weightFn?: (e: Edge) => number,
+     edgeFn?: (v: string) => Edge[],
+-  ): { : { [node: string]: Path } };
++  ): { [source: string]: { [node: string]: Path } };
+ 
+   /**
+    * Given a Graph, graph, this function returns all nodes that are part of a cycle. As there

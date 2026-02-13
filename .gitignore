@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+src-tauri/target/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Tauri
+src-tauri/gen/
+
+# Environment
+.env
+.env.*
+
+# TerraNova drafts
+.terranova/
+
+# AI agent workspace
+.serena/
+
+# Logs
+*.log

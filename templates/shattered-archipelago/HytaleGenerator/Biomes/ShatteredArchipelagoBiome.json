@@ -1,0 +1,685 @@
+{
+  "Name": "shattered_archipelago",
+  "Terrain": {
+    "Type": "DAOTerrain",
+    "Density": {
+      "Type": "CacheOnce",
+      "Input": {
+        "Type": "Conditional",
+        "Threshold": 0.25,
+        "Condition": {
+          "Type": "Blend",
+          "InputA": {
+            "Type": "Constant",
+            "Value": 0.0
+          },
+          "InputB": {
+            "Type": "Clamp",
+            "Min": 0.0,
+            "Max": 1.0,
+            "Input": {
+              "Type": "SimplexNoise3D",
+              "Frequency": 0.035,
+              "Amplitude": 1.0,
+              "Seed": "sea_caves",
+              "Octaves": 4,
+              "Lacunarity": 2.0,
+              "Gain": 0.5
+            }
+          },
+          "Factor": {
+            "Type": "GradientDensity",
+            "FromY": 75,
+            "ToY": 15
+          }
+        },
+        "TrueInput": {
+          "Type": "Constant",
+          "Value": -8.0
+        },
+        "FalseInput": {
+          "Type": "Clamp",
+          "Min": -1.0,
+          "Max": 1.0,
+          "Input": {
+            "Type": "Sum",
+            "InputA": {
+              "Type": "Blend",
+              "InputA": {
+                "Type": "Sum",
+                "InputA": {
+                  "Type": "LinearTransform",
+                  "Scale": 3.0,
+                  "Offset": 15.0,
+                  "Input": {
+                    "Type": "DomainWarp2D",
+                    "Amplitude": 25.0,
+                    "Input": {
+                      "Type": "FractalNoise2D",
+                      "Frequency": 0.008,
+                      "Octaves": 2,
+                      "Lacunarity": 2.0,
+                      "Gain": 0.5
+                    }
+                  }
+                },
+                "InputB": {
+                  "Type": "Sum",
+                  "InputA": {
+                    "Type": "LinearTransform",
+                    "Scale": 12.0,
+                    "Offset": 0.0,
+                    "Input": {
+                      "Type": "SimplexNoise2D",
+                      "Frequency": 0.012,
+                      "Amplitude": 1.0,
+                      "Seed": "coral_reef",
+                      "Octaves": 2,
+                      "Lacunarity": 2.0,
+                      "Gain": 0.5
+                    }
+                  },
+                  "InputB": {
+                    "Type": "LinearTransform",
+                    "Scale": -12.0,
+                    "Offset": 0.0,
+                    "Input": {
+                      "Type": "Clamp",
+                      "Min": 0.0,
+                      "Max": 1.0,
+                      "Input": {
+                        "Type": "SimplexNoise2D",
+                        "Frequency": 0.003,
+                        "Amplitude": 1.0,
+                        "Seed": "ocean_trench",
+                        "Octaves": 3,
+                        "Lacunarity": 2.0,
+                        "Gain": 0.5
+                      }
+                    }
+                  }
+                }
+              },
+              "InputB": {
+                "Type": "Blend",
+                "InputA": {
+                  "Type": "Sum",
+                  "InputA": {
+                    "Type": "Sum",
+                    "InputA": {
+                      "Type": "LinearTransform",
+                      "Scale": 80.0,
+                      "Offset": 70.0,
+                      "Input": {
+                        "Type": "CurveFunction",
+                        "Input": {
+                          "Type": "Normalizer",
+                          "SourceRange": { "Min": -1, "Max": 1 },
+                          "TargetRange": { "Min": 0, "Max": 1 },
+                          "Input": {
+                            "Type": "DomainWarp2D",
+                            "Amplitude": 45.0,
+                            "Input": {
+                              "Type": "SimplexNoise2D",
+                              "Frequency": 0.003,
+                              "Amplitude": 1.0,
+                              "Seed": "island_shape",
+                              "Octaves": 5,
+                              "Lacunarity": 2.0,
+                              "Gain": 0.5
+                            }
+                          }
+                        },
+                        "Curve": {
+                          "Type": "Blend",
+                          "InputA": {
+                            "Type": "Manual",
+                            "Points": [
+                              [0.0, 0.0],
+                              [0.15, 0.0],
+                              [0.3, 0.3],
+                              [0.5, 0.65],
+                              [0.7, 0.85],
+                              [1.0, 1.0]
+                            ]
+                          },
+                          "InputB": {
+                            "Type": "Manual",
+                            "Points": [
+                              [0.0, 0.0],
+                              [0.2, 0.0],
+                              [0.35, 0.05],
+                              [0.5, 0.15],
+                              [0.65, 0.9],
+                              [0.8, 0.95],
+                              [1.0, 1.0]
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "InputB": {
+                      "Type": "LinearTransform",
+                      "Scale": 45.0,
+                      "Offset": -8.0,
+                      "Input": {
+                        "Type": "Clamp",
+                        "Min": 0.0,
+                        "Max": 1.0,
+                        "Input": {
+                          "Type": "SimplexRidgeNoise2D",
+                          "Frequency": 0.009,
+                          "Amplitude": 1.0,
+                          "Seed": "volcano_ridge",
+                          "Octaves": 3
+                        }
+                      }
+                    }
+                  },
+                  "InputB": {
+                    "Type": "Sum",
+                    "InputA": {
+                      "Type": "LinearTransform",
+                      "Scale": 8.0,
+                      "Offset": 0.0,
+                      "Input": {
+                        "Type": "FractalNoise2D",
+                        "Frequency": 0.025,
+                        "Octaves": 3,
+                        "Lacunarity": 2.0,
+                        "Gain": 0.5
+                      }
+                    },
+                    "InputB": {
+                      "Type": "LinearTransform",
+                      "Scale": 6.0,
+                      "Offset": 0.0,
+                      "Input": {
+                        "Type": "Abs",
+                        "Input": {
+                          "Type": "SimplexNoise2D",
+                          "Frequency": 0.009,
+                          "Amplitude": 1.0,
+                          "Seed": "terrain_abs",
+                          "Octaves": 2,
+                          "Lacunarity": 2.0,
+                          "Gain": 0.5
+                        }
+                      }
+                    }
+                  }
+                },
+                "InputB": {
+                  "Type": "Constant",
+                  "Value": 75.0
+                },
+                "Factor": {
+                  "Type": "Normalizer",
+                  "SourceRange": { "Min": -1, "Max": 1 },
+                  "TargetRange": { "Min": 0, "Max": 1 },
+                  "Input": {
+                    "Type": "VoronoiNoise2D",
+                    "Frequency": 0.002,
+                    "Seed": "island_blend"
+                  }
+                }
+              },
+              "Factor": {
+                "Type": "DomainWarp2D",
+                "Amplitude": 60.0,
+                "Input": {
+                  "Type": "CurveFunction",
+                  "Input": {
+                    "Type": "Normalizer",
+                    "SourceRange": { "Min": -1, "Max": 1 },
+                    "TargetRange": { "Min": 0, "Max": 1 },
+                    "Input": {
+                      "Type": "VoronoiNoise2D",
+                      "Frequency": 0.008,
+                      "Seed": "island_cells"
+                    }
+                  },
+                  "Curve": {
+                    "Type": "Manual",
+                    "Points": [
+                      [0.0, 0.0],
+                      [0.4, 0.0],
+                      [0.5, 0.0],
+                      [0.6, 0.05],
+                      [0.7, 0.3],
+                      [0.8, 0.8],
+                      [0.9, 0.95],
+                      [1.0, 1.0]
+                    ]
+                  }
+                }
+              }
+            },
+            "InputB": {
+              "Type": "Negate",
+              "Input": {
+                "Type": "CoordinateY"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "MaterialProvider": {
+    "Type": "Conditional",
+    "Threshold": 0.7,
+    "Condition": {
+      "Type": "SimplexRidgeNoise2D",
+      "Frequency": 0.007,
+      "Amplitude": 1.0,
+      "Seed": "volcano_mat",
+      "Octaves": 3
+    },
+    "TrueInput": {
+      "Type": "SpaceAndDepth",
+      "DepthThreshold": 3,
+      "Solid": {
+        "Type": "Constant",
+        "Material": "Rock_Shale"
+      },
+      "Empty": {
+        "Type": "Constant",
+        "Material": "Rock_Volcanic"
+      }
+    },
+    "FalseInput": {
+      "Type": "Conditional",
+      "Threshold": 0.45,
+      "Condition": {
+        "Type": "VoronoiNoise2D",
+        "Frequency": 0.004,
+        "Seed": "mat_island"
+      },
+      "TrueInput": {
+        "Type": "SpaceAndDepth",
+        "DepthThreshold": 4,
+        "Solid": {
+          "Type": "HeightGradient",
+          "Range": { "Min": 30, "Max": 70 },
+          "Low": {
+            "Type": "Constant",
+            "Material": "Rock_Stone"
+          },
+          "High": {
+            "Type": "Constant",
+            "Material": "Soil_Dirt"
+          }
+        },
+        "Empty": {
+          "Type": "Constant",
+          "Material": "Soil_Grass"
+        }
+      },
+      "FalseInput": {
+        "Type": "Conditional",
+        "Threshold": 0.4,
+        "Condition": {
+          "Type": "SimplexNoise2D",
+          "Frequency": 0.015,
+          "Amplitude": 1.0,
+          "Seed": "coral_zone",
+          "Octaves": 2,
+          "Lacunarity": 2.0,
+          "Gain": 0.5
+        },
+        "TrueInput": {
+          "Type": "Constant",
+          "Material": "Rock_Lime_Cobble"
+        },
+        "FalseInput": {
+          "Type": "HeightGradient",
+          "Range": { "Min": 25, "Max": 55 },
+          "Low": {
+            "Type": "Constant",
+            "Material": "Rock_Stone"
+          },
+          "High": {
+            "Type": "Constant",
+            "Material": "Soil_Gravel"
+          }
+        }
+      }
+    }
+  },
+  "Props": [
+    {
+      "Runtime": 0,
+      "Skip": false,
+      "Positions": {
+        "Type": "FieldFunction",
+        "Threshold": 0.5,
+        "FieldFunction": {
+          "Type": "SimplexNoise2D",
+          "Frequency": 0.01,
+          "Amplitude": 1.0,
+          "Seed": "palm_density",
+          "Octaves": 2,
+          "Lacunarity": 2.0,
+          "Gain": 0.5
+        },
+        "PositionProvider": {
+          "Type": "Mesh2D",
+          "Resolution": 10,
+          "Jitter": 0.45
+        }
+      },
+      "Assignments": {
+        "Type": "Constant",
+        "Prop": {
+          "Type": "Conditional",
+          "Threshold": 0.5,
+          "Condition": {
+            "Type": "SimplexNoise2D",
+            "Frequency": 0.006,
+            "Amplitude": 1.0,
+            "Seed": "palm_type",
+            "Octaves": 1,
+            "Lacunarity": 2.0,
+            "Gain": 0.5
+          },
+          "TrueInput": {
+            "Type": "Prefab",
+            "Path": "props/trees/palm_large",
+            "Directionality": {
+              "Type": "Uniform"
+            },
+            "Scanner": {
+              "Type": "ColumnLinear",
+              "StepSize": 1,
+              "Range": { "Min": 56, "Max": 90 }
+            }
+          },
+          "FalseInput": {
+            "Type": "Prefab",
+            "Path": "props/trees/palm_small",
+            "Directionality": {
+              "Type": "Uniform"
+            },
+            "Scanner": {
+              "Type": "ColumnLinear",
+              "StepSize": 1,
+              "Range": { "Min": 56, "Max": 90 }
+            }
+          }
+        }
+      }
+    },
+    {
+      "Runtime": 0,
+      "Skip": false,
+      "Positions": {
+        "Type": "Mesh2D",
+        "Resolution": 4,
+        "Jitter": 0.5
+      },
+      "Assignments": {
+        "Type": "Constant",
+        "Prop": {
+          "Type": "Cluster",
+          "Props": [
+            {
+              "Type": "Prefab",
+              "Path": "props/flora/tropical_fern",
+              "Directionality": {
+                "Type": "Uniform"
+              },
+              "Scanner": {
+                "Type": "ColumnLinear",
+                "StepSize": 1,
+                "Range": { "Min": 58, "Max": 100 }
+              }
+            },
+            {
+              "Type": "Prefab",
+              "Path": "props/flora/jungle_bush",
+              "Directionality": {
+                "Type": "Uniform"
+              },
+              "Scanner": {
+                "Type": "ColumnLinear",
+                "StepSize": 1,
+                "Range": { "Min": 58, "Max": 100 }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "Runtime": 0,
+      "Skip": false,
+      "Positions": {
+        "Type": "FieldFunction",
+        "Threshold": 0.35,
+        "FieldFunction": {
+          "Type": "SimplexNoise2D",
+          "Frequency": 0.015,
+          "Amplitude": 1.0,
+          "Seed": "coral_props",
+          "Octaves": 2,
+          "Lacunarity": 2.0,
+          "Gain": 0.5
+        },
+        "PositionProvider": {
+          "Type": "Mesh2D",
+          "Resolution": 6,
+          "Jitter": 0.4
+        }
+      },
+      "Assignments": {
+        "Type": "Constant",
+        "Prop": {
+          "Type": "Cluster",
+          "Props": [
+            {
+              "Type": "Prefab",
+              "Path": "props/ocean/coral_brain",
+              "Directionality": {
+                "Type": "Uniform"
+              },
+              "Scanner": {
+                "Type": "ColumnLinear",
+                "StepSize": 1,
+                "Range": { "Min": 30, "Max": 54 }
+              }
+            },
+            {
+              "Type": "Prefab",
+              "Path": "props/ocean/coral_fan",
+              "Directionality": {
+                "Type": "Uniform"
+              },
+              "Scanner": {
+                "Type": "ColumnLinear",
+                "StepSize": 1,
+                "Range": { "Min": 30, "Max": 54 }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "Runtime": 0,
+      "Skip": false,
+      "Positions": {
+        "Type": "DensityBased",
+        "Threshold": 0.65,
+        "DensityFunction": {
+          "Type": "SimplexRidgeNoise2D",
+          "Frequency": 0.005,
+          "Amplitude": 1.0,
+          "Seed": "boulder_density",
+          "Octaves": 2,
+          "Lacunarity": 2.0,
+          "Gain": 0.5
+        }
+      },
+      "Assignments": {
+        "Type": "Constant",
+        "Prop": {
+          "Type": "Prefab",
+          "Path": "props/rocks/volcanic_boulder",
+          "Directionality": {
+            "Type": "Uniform"
+          },
+          "Scanner": {
+            "Type": "ColumnLinear",
+            "StepSize": 1,
+            "Range": { "Min": 60, "Max": 120 }
+          }
+        }
+      }
+    },
+    {
+      "Runtime": 0,
+      "Skip": false,
+      "Positions": {
+        "Type": "FieldFunction",
+        "Threshold": 0.8,
+        "FieldFunction": {
+          "Type": "VoronoiNoise2D",
+          "Frequency": 0.003,
+          "Seed": "ruins_scatter"
+        },
+        "PositionProvider": {
+          "Type": "Mesh2D",
+          "Resolution": 48,
+          "Jitter": 0.3
+        }
+      },
+      "Assignments": {
+        "Type": "Constant",
+        "Prop": {
+          "Type": "Conditional",
+          "Threshold": 0.5,
+          "Condition": {
+            "Type": "SimplexNoise2D",
+            "Frequency": 0.004,
+            "Amplitude": 1.0,
+            "Seed": "ruin_type",
+            "Octaves": 1,
+            "Lacunarity": 2.0,
+            "Gain": 0.5
+          },
+          "TrueInput": {
+            "Type": "Prefab",
+            "Path": "props/structures/ruin_pillar",
+            "Directionality": {
+              "Type": "Uniform"
+            },
+            "Scanner": {
+              "Type": "ColumnLinear",
+              "StepSize": 1,
+              "Range": { "Min": 58, "Max": 95 }
+            }
+          },
+          "FalseInput": {
+            "Type": "Prefab",
+            "Path": "props/structures/ruin_arch",
+            "Directionality": {
+              "Type": "Uniform"
+            },
+            "Scanner": {
+              "Type": "ColumnLinear",
+              "StepSize": 1,
+              "Range": { "Min": 58, "Max": 95 }
+            }
+          }
+        }
+      }
+    },
+    {
+      "Runtime": 0,
+      "Skip": false,
+      "Positions": {
+        "Type": "FieldFunction",
+        "Threshold": 0.4,
+        "FieldFunction": {
+          "Type": "SimplexNoise2D",
+          "Frequency": 0.012,
+          "Amplitude": 1.0,
+          "Seed": "kelp_density",
+          "Octaves": 2,
+          "Lacunarity": 2.0,
+          "Gain": 0.5
+        },
+        "PositionProvider": {
+          "Type": "Mesh2D",
+          "Resolution": 5,
+          "Jitter": 0.5
+        }
+      },
+      "Assignments": {
+        "Type": "Constant",
+        "Prop": {
+          "Type": "Prefab",
+          "Path": "props/ocean/kelp_tall",
+          "Directionality": {
+            "Type": "Uniform"
+          },
+          "Scanner": {
+            "Type": "ColumnLinear",
+            "StepSize": 1,
+            "Range": { "Min": 28, "Max": 50 }
+          }
+        }
+      }
+    },
+    {
+      "Runtime": 0,
+      "Skip": false,
+      "Positions": {
+        "Type": "Mesh2D",
+        "Resolution": 8,
+        "Jitter": 0.6
+      },
+      "Assignments": {
+        "Type": "Constant",
+        "Prop": {
+          "Type": "Cluster",
+          "Props": [
+            {
+              "Type": "Prefab",
+              "Path": "props/beach/driftwood",
+              "Directionality": {
+                "Type": "Uniform"
+              },
+              "Scanner": {
+                "Type": "ColumnLinear",
+                "StepSize": 1,
+                "Range": { "Min": 53, "Max": 60 }
+              }
+            },
+            {
+              "Type": "Prefab",
+              "Path": "props/beach/shell_cluster",
+              "Directionality": {
+                "Type": "Uniform"
+              },
+              "Scanner": {
+                "Type": "ColumnLinear",
+                "StepSize": 1,
+                "Range": { "Min": 53, "Max": 60 }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "EnvironmentProvider": {
+    "Type": "Default"
+  },
+  "TintProvider": {
+    "Type": "Gradient",
+    "From": "#1a6b4a",
+    "To": "#0d3d2e"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "BufferCapacityFactor": 0.4,
+  "CustomConcurrency": -1,
+  "StatsCheckpoints": [],
+  "TargetPlayerCount": 8,
+  "TargetViewDistance": 768
+}

@@ -1,0 +1,21 @@
+export {
+  ConstantMaterialNode,
+  SpaceAndDepthMaterialNode,
+  WeightedRandomMaterialNode,
+  ConditionalMaterialNode,
+  BlendMaterialNode,
+  HeightGradientMaterialNode,
+  NoiseSelectorMaterialNode,
+  SolidMaterialNode,
+  EmptyMaterialNode,
+  SurfaceMaterialNode,
+  CaveMaterialNode,
+  ClusterMaterialNode,
+  ImportedMaterialNode,
+  ExportedMaterialNode,
+  // Layer sub-asset nodes (SpaceAndDepth V2)
+  ConstantThicknessNode,
+  NoiseThicknessNode,
+  RangeThicknessNode,
+  WeightedThicknessNode,
+} from "./MaterialNodes";

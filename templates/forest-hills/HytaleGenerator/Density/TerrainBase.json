@@ -1,0 +1,64 @@
+{
+  "Type": "Product",
+  "Inputs": [
+    {
+      "Type": "Sum",
+      "InputA": {
+        "Type": "LinearTransform",
+        "Scale": 50.0,
+        "Offset": 64.0,
+        "Input": {
+          "Type": "CurveFunction",
+          "Input": {
+            "Type": "Normalizer",
+            "SourceRange": { "Min": -1, "Max": 1 },
+            "TargetRange": { "Min": 0, "Max": 1 },
+            "Input": {
+              "Type": "DomainWarp2D",
+              "Amplitude": 20.0,
+              "Input": {
+                "Type": "SimplexNoise2D",
+                "Frequency": 0.004,
+                "Amplitude": 1.0,
+                "Seed": 100,
+                "Octaves": 4,
+                "Lacunarity": 2.0,
+                "Gain": 0.5
+              }
+            }
+          },
+          "Curve": {
+            "Type": "Manual",
+            "Points": [
+              [0.0, 0.0],
+              [0.2, 0.1],
+              [0.5, 0.4],
+              [0.8, 0.75],
+              [1.0, 1.0]
+            ]
+          }
+        }
+      },
+      "InputB": {
+        "Type": "Negate",
+        "Input": {
+          "Type": "CoordinateY"
+        }
+      }
+    },
+    {
+      "Type": "Normalizer",
+      "SourceRange": { "Min": -1, "Max": 1 },
+      "TargetRange": { "Min": 0.3, "Max": 1.0 },
+      "Input": {
+        "Type": "SimplexNoise2D",
+        "Frequency": 0.002,
+        "Amplitude": 1.0,
+        "Seed": 101,
+        "Octaves": 2,
+        "Lacunarity": 2.0,
+        "Gain": 0.5
+      }
+    }
+  ]
+}

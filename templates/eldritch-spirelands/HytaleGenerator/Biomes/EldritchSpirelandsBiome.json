@@ -1,0 +1,196 @@
+{
+  "Name": "Eldritch_Spirelands",
+  "Terrain": {
+    "Type": "DAOTerrain",
+    "Density": {
+      "Type": "CacheOnce",
+      "Input": {
+        "Type": "Clamp",
+        "Input": {
+          "Type": "Sum",
+          "InputA": {
+            "Type": "Sum",
+            "InputA": {
+              "Type": "Sum",
+              "InputA": {
+                "Type": "LinearTransform",
+                "Input": {
+                  "Type": "SimplexNoise2D",
+                  "Seed": "terrain_base",
+                  "Octaves": 4,
+                  "Lacunarity": 2,
+                  "Frequency": 0.005,
+                  "Gain": 0.5
+                },
+                "Scale": 40,
+                "Offset": 0
+              },
+              "InputB": {
+                "Type": "Constant",
+                "Value": 100
+              }
+            },
+            "InputB": {
+              "Type": "Product",
+              "Inputs": [
+                {
+                  "Type": "LinearTransform",
+                  "Input": {
+                    "Type": "VoronoiNoise2D",
+                    "Jitter": 0.7,
+                    "CellType": "Distance2Div",
+                    "Octaves": 1,
+                    "Seed": "spires",
+                    "Frequency": 0.016666666666666666
+                  },
+                  "Scale": 25,
+                  "Offset": 0
+                },
+                {
+                  "Type": "CurveFunction",
+                  "Curve": {
+                    "Type": "Manual",
+                    "Points": [
+                      {
+                        "x": -10,
+                        "y": 1
+                      },
+                      {
+                        "x": 5,
+                        "y": 0.8
+                      },
+                      {
+                        "x": 30,
+                        "y": 0.3
+                      },
+                      {
+                        "x": 60,
+                        "y": 0
+                      }
+                    ]
+                  },
+                  "Input": {
+                    "Type": "BaseHeight",
+                    "BaseHeightName": "Base",
+                    "Distance": true
+                  }
+                }
+              ]
+            }
+          },
+          "InputB": {
+            "Type": "Sum",
+            "InputA": {
+              "Type": "LinearTransform",
+              "Input": {
+                "Type": "SimplexNoise2D",
+                "Seed": "detail",
+                "Octaves": 2,
+                "Lacunarity": 2.5,
+                "Frequency": 0.02,
+                "Gain": 0.4
+              },
+              "Scale": 8,
+              "Offset": 0
+            },
+            "InputB": {
+              "Type": "Negate",
+              "Input": {
+                "Type": "CoordinateY"
+              }
+            }
+          }
+        },
+        "Min": -1,
+        "Max": 1
+      }
+    }
+  },
+  "MaterialProvider": {
+    "Type": "Queue",
+    "Queue": [
+      {
+        "Type": "SpaceAndDepth",
+        "DepthThreshold": 1,
+        "Empty": {
+          "Type": "Weighted",
+          "SkipChance": 0,
+          "WeightedMaterials": [
+            {
+              "Weight": 0.3,
+              "Material": {
+                "Type": "Constant",
+                "Material": {
+                  "Solid": "Soil_Grass"
+                }
+              }
+            },
+            {
+              "Weight": 0.7,
+              "Material": {
+                "Type": "Constant",
+                "Material": {
+                  "Solid": "Rock_Magma_Cooled"
+                }
+              }
+            }
+          ]
+        },
+        "Solid": {
+          "Type": "Constant",
+          "Material": "Soil_Dirt"
+        }
+      },
+      {
+        "Type": "Constant",
+        "Material": "Rock_Stone"
+      }
+    ]
+  },
+  "FluidLevel": 95,
+  "FluidMaterial": "Lava_Source",
+  "Props": [
+    {
+      "Skip": false,
+      "Runtime": 1,
+      "Positions": {
+        "Type": "Mesh3D",
+        "PointGenerator": {
+          "Type": "Mesh",
+          "Jitter": 0.4,
+          "ScaleX": 40,
+          "ScaleY": 40,
+          "ScaleZ": 40,
+          "Seed": "A"
+        }
+      },
+      "Assignments": {
+        "Type": "Constant",
+        "Prop": {
+          "Type": "Prefab",
+          "Directionality": {
+            "Type": "Uniform",
+            "Scanner": {
+              "Type": "ColumnLinear",
+              "Range": {
+                "Min": 0,
+                "Max": 160
+              },
+              "StepSize": 1
+            },
+            "MoldingDirection": "NONE",
+            "MoldingChildren": false
+          },
+          "Path": "Monuments/Incidental/Ash"
+        }
+      }
+    }
+  ],
+  "EnvironmentProvider": {
+    "Type": "Default"
+  },
+  "TintProvider": {
+    "Type": "Constant",
+    "Color": "#6b1a8f"
+  }
+}

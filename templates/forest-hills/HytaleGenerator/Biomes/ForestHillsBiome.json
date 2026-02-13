@@ -1,0 +1,415 @@
+{
+  "Name": "forest_hills",
+  "Terrain": {
+    "Type": "DAOTerrain",
+    "Density": {
+      "Type": "CacheOnce",
+      "Input": {
+        "Type": "Conditional",
+        "Threshold": 0.3,
+        "Condition": {
+          "Type": "Blend",
+          "InputA": {
+            "Type": "Constant",
+            "Value": 0.0
+          },
+          "InputB": {
+            "Type": "Clamp",
+            "Min": 0.0,
+            "Max": 1.0,
+            "Input": {
+              "Type": "SimplexNoise3D",
+              "Frequency": 0.025,
+              "Amplitude": 1.0,
+              "Seed": 4,
+              "Octaves": 2,
+              "Lacunarity": 2.0,
+              "Gain": 0.5
+            }
+          },
+          "Factor": {
+            "Type": "GradientDensity",
+            "FromY": 90,
+            "ToY": 30
+          }
+        },
+        "TrueInput": {
+          "Type": "Constant",
+          "Value": -5.0
+        },
+        "FalseInput": {
+          "Type": "Clamp",
+          "Min": -1.0,
+          "Max": 1.0,
+          "Input": {
+            "Type": "Sum",
+            "InputA": {
+              "Type": "Blend",
+              "InputA": {
+                "Type": "Sum",
+                "InputA": {
+                  "Type": "Sum",
+                  "InputA": {
+                    "Type": "LinearTransform",
+                    "Scale": 55.0,
+                    "Offset": 62.0,
+                    "Input": {
+                      "Type": "CurveFunction",
+                      "Input": {
+                        "Type": "Normalizer",
+                        "SourceRange": { "Min": -1, "Max": 1 },
+                        "TargetRange": { "Min": 0, "Max": 1 },
+                        "Input": {
+                          "Type": "DomainWarp2D",
+                          "Amplitude": 28.0,
+                          "Input": {
+                            "Type": "SimplexNoise2D",
+                            "Frequency": 0.003,
+                            "Amplitude": 1.0,
+                            "Seed": 1,
+                            "Octaves": 5,
+                            "Lacunarity": 2.0,
+                            "Gain": 0.5
+                          }
+                        }
+                      },
+                      "Curve": {
+                        "Type": "Blend",
+                        "InputA": {
+                          "Type": "Manual",
+                          "Points": [
+                            [0.0, 0.0],
+                            [0.25, 0.15],
+                            [0.5, 0.45],
+                            [0.75, 0.7],
+                            [1.0, 1.0]
+                          ]
+                        },
+                        "InputB": {
+                          "Type": "Manual",
+                          "Points": [
+                            [0.0, 0.0],
+                            [0.3, 0.05],
+                            [0.5, 0.1],
+                            [0.7, 0.85],
+                            [1.0, 1.0]
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  "InputB": {
+                    "Type": "LinearTransform",
+                    "Scale": 20.0,
+                    "Offset": -5.0,
+                    "Input": {
+                      "Type": "Clamp",
+                      "Min": 0.0,
+                      "Max": 1.0,
+                      "Input": {
+                        "Type": "SimplexRidgeNoise2D",
+                        "Frequency": 0.005,
+                        "Amplitude": 1.0,
+                        "Seed": 3,
+                        "Octaves": 3
+                      }
+                    }
+                  }
+                },
+                "InputB": {
+                  "Type": "Sum",
+                  "InputA": {
+                    "Type": "LinearTransform",
+                    "Scale": 4.0,
+                    "Offset": 0.0,
+                    "Input": {
+                      "Type": "FractalNoise2D",
+                      "Frequency": 0.02,
+                      "Octaves": 3,
+                      "Lacunarity": 2.0,
+                      "Gain": 0.5
+                    }
+                  },
+                  "InputB": {
+                    "Type": "LinearTransform",
+                    "Scale": 3.0,
+                    "Offset": 0.0,
+                    "Input": {
+                      "Type": "Abs",
+                      "Input": {
+                        "Type": "SimplexNoise2D",
+                        "Frequency": 0.008,
+                        "Amplitude": 1.0,
+                        "Seed": 7,
+                        "Octaves": 2,
+                        "Lacunarity": 2.0,
+                        "Gain": 0.5
+                      }
+                    }
+                  }
+                }
+              },
+              "InputB": {
+                "Type": "Constant",
+                "Value": 68.0
+              },
+              "Factor": {
+                "Type": "Normalizer",
+                "SourceRange": { "Min": -1, "Max": 1 },
+                "TargetRange": { "Min": 0, "Max": 1 },
+                "Input": {
+                  "Type": "VoronoiNoise2D",
+                  "Frequency": 0.002,
+                  "Seed": 2
+                }
+              }
+            },
+            "InputB": {
+              "Type": "Negate",
+              "Input": {
+                "Type": "CoordinateY"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "MaterialProvider": {
+    "Type": "Conditional",
+    "Threshold": 0.6,
+    "Condition": {
+      "Type": "SimplexNoise2D",
+      "Frequency": 0.008,
+      "Amplitude": 1.0,
+      "Seed": 50,
+      "Octaves": 2,
+      "Lacunarity": 2.0,
+      "Gain": 0.5
+    },
+    "TrueInput": {
+      "Type": "Constant",
+      "Material": "gravel"
+    },
+    "FalseInput": {
+      "Type": "SpaceAndDepth",
+      "DepthThreshold": 3,
+      "Solid": {
+        "Type": "HeightGradient",
+        "Range": { "Min": 0, "Max": 70 },
+        "Low": {
+          "Type": "Constant",
+          "Material": "stone"
+        },
+        "High": {
+          "Type": "Constant",
+          "Material": "dirt"
+        }
+      },
+      "Empty": {
+        "Type": "Constant",
+        "Material": "grass"
+      }
+    }
+  },
+  "Props": [
+    {
+      "Runtime": 0,
+      "Skip": false,
+      "Positions": {
+        "Type": "FieldFunction",
+        "Threshold": 0.5,
+        "FieldFunction": {
+          "Type": "SimplexNoise2D",
+          "Frequency": 0.01,
+          "Amplitude": 1.0,
+          "Seed": 10,
+          "Octaves": 2,
+          "Lacunarity": 2.0,
+          "Gain": 0.5
+        },
+        "PositionProvider": {
+          "Type": "Mesh2D",
+          "Resolution": 12,
+          "Jitter": 0.4
+        }
+      },
+      "Assignments": {
+        "Type": "Constant",
+        "Prop": {
+          "Type": "Conditional",
+          "Threshold": 0.5,
+          "Condition": {
+            "Type": "SimplexNoise2D",
+            "Frequency": 0.006,
+            "Amplitude": 1.0,
+            "Seed": 11,
+            "Octaves": 1,
+            "Lacunarity": 2.0,
+            "Gain": 0.5
+          },
+          "TrueInput": {
+            "Type": "Prefab",
+            "Path": "props/trees/oak_large",
+            "Directionality": {
+              "Type": "Uniform"
+            },
+            "Scanner": {
+              "Type": "ColumnLinear",
+              "StepSize": 1,
+              "Range": { "Min": 40, "Max": 200 }
+            }
+          },
+          "FalseInput": {
+            "Type": "Prefab",
+            "Path": "props/trees/birch_small",
+            "Directionality": {
+              "Type": "Uniform"
+            },
+            "Scanner": {
+              "Type": "ColumnLinear",
+              "StepSize": 1,
+              "Range": { "Min": 40, "Max": 200 }
+            }
+          }
+        }
+      }
+    },
+    {
+      "Runtime": 0,
+      "Skip": false,
+      "Positions": {
+        "Type": "Mesh2D",
+        "Resolution": 4,
+        "Jitter": 0.3
+      },
+      "Assignments": {
+        "Type": "Constant",
+        "Prop": {
+          "Type": "Surface",
+          "Pattern": {
+            "Type": "Surface",
+            "Floor": {
+              "Type": "Floor",
+              "Depth": 1
+            },
+            "Ceiling": {
+              "Type": "Ceiling",
+              "Depth": 1
+            }
+          },
+          "Scanner": {
+            "Type": "ColumnLinear",
+            "StepSize": 1,
+            "Range": { "Min": 0, "Max": 256 }
+          }
+        }
+      }
+    },
+    {
+      "Runtime": 0,
+      "Skip": false,
+      "Positions": {
+        "Type": "DensityBased",
+        "Threshold": 0.6,
+        "DensityFunction": {
+          "Type": "SimplexNoise2D",
+          "Frequency": 0.004,
+          "Amplitude": 1.0,
+          "Seed": 20,
+          "Octaves": 2,
+          "Lacunarity": 2.0,
+          "Gain": 0.5
+        }
+      },
+      "Assignments": {
+        "Type": "Constant",
+        "Prop": {
+          "Type": "Prefab",
+          "Path": "props/rocks/boulder_mossy",
+          "Directionality": {
+            "Type": "Uniform"
+          },
+          "Scanner": {
+            "Type": "ColumnLinear",
+            "StepSize": 1,
+            "Range": { "Min": 30, "Max": 180 }
+          }
+        }
+      }
+    },
+    {
+      "Runtime": 0,
+      "Skip": false,
+      "Positions": {
+        "Type": "Mesh2D",
+        "Resolution": 8,
+        "Jitter": 0.5
+      },
+      "Assignments": {
+        "Type": "Constant",
+        "Prop": {
+          "Type": "Cluster",
+          "Props": [
+            {
+              "Type": "Prefab",
+              "Path": "props/flora/wildflower",
+              "Directionality": {
+                "Type": "Uniform"
+              },
+              "Scanner": {
+                "Type": "ColumnLinear",
+                "StepSize": 1,
+                "Range": { "Min": 50, "Max": 200 }
+              }
+            },
+            {
+              "Type": "Prefab",
+              "Path": "props/flora/fern",
+              "Directionality": {
+                "Type": "Uniform"
+              },
+              "Scanner": {
+                "Type": "ColumnLinear",
+                "StepSize": 1,
+                "Range": { "Min": 50, "Max": 200 }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "Runtime": 0,
+      "Skip": false,
+      "Positions": {
+        "Type": "Mesh2D",
+        "Resolution": 20,
+        "Jitter": 0.3
+      },
+      "Assignments": {
+        "Type": "Constant",
+        "Prop": {
+          "Type": "Prefab",
+          "Path": "props/flora/mushroom_cluster",
+          "Directionality": {
+            "Type": "Uniform"
+          },
+          "Scanner": {
+            "Type": "ColumnLinear",
+            "StepSize": 1,
+            "Range": { "Min": 40, "Max": 150 }
+          }
+        }
+      }
+    }
+  ],
+  "EnvironmentProvider": {
+    "Type": "Default"
+  },
+  "TintProvider": {
+    "Type": "Gradient",
+    "From": "#2d5a1e",
+    "To": "#1a3a0e"
+  }
+}

@@ -1,0 +1,5 @@
+ignoredBuiltDependencies:
+  - esbuild
+
+patchedDependencies:
+  '@dagrejs/graphlib@3.0.2': patches/@dagrejs__graphlib@3.0.2.patch

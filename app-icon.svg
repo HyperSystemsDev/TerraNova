@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Background -->
+  <rect width="512" height="512" rx="108" fill="#1a1814"/>
+
+  <!-- Subtle ambient glow behind peaks -->
+  <ellipse cx="230" cy="260" rx="180" ry="140" fill="#b5924c" opacity="0.06"/>
+
+  <!-- Back range — dark muted stone -->
+  <path d="M310 185 L440 370 L200 370 Z" fill="#3d3730"/>
+
+  <!-- Hero peak — accent gold -->
+  <path d="M195 145 L375 370 L55 370 Z" fill="#b5924c"/>
+
+  <!-- Snow cap highlight -->
+  <path d="M195 145 L215 192 L175 192 Z" fill="#e8e2d9" opacity="0.8"/>
+
+  <!-- Ground line -->
+  <rect x="46" y="368" width="420" height="3" rx="1.5" fill="#4a4438"/>
+
+  <!-- Terrain contour line -->
+  <path d="M66 402 Q190 380 275 394 Q365 408 446 388" stroke="#b5924c" stroke-width="3" opacity="0.3" fill="none" stroke-linecap="round"/>
+
+  <!-- North star -->
+  <circle cx="412" cy="98" r="10" fill="#b5924c" opacity="0.4"/>
+  <circle cx="412" cy="98" r="5" fill="#e8e2d9" opacity="0.65"/>
+</svg>
