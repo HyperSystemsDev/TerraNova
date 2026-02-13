@@ -8,7 +8,8 @@ import type { Node } from "@xyflow/react";
 export function isBiomeFile(content: Record<string, unknown>, filePath: string): boolean {
   if ("Type" in content) return false;
   if ("Terrain" in content) return true;
-  return filePath.toLowerCase().includes("/biomes/");
+  const p = filePath.toLowerCase();
+  return p.includes("/biomes/") || p.includes("\\biomes\\");
 }
 
 /**

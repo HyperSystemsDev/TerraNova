@@ -365,8 +365,9 @@ export function useTauriIO() {
           // Try to load ContentFields from sibling WorldStructures/MainWorld.json
           let contentFields: Record<string, number> | undefined;
           try {
-            const biomeDir = filePath.replace(/[/\\][^/\\]+$/, "");
-            const parentDir = biomeDir.replace(/[/\\][^/\\]+$/, "");
+            const normalized = filePath.replace(/\\/g, "/");
+            const biomeDir = normalized.replace(/\/[^/]+$/, "");
+            const parentDir = biomeDir.replace(/\/[^/]+$/, "");
             const worldStructurePath = `${parentDir}/WorldStructures/MainWorld.json`;
             const wsContent = await readAssetFile(worldStructurePath);
             if (wsContent && typeof wsContent === "object") {

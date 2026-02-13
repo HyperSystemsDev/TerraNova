@@ -8,6 +8,7 @@ import { PanelLayout } from "@/components/layout/PanelLayout";
 import { DragGhost } from "@/components/editor/DragGhost";
 import { HomeScreen } from "@/components/home/HomeScreen";
 import { Toast } from "@/components/ui/Toast";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ConfirmDialog } from "@/components/dialogs/ConfirmDialog";
 import { saveRef } from "@/utils/saveRef";
 
@@ -137,7 +138,9 @@ export default function App() {
     <ReactFlowProvider>
       <div className="flex flex-col h-screen bg-tn-bg text-tn-text">
         <Toolbar onCloseProject={requestCloseProject} />
-        <PanelLayout />
+        <ErrorBoundary>
+          <PanelLayout />
+        </ErrorBoundary>
         <StatusBar />
       </div>
       <DragGhost />
