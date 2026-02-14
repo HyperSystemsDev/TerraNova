@@ -5,7 +5,7 @@ mod noise;
 mod schema;
 
 use bridge::client::BridgeState;
-use commands::{bridge as bridge_commands, io as io_commands, preview, validate};
+use commands::{bridge as bridge_commands, io as io_commands, preview, process, validate};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -37,6 +37,7 @@ pub fn run() {
             bridge_commands::bridge_fetch_palette,
             bridge_commands::bridge_fetch_chunk,
             bridge_commands::bridge_sync_file,
+            process::relaunch_app,
         ])
         .run(tauri::generate_context!())
         .expect("error while running TerraNova");

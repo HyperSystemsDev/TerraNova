@@ -133,6 +133,8 @@ export function StatusBar() {
         </button>
       ) : updateStatus === "downloading" ? (
         <span className="text-amber-400">Updating {updateProgress}%</span>
+      ) : updateStatus === "restarting" ? (
+        <span className="text-amber-400">Restarting...</span>
       ) : updateStatus === "ready" ? (
         <button
           onClick={restartToUpdate}

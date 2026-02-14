@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type UpdateStatus = "idle" | "checking" | "available" | "downloading" | "ready";
+export type UpdateStatus = "idle" | "checking" | "available" | "downloading" | "restarting" | "ready";
 
 interface UpdateState {
   status: UpdateStatus;

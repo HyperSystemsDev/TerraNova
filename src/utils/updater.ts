@@ -1,5 +1,5 @@
 import { check, type Update } from "@tauri-apps/plugin-updater";
-import { relaunch } from "@tauri-apps/plugin-process";
+import { invoke } from "@tauri-apps/api/core";
 import { useUpdateStore } from "@/stores/updateStore";
 import { useToastStore } from "@/stores/toastStore";
 
@@ -60,8 +60,14 @@ export async function downloadAndInstall(): Promise<void> {
       }
     });
 
-    useUpdateStore.getState().setStatus("ready");
-    useToastStore.getState().addToast("Update ready — restart to apply", "success");
+    pendingUpdate = null;
+    useUpdateStore.getState().setStatus("restarting");
+    try {
+      await invoke("relaunch_app");
+    } catch {
+      useUpdateStore.getState().setStatus("ready");
+      useToastStore.getState().addToast("Update installed — please restart the app manually", "info");
+    }
   } catch (err) {
     useUpdateStore.getState().setError(String(err));
     useUpdateStore.getState().setStatus("idle");
@@ -71,5 +77,11 @@ export async function downloadAndInstall(): Promise<void> {
 }
 
 export async function restartToUpdate(): Promise<void> {
-  await relaunch();
+  useUpdateStore.getState().setStatus("restarting");
+  try {
+    await invoke("relaunch_app");
+  } catch {
+    useUpdateStore.getState().setStatus("ready");
+    useToastStore.getState().addToast("Update installed — please restart the app manually", "info");
+  }
 }

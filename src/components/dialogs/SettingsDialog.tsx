@@ -178,6 +178,8 @@ export function SettingsDialog({ open, onClose }: SettingsDialogProps) {
                 </button>
               ) : updateStatus === "downloading" ? (
                 <span className="text-sm text-amber-400">Downloading {updateProgress}%</span>
+              ) : updateStatus === "restarting" ? (
+                <span className="text-sm text-amber-400">Restarting...</span>
               ) : updateStatus === "ready" ? (
                 <button
                   onClick={restartToUpdate}
