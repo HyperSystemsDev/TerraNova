@@ -14,6 +14,7 @@ import type {
 export const biomeRangesInitialState = {
   biomeRanges: [] as BiomeRangeEntry[],
   noiseRangeConfig: null as NoiseRangeConfig | null,
+  selectedBiomeIndex: null as number | null,
 };
 
 // ---------------------------------------------------------------------------
@@ -51,7 +52,20 @@ export const createBiomeRangesSlice: SliceCreator<BiomeRangesSliceState> = (set)
       const mutateAndCommit = getMutateAndCommit();
       mutateAndCommit((state) => ({
         biomeRanges: state.biomeRanges.filter((_, i) => i !== index),
+        selectedBiomeIndex: state.selectedBiomeIndex === index ? null : state.selectedBiomeIndex,
       }), "Remove biome range");
+      markDirty();
+    },
+
+    setSelectedBiomeIndex: (index) => set({ selectedBiomeIndex: index }),
+
+    renameBiomeRange: (index, name) => {
+      const mutateAndCommit = getMutateAndCommit();
+      mutateAndCommit((state) => {
+        const ranges = [...state.biomeRanges];
+        ranges[index] = { ...ranges[index], Biome: name };
+        return { biomeRanges: ranges };
+      }, "Rename biome range");
       markDirty();
     },
   };

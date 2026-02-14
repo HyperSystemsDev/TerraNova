@@ -31,17 +31,69 @@ export function isSettingsFile(content: Record<string, unknown>, filePath: strin
 }
 
 /**
+ * Detect Hytale-specific field names in a JSON tree even when $NodeId is absent.
+ * Checks recursively for known Hytale field names that differ from internal names.
+ */
+function hasHytaleFieldNames(content: Record<string, unknown>): boolean {
+  // Hytale-only field names mapped to the types they appear on
+  const HYTALE_ONLY_FIELDS: Record<string, string[]> = {
+    Scale: ["SimplexNoise2D", "CellNoise2D"],
+    Persistence: ["SimplexNoise2D", "SimplexNoise3D", "CellNoise2D", "CellNoise3D"],
+    ScaleXZ: ["SimplexNoise3D"],
+    WallA: ["Clamp", "SmoothClamp"],
+    WallB: ["Clamp", "SmoothClamp"],
+    FromMin: ["Normalizer"],
+    FromMax: ["Normalizer"],
+    ToMin: ["Normalizer"],
+    ToMax: ["Normalizer"],
+    WarpFactor: ["FastGradientWarp"],
+    SpinAngle: ["Rotator"],
+    SlideX: ["Slider"],
+    SlideY: ["Slider"],
+    SlideZ: ["Slider"],
+  };
+
+  function check(obj: unknown): boolean {
+    if (!obj || typeof obj !== "object" || Array.isArray(obj)) return false;
+    const rec = obj as Record<string, unknown>;
+    const type = rec.Type as string | undefined;
+
+    if (type) {
+      for (const [field, types] of Object.entries(HYTALE_ONLY_FIELDS)) {
+        if (field in rec && types.includes(type)) return true;
+      }
+    }
+
+    // Recurse into child objects
+    for (const value of Object.values(rec)) {
+      if (value && typeof value === "object") {
+        if (Array.isArray(value)) {
+          for (const item of value) {
+            if (check(item)) return true;
+          }
+        } else if (check(value)) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  return check(content);
+}
+
+/**
  * Auto-detect Hytale native format and convert to internal format if needed.
  * Returns the content in TerraNova internal format ready for jsonToGraph.
  */
 export function normalizeImport(content: Record<string, unknown>): Record<string, unknown> {
-  if (isHytaleNativeFormat(content)) {
-    // Typed asset with $NodeId -> Hytale native format
+  if (isHytaleNativeFormat(content) || hasHytaleFieldNames(content)) {
+    // Typed asset with $NodeId or Hytale field names -> Hytale native format
     if ("Type" in content) {
       const { asset } = hytaleToInternal(content);
       return asset;
     }
-    // Biome wrapper with $NodeId -> Hytale native biome
+    // Biome wrapper with $NodeId or Hytale field names -> Hytale native biome
     const { wrapper } = hytaleToInternalBiome(content);
     return wrapper;
   }

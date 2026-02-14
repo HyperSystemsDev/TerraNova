@@ -6,6 +6,15 @@ import { safeDisplay } from "@/nodes/shared/displayUtils";
 
 const OUTPUT_ONLY_HANDLES = [densityOutput()];
 
+/** Resolve internal field name with Hytale fallback for noise nodes */
+function resolveNoiseField(fields: Record<string, any>, name: string): unknown {
+  if (fields[name] != null) return fields[name];
+  // Fallback: handle Hytale field names that weren't translated
+  if (name === "Frequency" && fields.Scale != null) return 1 / (fields.Scale as number);
+  if (name === "Gain" && fields.Persistence != null) return fields.Persistence;
+  return undefined;
+}
+
 function NoiseNodeBody({ data, fields }: { data: { fields: Record<string, any> }; fields: string[] }) {
   const labels: Record<string, string> = {
     Frequency: "Freq",
@@ -20,7 +29,7 @@ function NoiseNodeBody({ data, fields }: { data: { fields: Record<string, any> }
       {fields.map((f) => (
         <div key={f} className="flex justify-between">
           <span className="text-tn-text-muted">{labels[f] ?? f}</span>
-          <span>{safeDisplay(data.fields[f])}</span>
+          <span>{safeDisplay(resolveNoiseField(data.fields, f))}</span>
         </div>
       ))}
     </div>
