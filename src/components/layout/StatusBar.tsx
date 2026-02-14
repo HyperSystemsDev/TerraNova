@@ -1,9 +1,12 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { getVersion } from "@tauri-apps/api/app";
 import { useProjectStore } from "@/stores/projectStore";
 import { useEditorStore } from "@/stores/editorStore";
 import { useBridgeStore } from "@/stores/bridgeStore";
 import { usePreviewStore } from "@/stores/previewStore";
 import { useUIStore } from "@/stores/uiStore";
+import { useUpdateStore } from "@/stores/updateStore";
+import { downloadAndInstall, restartToUpdate } from "@/utils/updater";
 import { useStore } from "@xyflow/react";
 
 export function StatusBar() {
@@ -25,6 +28,17 @@ export function StatusBar() {
   // Grid/snap state
   const showGrid = useUIStore((s) => s.showGrid);
   const snapToGrid = useUIStore((s) => s.snapToGrid);
+
+  // App version
+  const [appVersion, setAppVersion] = useState<string>("");
+  useEffect(() => {
+    getVersion().then(setAppVersion);
+  }, []);
+
+  // Update state
+  const updateStatus = useUpdateStore((s) => s.status);
+  const updateVersion = useUpdateStore((s) => s.version);
+  const updateProgress = useUpdateStore((s) => s.progress);
 
   // Zoom level from ReactFlow store
   const zoom = useStore((s) => s.transform[2]);
@@ -110,7 +124,25 @@ export function StatusBar() {
         )}
       </span>
 
-      <span>v0.1.0</span>
+      {updateStatus === "available" ? (
+        <button
+          onClick={downloadAndInstall}
+          className="text-tn-accent hover:underline cursor-pointer"
+        >
+          v{updateVersion} available
+        </button>
+      ) : updateStatus === "downloading" ? (
+        <span className="text-amber-400">Updating {updateProgress}%</span>
+      ) : updateStatus === "ready" ? (
+        <button
+          onClick={restartToUpdate}
+          className="text-emerald-400 hover:underline cursor-pointer"
+        >
+          Restart to update
+        </button>
+      ) : (
+        <span>v{appVersion}</span>
+      )}
     </div>
   );
 }
