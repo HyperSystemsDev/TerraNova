@@ -139,12 +139,15 @@ export interface BiomeSectionsSliceState {
 export interface BiomeRangesSliceState {
   biomeRanges: BiomeRangeEntry[];
   noiseRangeConfig: NoiseRangeConfig | null;
+  selectedBiomeIndex: number | null;
 
   setBiomeRanges: (ranges: BiomeRangeEntry[]) => void;
   setNoiseRangeConfig: (config: NoiseRangeConfig | null) => void;
   updateBiomeRange: (index: number, entry: Partial<BiomeRangeEntry>) => void;
   addBiomeRange: (entry: BiomeRangeEntry) => void;
   removeBiomeRange: (index: number) => void;
+  setSelectedBiomeIndex: (index: number | null) => void;
+  renameBiomeRange: (index: number, name: string) => void;
 }
 
 export interface FileCacheSliceState {

@@ -5,12 +5,19 @@ import { useLanguage } from "@/languages/useLanguage";
 
 const ROOT_COLOR = "#8B4450";
 
+/** Editing contexts where the Root dock is irrelevant (no density root node). */
+const HIDDEN_CONTEXTS = new Set(["NoiseRange", "Settings", "RawJson"]);
+
 export function RootDock() {
   const [collapsed, setCollapsed] = useState(false);
   const nodes = useEditorStore((s) => s.nodes);
   const edges = useEditorStore((s) => s.edges);
+  const editingContext = useEditorStore((s) => s.editingContext);
   const { getTypeDisplayName } = useLanguage();
   const reactFlow = useReactFlow();
+
+  // Hide for non-graph editing contexts (world structure, settings, raw JSON)
+  if (editingContext && HIDDEN_CONTEXTS.has(editingContext)) return null;
 
   // Find the Root node in the graph
   const rootNode = nodes.find((n) => n.type === "Root");

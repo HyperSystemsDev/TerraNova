@@ -11,10 +11,10 @@ describe("BiomeRangeEditor", () => {
   it("renders the header and add button", () => {
     render(<BiomeRangeEditor />);
     expect(screen.getByText("Biome Ranges")).toBeTruthy();
-    expect(screen.getByText("+ Add Biome")).toBeTruthy();
+    expect(screen.getByText("+ Add")).toBeTruthy();
   });
 
-  it("renders correct number of range blocks from store state", () => {
+  it("renders biome names in the list from store state", () => {
     useEditorStore.getState().setBiomeRanges([
       { Biome: "forest_hills", Min: -1.0, Max: 1.0 },
       { Biome: "desert", Min: -0.5, Max: 0.5 },
@@ -25,27 +25,31 @@ describe("BiomeRangeEditor", () => {
     expect(screen.getByText("desert")).toBeTruthy();
   });
 
-  it("detects overlapping ranges and shows warning", () => {
+  it("displays biome count in the header", () => {
     useEditorStore.getState().setBiomeRanges([
       { Biome: "forest_hills", Min: -0.5, Max: 0.5 },
       { Biome: "desert", Min: 0.1, Max: 0.8 },
     ]);
 
     render(<BiomeRangeEditor />);
-    expect(screen.getByText(/Overlap.*forest_hills.*desert/)).toBeTruthy();
+    expect(screen.getByText("(2)")).toBeTruthy();
   });
 
-  it("does not show overlap warning for non-overlapping ranges", () => {
+  it("filters biomes by search query", () => {
     useEditorStore.getState().setBiomeRanges([
       { Biome: "forest_hills", Min: -1.0, Max: 0.0 },
       { Biome: "desert", Min: 0.0, Max: 1.0 },
     ]);
 
     render(<BiomeRangeEditor />);
-    expect(screen.queryByText(/Overlap/)).toBeNull();
+    const searchInput = screen.getByPlaceholderText("Search...");
+    fireEvent.change(searchInput, { target: { value: "forest" } });
+
+    expect(screen.getByText("forest_hills")).toBeTruthy();
+    expect(screen.queryByText("desert")).toBeNull();
   });
 
-  it("adding a biome range increases block count", () => {
+  it("adding a biome range increases list count", () => {
     useEditorStore.getState().setBiomeRanges([
       { Biome: "forest_hills", Min: -1.0, Max: 1.0 },
     ]);
@@ -53,13 +57,13 @@ describe("BiomeRangeEditor", () => {
     render(<BiomeRangeEditor />);
     expect(screen.getByText("forest_hills")).toBeTruthy();
 
-    fireEvent.click(screen.getByText("+ Add Biome"));
+    fireEvent.click(screen.getByText("+ Add"));
 
     expect(screen.getByText("new_biome")).toBeTruthy();
     expect(useEditorStore.getState().biomeRanges).toHaveLength(2);
   });
 
-  it("removing a biome range decreases block count", () => {
+  it("removing a biome range decreases list count", () => {
     useEditorStore.getState().setBiomeRanges([
       { Biome: "forest_hills", Min: -1.0, Max: 1.0 },
       { Biome: "desert", Min: -0.5, Max: 0.5 },
@@ -88,5 +92,24 @@ describe("BiomeRangeEditor", () => {
     useEditorStore.getState().setBiomeRanges([]);
     render(<BiomeRangeEditor />);
     expect(screen.getByText("Biome Ranges")).toBeTruthy();
+  });
+
+  it("shows column headers for sorting", () => {
+    render(<BiomeRangeEditor />);
+    expect(screen.getByText("Name")).toBeTruthy();
+    expect(screen.getByText("Range")).toBeTruthy();
+    expect(screen.getByText("Min")).toBeTruthy();
+    expect(screen.getByText("Max")).toBeTruthy();
+  });
+
+  it("selects a biome on click", () => {
+    useEditorStore.getState().setBiomeRanges([
+      { Biome: "forest_hills", Min: -1.0, Max: 0.0 },
+      { Biome: "desert", Min: 0.0, Max: 1.0 },
+    ]);
+
+    render(<BiomeRangeEditor />);
+    fireEvent.click(screen.getByText("forest_hills"));
+    expect(useEditorStore.getState().selectedBiomeIndex).toBe(0);
   });
 });

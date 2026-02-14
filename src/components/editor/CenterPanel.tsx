@@ -133,14 +133,16 @@ export function CenterPanel() {
   return <EditorCanvas />;
 }
 
-const BAND_HEIGHT = 24;
-const EDITOR_OVERHEAD = 52; // header (~30px) + tick axis (~16px) + margins (~6px)
-const MIN_EDITOR_H = 80;
-const MAX_EDITOR_H = 300;
+const ROW_H = 28;
+const EDITOR_OVERHEAD = 90; // header + coverage strip + column headers
+const MIN_EDITOR_H = 160;
+const MAX_EDITOR_H = 500;
 
 function defaultEditorHeight(biomeCount: number): number {
   if (biomeCount === 0) return 160;
-  return Math.max(MIN_EDITOR_H, Math.min(MAX_EDITOR_H, biomeCount * BAND_HEIGHT + EDITOR_OVERHEAD));
+  // Show ~8–12 rows by default, capped
+  const visibleRows = Math.min(biomeCount, 12);
+  return Math.max(MIN_EDITOR_H, Math.min(MAX_EDITOR_H, visibleRows * ROW_H + EDITOR_OVERHEAD));
 }
 
 /** NoiseRange layout with floating view mode overlay */
