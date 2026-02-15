@@ -30,7 +30,8 @@ const ROOT_COLOR = "#8B4450";
 const GROUP_COLOR_START = "#6B5B3E";
 const GROUP_COLOR_END = "#8B7355";
 const HANDLE_RADIUS = 7;
-const HANDLE_STROKE = "rgba(0,0,0,0.4)";
+const HANDLE_STROKE_COLOR = "#000000";
+const HANDLE_STROKE_OPACITY = "0.4";
 const GRID_SIZE = 20;
 const DEFAULT_NODE_W = 220;
 
@@ -69,6 +70,19 @@ function getCategoryFromRfType(rfType: string): AssetCategory | null {
   return AssetCategory.Density;
 }
 
+/** Convert HSL to 6-digit hex string. */
+function hslToHex(h: number, s: number, l: number): string {
+  s /= 100;
+  l /= 100;
+  const a = s * Math.min(l, 1 - l);
+  const f = (n: number) => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color).toString(16).padStart(2, "0");
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
+}
+
 /** Deterministic hash-based color for unknown/generic node types. */
 function getGenericTypeColor(typeName: string): string {
   const KNOWN: Record<string, string> = {
@@ -82,7 +96,7 @@ function getGenericTypeColor(typeName: string): string {
   for (let i = 0; i < typeName.length; i++) {
     hash = typeName.charCodeAt(i) + ((hash << 5) - hash);
   }
-  return `hsl(${Math.abs(hash) % 360}, 40%, 48%)`;
+  return hslToHex(Math.abs(hash) % 360, 40, 48);
 }
 
 function isLabelSignificant(label: string): boolean {
@@ -384,6 +398,7 @@ export function generateSvg(
 
   const svg: string[] = [];
 
+  svg.push(`<?xml version="1.0" encoding="UTF-8"?>`);
   svg.push(
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vbX} ${vbY} ${vbW} ${vbH}" width="${vbW}" height="${vbH}">`,
   );
@@ -392,7 +407,14 @@ export function generateSvg(
   svg.push(`<defs>`);
   svg.push(
     `<filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">`,
-    `<feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="rgba(0,0,0,0.4)" />`,
+    `<feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur" />`,
+    `<feOffset in="blur" dx="0" dy="2" result="shifted" />`,
+    `<feFlood flood-color="#000000" flood-opacity="0.4" result="color" />`,
+    `<feComposite in="color" in2="shifted" operator="in" result="shadow" />`,
+    `<feMerge>`,
+    `<feMergeNode in="shadow" />`,
+    `<feMergeNode in="SourceGraphic" />`,
+    `</feMerge>`,
     `</filter>`,
   );
   if (options.showGrid) {
@@ -508,7 +530,7 @@ function renderNodeSvg(nd: NodeRenderData, mode: string, flowDirection: FlowDire
     if (mode === "debug" || nd.displayName !== nd.rawType) {
       p.push(
         `<text x="12" y="${HEADER_H / 2 + 8}" dominant-baseline="middle" ` +
-          `font-family="${FONT}" font-size="8" fill="rgba(255,255,255,0.5)">${escXml(nd.rawType)}</text>`,
+          `font-family="${FONT}" font-size="8" fill="#ffffff" fill-opacity="0.5">${escXml(nd.rawType)}</text>`,
       );
     }
   }
@@ -517,7 +539,7 @@ function renderNodeSvg(nd: NodeRenderData, mode: string, flowDirection: FlowDire
   if (nd.variant === "group" && nd.groupChildCount !== undefined) {
     const bx = w - 32;
     const by = (HEADER_H - 16) / 2;
-    p.push(`<rect x="${bx}" y="${by}" width="24" height="16" rx="3" fill="rgba(0,0,0,0.3)" />`);
+    p.push(`<rect x="${bx}" y="${by}" width="24" height="16" rx="3" fill="#000000" fill-opacity="0.3" />`);
     p.push(
       `<text x="${bx + 12}" y="${HEADER_H / 2 + 1}" text-anchor="middle" dominant-baseline="middle" ` +
         `font-family="${FONT}" font-size="9" fill="white">${nd.groupChildCount}</text>`,
@@ -539,7 +561,7 @@ function renderNodeSvg(nd: NodeRenderData, mode: string, flowDirection: FlowDire
     const h = inputs[i];
     const cy = HEADER_H + handleTop(i);
     p.push(
-      `<circle cx="${inputX}" cy="${cy}" r="${HANDLE_RADIUS}" fill="${INPUT_HANDLE_COLOR}" stroke="${HANDLE_STROKE}" stroke-width="2" />`,
+      `<circle cx="${inputX}" cy="${cy}" r="${HANDLE_RADIUS}" fill="${INPUT_HANDLE_COLOR}" stroke="${HANDLE_STROKE_COLOR}" stroke-opacity="${HANDLE_STROKE_OPACITY}" stroke-width="2" />`,
     );
     if (isLabelSignificant(h.label) || showIdx) {
       const lbl = showIdx
@@ -559,7 +581,7 @@ function renderNodeSvg(nd: NodeRenderData, mode: string, flowDirection: FlowDire
     const cy = HEADER_H + handleTop(i);
     const color = getHandleColor(h.category);
     p.push(
-      `<circle cx="${outputX}" cy="${cy}" r="${HANDLE_RADIUS}" fill="${color}" stroke="${HANDLE_STROKE}" stroke-width="2" />`,
+      `<circle cx="${outputX}" cy="${cy}" r="${HANDLE_RADIUS}" fill="${color}" stroke="${HANDLE_STROKE_COLOR}" stroke-opacity="${HANDLE_STROKE_OPACITY}" stroke-width="2" />`,
     );
     if (isLabelSignificant(h.label) || showOutIdx) {
       const lbl = showOutIdx
@@ -579,7 +601,7 @@ function renderNodeSvg(nd: NodeRenderData, mode: string, flowDirection: FlowDire
   if (showFields) {
     const fieldY = HEADER_H + handleZoneH;
     p.push(
-      `<line x1="0" y1="${fieldY}" x2="${w}" y2="${fieldY}" stroke="${nd.headerColor}33" stroke-width="1" />`,
+      `<line x1="0" y1="${fieldY}" x2="${w}" y2="${fieldY}" stroke="${nd.headerColor}" stroke-opacity="0.2" stroke-width="1" />`,
     );
     for (let i = 0; i < nd.fields.length; i++) {
       const [key, value] = nd.fields[i];
@@ -590,7 +612,7 @@ function renderNodeSvg(nd: NodeRenderData, mode: string, flowDirection: FlowDire
         `<text x="12" y="${y}" font-family="${FONT}" font-size="10" fill="#8C8878">${escXml(key)}</text>`,
       );
       p.push(
-        `<text x="${w - 12}" y="${y}" text-anchor="end" font-family="${FONT}" font-size="10" fill="#ccc" font-family="monospace, ${FONT}">${escXml(displayValue)}</text>`,
+        `<text x="${w - 12}" y="${y}" text-anchor="end" font-family="monospace, ${FONT}" font-size="10" fill="#ccc">${escXml(displayValue)}</text>`,
       );
     }
   }
@@ -599,7 +621,7 @@ function renderNodeSvg(nd: NodeRenderData, mode: string, flowDirection: FlowDire
   if (mode === "debug") {
     p.push(
       `<text x="${w / 2}" y="${totalH + 14}" text-anchor="middle" ` +
-        `font-family="${FONT}" font-size="8" fill="rgba(255,255,255,0.4)">${escXml(nd.id)}</text>`,
+        `font-family="${FONT}" font-size="8" fill="#ffffff" fill-opacity="0.4">${escXml(nd.id)}</text>`,
     );
   }
 
