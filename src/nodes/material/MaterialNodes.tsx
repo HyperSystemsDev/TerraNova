@@ -4,6 +4,7 @@ import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { materialInput, materialOutput, densityInput } from "@/nodes/shared/handles";
 import { safeDisplay } from "@/nodes/shared/displayUtils";
+import { useCompoundHandles } from "@/hooks/useCompoundHandles";
 
 /* ── Hoisted static handle arrays ──────────────────────────────────── */
 
@@ -13,11 +14,6 @@ const HANDLES_MAT_IN_OUT = [materialInput("Input", "Input"), materialOutput()];
 
 const HANDLES_MAT_MATERIAL_OUT = [materialInput("Material", "Material"), materialOutput()];
 
-const HANDLES_WEIGHTED_RANDOM = [
-  materialInput("Entries[0]", "Entry 0"),
-  materialInput("Entries[1]", "Entry 1"),
-  materialOutput(),
-];
 
 const HANDLES_CONDITIONAL = [
   densityInput("Condition", "Condition"),
@@ -39,11 +35,6 @@ const HANDLES_HEIGHT_GRADIENT = [
   materialOutput(),
 ];
 
-const HANDLES_NOISE_SELECTOR = [
-  materialInput("InputA", "Input A"),
-  materialInput("InputB", "Input B"),
-  materialOutput(),
-];
 
 const HANDLES_NOISE_THICKNESS = [
   densityInput("ThicknessFunctionXZ", "Noise"),
@@ -136,11 +127,12 @@ export const SpaceAndDepthMaterialNode = memo(function SpaceAndDepthMaterialNode
 });
 
 export const WeightedRandomMaterialNode = memo(function WeightedRandomMaterialNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "Material:WeightedRandom");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.MaterialProvider}
-      handles={HANDLES_WEIGHTED_RANDOM}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">Weighted random</div>
     </BaseNode>
@@ -196,11 +188,12 @@ export const HeightGradientMaterialNode = memo(function HeightGradientMaterialNo
 
 export const NoiseSelectorMaterialNode = memo(function NoiseSelectorMaterialNode(props: TypedNodeProps) {
   const data = props.data;
+  const handles = useCompoundHandles(props.id, "Material:NoiseSelector");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.MaterialProvider}
-      handles={HANDLES_NOISE_SELECTOR}
+      handles={handles}
     >
       <div className="space-y-1">
         <div className="flex justify-between">

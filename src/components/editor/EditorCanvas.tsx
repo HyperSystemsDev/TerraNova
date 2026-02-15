@@ -32,6 +32,8 @@ import { NodeContextMenu } from "./NodeContextMenu";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { MIN_ZOOM, MAX_ZOOM } from "@/constants";
 import { useConnectionValidation } from "@/hooks/useConnectionValidation";
+import { useKnifeTool } from "@/hooks/useKnifeTool";
+import { KnifeOverlay } from "./KnifeOverlay";
 import {
   getUpstreamEdgeIds,
   getBidirectionalEdgeIds,
@@ -165,6 +167,9 @@ export function EditorCanvas() {
     handleType: "source" | "target";
   } | null>(null);
 
+  // Track where a connection drag started (for backward-drag distance check)
+  const connectStartPosRef = useRef<{ x: number; y: number } | null>(null);
+
   // Track whether onConnect fired (successful connection) to avoid opening QuickAdd
   const connectionMadeRef = useRef(false);
 
@@ -219,6 +224,16 @@ export function EditorCanvas() {
 
   // ── Connection type validation ────────────────────────────────────────
   const isValidConnection = useConnectionValidation();
+
+  // ── Knife tool (Ctrl+Shift+LMB drag to cut wires) ──────────────────
+  const {
+    knifeActive,
+    cutEdgeIds,
+    overlayProps: knifeOverlayProps,
+    handlePointerDownCapture: knifePointerDownCapture,
+    handlePointerMoveCapture: knifePointerMoveCapture,
+    handlePointerUpCapture: knifePointerUpCapture,
+  } = useKnifeTool({ containerRef: canvasContainerRef });
 
   // Register keyboard shortcuts
   useKeyboardShortcuts({
@@ -282,8 +297,14 @@ export function EditorCanvas() {
   }, [selectedHandle, selectedNodeId, edges, hoverTrigger]);
 
   const styledEdges = useMemo(() => {
-    if (!hasHighlight) return edges;
+    const needsHighlight = hasHighlight || (knifeActive && cutEdgeIds.size > 0);
+    if (!needsHighlight) return edges;
     return edges.map((edge) => {
+      // Knife cut highlight takes priority
+      if (knifeActive && cutEdgeIds.has(edge.id)) {
+        return { ...edge, className: "knife-cut-edge", style: { stroke: "#ff4444", strokeWidth: 3 } };
+      }
+
       const isUpstream = upstreamEdgeIds.has(edge.id);
       const isDownstream = downstreamEdgeIds.has(edge.id);
 
@@ -296,10 +317,13 @@ export function EditorCanvas() {
       if (isDownstream) {
         return { ...edge, animated: false, style: { stroke: "#7a9e68", strokeWidth: 2.5 } };
       }
-      // Non-participating — dotted
-      return { ...edge, style: { stroke: "#5a5347", strokeWidth: 1.5, strokeDasharray: "4 3" } };
+      if (hasHighlight) {
+        // Non-participating — dotted
+        return { ...edge, style: { stroke: "#5a5347", strokeWidth: 1.5, strokeDasharray: "4 3" } };
+      }
+      return edge;
     });
-  }, [edges, hasHighlight, upstreamEdgeIds, downstreamEdgeIds]);
+  }, [edges, hasHighlight, upstreamEdgeIds, downstreamEdgeIds, knifeActive, cutEdgeIds]);
 
   // ── Pointer-based drop handler (replaces HTML5 drag-and-drop) ───────
   const handleMouseUp = useCallback(
@@ -392,6 +416,11 @@ export function EditorCanvas() {
       handleType,
     };
 
+    // Record drag start position for backward-drag distance check
+    const clientX = _event.clientX ?? _event.touches?.[0]?.clientX ?? 0;
+    const clientY = _event.clientY ?? _event.touches?.[0]?.clientY ?? 0;
+    connectStartPosRef.current = { x: clientX, y: clientY };
+
     // Input handle click → highlight upstream path from this port
     if (handleType === "target" && params.handleId) {
       setSelectedHandle({ nodeId: params.nodeId, handleId: params.handleId });
@@ -417,16 +446,31 @@ export function EditorCanvas() {
     // If onConnect fired, the connection succeeded — don't open QuickAdd
     if (connectionMadeRef.current) return;
 
-    // Target handle click — used for path highlighting, skip QuickAdd
-    if (pending.handleType === "target") return;
-
     const clientX = (event as MouseEvent).clientX ?? (event as TouchEvent).changedTouches?.[0]?.clientX ?? 0;
     const clientY = (event as MouseEvent).clientY ?? (event as TouchEvent).changedTouches?.[0]?.clientY ?? 0;
+
+    // Target handle: short click = path highlighting only, long drag = open QuickAdd
+    if (pending.handleType === "target") {
+      const start = connectStartPosRef.current;
+      if (start) {
+        const dx = clientX - start.x;
+        const dy = clientY - start.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < 10) return; // click — used for path highlighting
+      } else {
+        return;
+      }
+    }
 
     // Look up the node type for handle category resolution
     const nodes = useEditorStore.getState().nodes;
     const node = nodes.find((n) => n.id === pending.nodeId);
     const nodeType = node?.type ?? "default";
+
+    // Clear path highlighting when opening QuickAdd from backward drag
+    if (pending.handleType === "target") {
+      setSelectedHandle(null);
+    }
 
     setQuickAddPos({ x: clientX, y: clientY });
     setPendingConnection({
@@ -470,7 +514,16 @@ export function EditorCanvas() {
   }, [setSelectedNodeId]);
 
   return (
-    <div ref={canvasContainerRef} className="w-full h-full" onMouseUp={handleMouseUp} onMouseMove={(e) => { mousePosRef.current = { x: e.clientX, y: e.clientY }; }}>
+    <div
+      ref={canvasContainerRef}
+      className="w-full h-full"
+      style={knifeActive ? { cursor: "crosshair" } : undefined}
+      onMouseUp={handleMouseUp}
+      onMouseMove={(e) => { mousePosRef.current = { x: e.clientX, y: e.clientY }; }}
+      onPointerDownCapture={knifePointerDownCapture}
+      onPointerMoveCapture={knifePointerMoveCapture}
+      onPointerUpCapture={knifePointerUpCapture}
+    >
       <ReactFlow
         nodes={resolvedNodes}
         edges={styledEdges}
@@ -533,6 +586,9 @@ export function EditorCanvas() {
           />
         )}
       </ReactFlow>
+
+      {/* Knife tool cut line overlay */}
+      <KnifeOverlay {...knifeOverlayProps} />
 
       {/* Root dock — right-edge output target */}
       <RootDock />

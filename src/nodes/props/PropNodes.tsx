@@ -12,14 +12,10 @@ import {
   blockMaskInput,
   directionalityInput,
 } from "@/nodes/shared/handles";
+import { useCompoundHandles } from "@/hooks/useCompoundHandles";
 
 // ── Hoisted handle arrays ───────────────────────────────────────────────
 const PROP_OUTPUT_HANDLES = [propOutput()];
-const CLUSTER_PROP_HANDLES = [
-  propInput("Props[0]", "Prop 0"),
-  propInput("Props[1]", "Prop 1"),
-  propOutput(),
-];
 const DENSITY_PROP_HANDLES = [
   densityInput("DensityFunction", "Density"),
   materialInput("Material", "Material"),
@@ -36,11 +32,6 @@ const CONDITIONAL_PROP_HANDLES = [
   densityInput("Condition", "Condition"),
   propInput("TrueInput", "True"),
   propInput("FalseInput", "False"),
-  propOutput(),
-];
-const WEIGHTED_RANDOM_PROP_HANDLES = [
-  propInput("Entries[0]", "Entry 0"),
-  propInput("Entries[1]", "Entry 1"),
   propOutput(),
 ];
 const SURFACE_CAVE_PROP_HANDLES = [
@@ -95,11 +86,12 @@ export const ColumnPropNode = memo(function ColumnPropNode(props: TypedNodeProps
 });
 
 export const ClusterPropNode = memo(function ClusterPropNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "Prop:Cluster");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.Prop}
-      handles={CLUSTER_PROP_HANDLES}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">Cluster</div>
     </BaseNode>
@@ -181,11 +173,12 @@ export const ConditionalPropNode = memo(function ConditionalPropNode(props: Type
 });
 
 export const WeightedRandomPropNode = memo(function WeightedRandomPropNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "Prop:WeightedRandom");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.Prop}
-      handles={WEIGHTED_RANDOM_PROP_HANDLES}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">Weighted random</div>
     </BaseNode>
@@ -245,11 +238,12 @@ export const ExportedPropNode = memo(function ExportedPropNode(props: TypedNodeP
 });
 
 export const UnionPropNode = memo(function UnionPropNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "Prop:Union");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.Prop}
-      handles={CLUSTER_PROP_HANDLES}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">Union</div>
     </BaseNode>
@@ -257,11 +251,12 @@ export const UnionPropNode = memo(function UnionPropNode(props: TypedNodeProps) 
 });
 
 export const WeightedPropNode = memo(function WeightedPropNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "Prop:Weighted");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.Prop}
-      handles={WEIGHTED_RANDOM_PROP_HANDLES}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">Weighted</div>
     </BaseNode>

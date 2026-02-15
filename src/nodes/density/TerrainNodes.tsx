@@ -3,9 +3,9 @@ import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { densityInput, densityOutput, curveInput, vectorInput } from "@/nodes/shared/handles";
 import { safeDisplay } from "@/nodes/shared/displayUtils";
+import { useCompoundHandles } from "@/hooks/useCompoundHandles";
 
 const INPUT_OUTPUT_HANDLES = [densityInput("Input", "Input"), densityOutput()];
-const AB_INPUT_HANDLES = [densityInput("Inputs[0]", "Input A"), densityInput("Inputs[1]", "Input B"), densityOutput()];
 const OUTPUT_ONLY_HANDLES = [densityOutput()];
 const DISTANCE_HANDLES = [curveInput("Curve", "Curve"), densityOutput()];
 const YSAMPLED_HANDLES = [densityInput("Input", "Input"), densityInput("YProvider", "Y Provider"), densityOutput()];
@@ -22,8 +22,9 @@ export const SurfaceDensityNode = memo(function SurfaceDensityNode(props: TypedN
 
 export const TerrainBooleanNode = memo(function TerrainBooleanNode(props: TypedNodeProps) {
   const data = props.data;
+  const handles = useCompoundHandles(props.id, "TerrainBoolean");
   return (
-    <BaseNode {...props} category={AssetCategory.Density} handles={AB_INPUT_HANDLES}>
+    <BaseNode {...props} category={AssetCategory.Density} handles={handles}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Op</span>
         <span>{safeDisplay(data.fields.Operation, "Union")}</span>

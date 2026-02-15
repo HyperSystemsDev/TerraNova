@@ -91,7 +91,7 @@ export const HANDLE_REGISTRY: Record<string, HandleDef[]> = {
   DomainWarp3D: [densityInput("Input", "Input"), densityOutput()],
 
   // Dual-input density
-  Sum: [densityInput("InputA", "Input"), densityInput("InputB", "Input"), densityOutput()],
+  Sum: [densityInput("Inputs[0]", "Input"), densityInput("Inputs[1]", "Input"), densityOutput()],
   WeightedSum: [densityInput("Inputs[0]", "Input 0"), densityInput("Inputs[1]", "Input 1"), densityOutput()],
   Product: [densityInput("Inputs[0]", "Input"), densityInput("Inputs[1]", "Input"), densityOutput()],
   MinFunction: [densityInput("Inputs[0]", "Input"), densityInput("Inputs[1]", "Input"), densityOutput()],
@@ -199,7 +199,7 @@ export const HANDLE_REGISTRY: Record<string, HandleDef[]> = {
   // Dual-input curves
   "Curve:Multiplier": [curveInput("Inputs[0]", "Input"), curveInput("Inputs[1]", "Input"), curveOutput()],
   "Curve:Sum": [curveInput("Inputs[0]", "Input"), curveInput("Inputs[1]", "Input"), curveOutput()],
-  "Curve:Blend": [curveInput("InputA", "Input"), curveInput("InputB", "Input"), curveOutput()],
+  "Curve:Blend": [curveInput("Inputs[0]", "Input"), curveInput("Inputs[1]", "Input"), curveOutput()],
   "Curve:Min": [curveInput("Inputs[0]", "Input"), curveInput("Inputs[1]", "Input"), curveOutput()],
   "Curve:Max": [curveInput("Inputs[0]", "Input"), curveInput("Inputs[1]", "Input"), curveOutput()],
   "Curve:SmoothMin": [curveInput("Inputs[0]", "Input"), curveInput("Inputs[1]", "Input"), curveOutput()],
@@ -215,8 +215,8 @@ export const HANDLE_REGISTRY: Record<string, HandleDef[]> = {
   "Material:SpaceAndDepth": [materialInput("Layers[0]", "Layer 0"), materialInput("Layers[1]", "Layer 1"), materialOutput()],
   "Material:WeightedRandom": [materialInput("Entries[0]", "Entry 0"), materialInput("Entries[1]", "Entry 1"), materialOutput()],
   "Material:HeightGradient": [materialInput("Low", "Low"), materialInput("High", "High"), materialOutput()],
-  "Material:NoiseSelectorMaterial": [materialInput("InputA", "Input"), materialInput("InputB", "Input"), materialOutput()],
-  "Material:NoiseSelector": [materialInput("InputA", "Input"), materialInput("InputB", "Input"), materialOutput()],
+  "Material:NoiseSelectorMaterial": [materialInput("Inputs[0]", "Input"), materialInput("Inputs[1]", "Input"), materialOutput()],
+  "Material:NoiseSelector": [materialInput("Inputs[0]", "Input"), materialInput("Inputs[1]", "Input"), materialOutput()],
   "Material:Surface": [materialInput("Input", "Input"), materialOutput()],
   "Material:Cave": [materialInput("Input", "Input"), materialOutput()],
   "Material:Cluster": [materialInput("Input", "Input"), materialOutput()],
@@ -400,6 +400,7 @@ export function getHandles(nodeType: string): HandleDef[] {
 
 /**
  * Look up the HandleDef for a specific handle ID on a node type.
+ * Supports dynamic array-indexed handles (e.g. Inputs[5] matches any Inputs[N]).
  * Returns undefined if not found (e.g. GenericNode or dynamic handles).
  */
 export function findHandleDef(
@@ -408,5 +409,18 @@ export function findHandleDef(
 ): HandleDef | undefined {
   const defs = HANDLE_REGISTRY[nodeType] ?? getSchemaHandles(nodeType);
   if (!defs) return undefined;
-  return defs.find((h) => h.id === handleId);
+
+  // Exact match first
+  const exact = defs.find((h) => h.id === handleId);
+  if (exact) return exact;
+
+  // Array-pattern fallback: "Inputs[5]" matches any "Inputs[N]" in the registry
+  const arrayMatch = /^(.+)\[\d+\]$/.exec(handleId);
+  if (arrayMatch) {
+    const base = arrayMatch[1];
+    const pattern = new RegExp(`^${base.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\[\\d+\\]$`);
+    return defs.find((h) => pattern.test(h.id));
+  }
+
+  return undefined;
 }

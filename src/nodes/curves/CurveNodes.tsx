@@ -6,21 +6,10 @@ import { curveInput, curveOutput } from "@/nodes/shared/handles";
 import { CurveCanvas } from "@/components/properties/CurveCanvas";
 import { getCurveEvaluator } from "@/utils/curveEvaluators";
 import { safeDisplay } from "@/nodes/shared/displayUtils";
+import { useCompoundHandles } from "@/hooks/useCompoundHandles";
 const HANDLES_CURVE_OUT = [curveOutput()];
 
 const HANDLES_CURVE_IN_OUT = [curveInput("Input", "Input"), curveOutput()];
-
-const HANDLES_CURVE_TWO_IN = [
-  curveInput("Inputs[0]", "Input A"),
-  curveInput("Inputs[1]", "Input B"),
-  curveOutput(),
-];
-
-const HANDLES_CURVE_BLEND = [
-  curveInput("InputA", "Input A"),
-  curveInput("InputB", "Input B"),
-  curveOutput(),
-];
 
 /* ── Helpers ───────────────────────────────────────────────────────── */
 
@@ -182,11 +171,12 @@ export const PowerCurveNode = memo(function PowerCurveNode(props: TypedNodeProps
 // ── Composite curves ───────────────────────────────────────────────────
 
 export const MultiplierCurveNode = memo(function MultiplierCurveNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "Curve:Multiplier");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.Curve}
-      handles={HANDLES_CURVE_TWO_IN}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">A × B</div>
     </BaseNode>
@@ -194,11 +184,12 @@ export const MultiplierCurveNode = memo(function MultiplierCurveNode(props: Type
 });
 
 export const SumCurveNode = memo(function SumCurveNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "Curve:Sum");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.Curve}
-      handles={HANDLES_CURVE_TWO_IN}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">A + B</div>
     </BaseNode>
@@ -289,11 +280,12 @@ export const CacheCurveNode = memo(function CacheCurveNode(props: TypedNodeProps
 });
 
 export const BlendCurveNodeC = memo(function BlendCurveNodeC(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "Curve:Blend");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.Curve}
-      handles={HANDLES_CURVE_BLEND}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">Blend A↔B</div>
     </BaseNode>
@@ -395,16 +387,18 @@ export const SmoothClampCurveNode = memo(function SmoothClampCurveNode(props: Ty
 });
 
 export const MinCurveNode = memo(function MinCurveNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "Curve:Min");
   return (
-    <BaseNode {...props} category={AssetCategory.Curve} handles={HANDLES_CURVE_TWO_IN}>
+    <BaseNode {...props} category={AssetCategory.Curve} handles={handles}>
       <div className="text-tn-text-muted text-center py-1">min(A, B)</div>
     </BaseNode>
   );
 });
 
 export const MaxCurveNode = memo(function MaxCurveNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "Curve:Max");
   return (
-    <BaseNode {...props} category={AssetCategory.Curve} handles={HANDLES_CURVE_TWO_IN}>
+    <BaseNode {...props} category={AssetCategory.Curve} handles={handles}>
       <div className="text-tn-text-muted text-center py-1">max(A, B)</div>
     </BaseNode>
   );
@@ -412,8 +406,9 @@ export const MaxCurveNode = memo(function MaxCurveNode(props: TypedNodeProps) {
 
 export const SmoothMinCurveNode = memo(function SmoothMinCurveNode(props: TypedNodeProps) {
   const data = props.data;
+  const handles = useCompoundHandles(props.id, "Curve:SmoothMin");
   return (
-    <BaseNode {...props} category={AssetCategory.Curve} handles={HANDLES_CURVE_TWO_IN}>
+    <BaseNode {...props} category={AssetCategory.Curve} handles={handles}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Smoothness</span>
         <span>{safeDisplay(data.fields.Smoothness, 0.1)}</span>
@@ -424,8 +419,9 @@ export const SmoothMinCurveNode = memo(function SmoothMinCurveNode(props: TypedN
 
 export const SmoothMaxCurveNode = memo(function SmoothMaxCurveNode(props: TypedNodeProps) {
   const data = props.data;
+  const handles = useCompoundHandles(props.id, "Curve:SmoothMax");
   return (
-    <BaseNode {...props} category={AssetCategory.Curve} handles={HANDLES_CURVE_TWO_IN}>
+    <BaseNode {...props} category={AssetCategory.Curve} handles={handles}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Smoothness</span>
         <span>{safeDisplay(data.fields.Smoothness, 0.1)}</span>

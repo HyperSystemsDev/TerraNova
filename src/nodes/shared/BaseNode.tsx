@@ -75,6 +75,15 @@ const SHADOW_OUTPUT = "0 0 0 2px #f59e0b, 0 0 12px rgba(245,158,11,0.4), 0 2px 8
 const SHADOW_SELECTED = "0 0 0 2px #f59e0b, 0 2px 8px rgba(0,0,0,0.4)";
 const SHADOW_DEFAULT = "0 2px 8px rgba(0,0,0,0.4)";
 
+/** Returns true if the label conveys meaningful type info beyond generic "Input"/"Output". */
+function isLabelSignificant(label: string): boolean {
+  if (label === "Input" || label === "Output") return false;
+  if (/^Input \d+$/.test(label) || /^Output \d+$/.test(label)) return false;
+  if (/^Input [A-Z]$/.test(label)) return false;
+  if (/^Entry \d+$/.test(label)) return false;
+  return true;
+}
+
 export interface BaseNodeData extends Record<string, unknown> {
   type: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- field values are mixed primitives displayed in JSX
@@ -290,12 +299,16 @@ export const BaseNode = memo(function BaseNode({ id, data, selected, category, h
                   )}
                 </div>
               </div>
-              <div
-                className={`absolute ${inSide}-4 text-xs text-tn-text-muted`}
-                style={{ top: handleTop(i), transform: "translateY(-50%)" }}
-              >
-                {showIndex ? `[${i}] ${handle.label}` : handle.label}
-              </div>
+              {(isLabelSignificant(handle.label) || showIndex) && (
+                <div
+                  className={`absolute ${inSide}-4 text-xs text-tn-text-muted`}
+                  style={{ top: handleTop(i), transform: "translateY(-50%)" }}
+                >
+                  {showIndex
+                    ? isLabelSignificant(handle.label) ? `[${i}] ${handle.label}` : `[${i}]`
+                    : handle.label}
+                </div>
+              )}
             </Fragment>
           );
           })}
@@ -330,12 +343,16 @@ export const BaseNode = memo(function BaseNode({ id, data, selected, category, h
                   )}
                 </div>
               </div>
-              <div
-                className={`absolute ${outSide}-4 text-xs text-tn-text-muted`}
-                style={{ top: handleTop(i), transform: "translateY(-50%)" }}
-              >
-                {showOutputIndex ? `[${i}] ${handle.label}` : handle.label}
-              </div>
+              {(isLabelSignificant(handle.label) || showOutputIndex) && (
+                <div
+                  className={`absolute ${outSide}-4 text-xs text-tn-text-muted`}
+                  style={{ top: handleTop(i), transform: "translateY(-50%)" }}
+                >
+                  {showOutputIndex
+                    ? isLabelSignificant(handle.label) ? `[${i}] ${handle.label}` : `[${i}]`
+                    : handle.label}
+                </div>
+              )}
             </Fragment>
             );
           })}

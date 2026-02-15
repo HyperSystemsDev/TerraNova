@@ -4,9 +4,9 @@ import { AssetCategory } from "@/schema/types";
 import { densityInput, densityOutput } from "@/nodes/shared/handles";
 import type { RangeDouble } from "@/schema/types";
 import { safeDisplay } from "@/nodes/shared/displayUtils";
+import { useCompoundHandles } from "@/hooks/useCompoundHandles";
 
 const INPUT_OUTPUT_HANDLES = [densityInput("Input", "Input"), densityOutput()];
-const AB_INPUT_HANDLES = [densityInput("Inputs[0]", "Input A"), densityInput("Inputs[1]", "Input B"), densityOutput()];
 const RANGE_CHOICE_HANDLES = [
   densityInput("Condition", "Condition"),
   densityInput("TrueInput", "True"),
@@ -228,8 +228,9 @@ export const SmoothCeilingNode = memo(function SmoothCeilingNode(props: TypedNod
 
 export const SmoothMinNode = memo(function SmoothMinNode(props: TypedNodeProps) {
   const data = props.data;
+  const handles = useCompoundHandles(props.id, "SmoothMin");
   return (
-    <BaseNode {...props} category={AssetCategory.Density} handles={AB_INPUT_HANDLES}>
+    <BaseNode {...props} category={AssetCategory.Density} handles={handles}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Smooth</span>
         <span>{safeDisplay(data.fields.Smoothness, 0.1)}</span>
@@ -240,8 +241,9 @@ export const SmoothMinNode = memo(function SmoothMinNode(props: TypedNodeProps) 
 
 export const SmoothMaxNode = memo(function SmoothMaxNode(props: TypedNodeProps) {
   const data = props.data;
+  const handles = useCompoundHandles(props.id, "SmoothMax");
   return (
-    <BaseNode {...props} category={AssetCategory.Density} handles={AB_INPUT_HANDLES}>
+    <BaseNode {...props} category={AssetCategory.Density} handles={handles}>
       <div className="flex justify-between">
         <span className="text-tn-text-muted">Smooth</span>
         <span>{safeDisplay(data.fields.Smoothness, 0.1)}</span>

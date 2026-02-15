@@ -109,8 +109,7 @@ export const DENSITY_NAMED_TO_ARRAY: Record<string, string[]> = {
   DoubleNormalizer: ["Input"],
   OffsetConstant: ["Input"],
   Cache2D: ["Input"],
-  // 2-input types
-  Sum: ["InputA", "InputB"],
+  // 2-input types (Sum uses Inputs[] natively via compound handles)
   Offset: ["Input", "Offset"],
   GradientWarp: ["Input", "WarpSource"],
   VectorWarp: ["Input", "WarpVector"],

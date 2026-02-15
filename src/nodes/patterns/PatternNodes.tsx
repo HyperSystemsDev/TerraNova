@@ -3,6 +3,7 @@ import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { patternInput, patternOutput, densityInput } from "@/nodes/shared/handles";
 import { safeDisplay } from "@/nodes/shared/displayUtils";
+import { useCompoundHandles } from "@/hooks/useCompoundHandles";
 
 // ── Hoisted handle arrays ───────────────────────────────────────────────
 const PATTERN_PASSTHROUGH_HANDLES = [patternInput("SubPattern", "Pattern"), patternOutput()];
@@ -10,11 +11,6 @@ const PATTERN_OUTPUT_HANDLES = [patternOutput()];
 const SURFACE_PATTERN_HANDLES = [
   patternInput("Floor", "Floor"),
   patternInput("Ceiling", "Ceiling"),
-  patternOutput(),
-];
-const BLOCK_SET_PATTERN_HANDLES = [
-  patternInput("Patterns[0]", "Pattern 0"),
-  patternInput("Patterns[1]", "Pattern 1"),
   patternOutput(),
 ];
 const CONDITIONAL_PATTERN_HANDLES = [
@@ -27,16 +23,6 @@ const BLEND_PATTERN_HANDLES = [
   patternInput("InputA", "Input A"),
   patternInput("InputB", "Input B"),
   densityInput("Factor", "Factor"),
-  patternOutput(),
-];
-const UNION_PATTERN_HANDLES = [
-  patternInput("Patterns[0]", "Pattern A"),
-  patternInput("Patterns[1]", "Pattern B"),
-  patternOutput(),
-];
-const INTERSECTION_PATTERN_HANDLES = [
-  patternInput("Patterns[0]", "Pattern A"),
-  patternInput("Patterns[1]", "Pattern B"),
   patternOutput(),
 ];
 const EXPORTED_PATTERN_HANDLES = [patternInput("Input", "Input"), patternOutput()];
@@ -130,11 +116,12 @@ export const BlockTypePatternNode = memo(function BlockTypePatternNode(props: Ty
 });
 
 export const BlockSetPatternNode = memo(function BlockSetPatternNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "Pattern:BlockSet");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.Pattern}
-      handles={BLOCK_SET_PATTERN_HANDLES}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">Block set</div>
     </BaseNode>
@@ -204,11 +191,12 @@ export const BlendPatternNode = memo(function BlendPatternNode(props: TypedNodeP
 });
 
 export const UnionPatternNode = memo(function UnionPatternNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "Pattern:Union");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.Pattern}
-      handles={UNION_PATTERN_HANDLES}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">Union</div>
     </BaseNode>
@@ -216,11 +204,12 @@ export const UnionPatternNode = memo(function UnionPatternNode(props: TypedNodeP
 });
 
 export const IntersectionPatternNode = memo(function IntersectionPatternNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "Pattern:Intersection");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.Pattern}
-      handles={INTERSECTION_PATTERN_HANDLES}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">Intersection</div>
     </BaseNode>

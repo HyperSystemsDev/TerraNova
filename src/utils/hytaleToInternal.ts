@@ -503,35 +503,6 @@ function distributeInputs(
 }
 
 // ---------------------------------------------------------------------------
-// N-ary Sum → balanced binary tree
-// ---------------------------------------------------------------------------
-
-/**
- * When a Hytale Sum has 3+ inputs, restructure into a balanced binary tree
- * of nested Sum nodes so the editor's InputA/InputB handles can represent it.
- *   Sum(A, B, C, D) → Sum(InputA=Sum(A,B), InputB=Sum(C,D))
- *   Sum(A, B, C)    → Sum(InputA=Sum(A,B), InputB=C)
- *   Sum(A, B)       → { InputA: A, InputB: B }
- */
-function nestNarySum(inputs: unknown[]): { InputA: unknown; InputB: unknown } {
-  if (inputs.length === 2) {
-    return { InputA: inputs[0], InputB: inputs[1] };
-  }
-  const mid = Math.ceil(inputs.length / 2);
-  const left = inputs.slice(0, mid);
-  const right = inputs.slice(mid);
-
-  const leftNode = left.length === 1
-    ? left[0]
-    : { Type: "Sum", ...nestNarySum(left) };
-  const rightNode = right.length === 1
-    ? right[0]
-    : { Type: "Sum", ...nestNarySum(right) };
-
-  return { InputA: leftNode, InputB: rightNode };
-}
-
-// ---------------------------------------------------------------------------
 // Infer category from Hytale $NodeId prefix
 // ---------------------------------------------------------------------------
 
@@ -834,11 +805,7 @@ function transformNodeToInternal(
     });
     const { Inputs: _, ...rest } = processedFields;
     const resolvedType = output.Type as string;
-    if (resolvedType === "Sum" && inputs.length > 2) {
-      processedFields = { ...rest, ...nestNarySum(inputs) };
-    } else {
-      processedFields = { ...rest, ...distributeInputs(inputs, resolvedType, ctx) };
-    }
+    processedFields = { ...rest, ...distributeInputs(inputs, resolvedType, ctx) };
   }
 
   // Apply per-type reverse field transformations

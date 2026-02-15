@@ -531,12 +531,18 @@ export function evaluateMaterialGraph(
 
       case "Material:NoiseSelector":
       case "Material:NoiseSelectorMaterial": {
-        // Use world coordinate hash to select A or B
-        const h = positionHash(ctx.x, ctx.y, ctx.z, 42);
-        const selectedId = h >= 0.5
-          ? getMaterialInputId(inputs, "InputB")
-          : getMaterialInputId(inputs, "InputA");
-        result = selectedId ? evaluateNode(selectedId, ctx) : null;
+        // Count connected inputs and use hash to pick one
+        let count = 0;
+        for (let i = 0; i < 16; i++) {
+          if (!getMaterialInputId(inputs, `Inputs[${i}]`)) break;
+          count++;
+        }
+        if (count > 0) {
+          const h = positionHash(ctx.x, ctx.y, ctx.z, 42);
+          const selected = Math.floor(h * count);
+          const selectedId = getMaterialInputId(inputs, `Inputs[${selected}]`);
+          result = selectedId ? evaluateNode(selectedId, ctx) : null;
+        }
         break;
       }
 

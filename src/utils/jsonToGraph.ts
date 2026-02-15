@@ -11,6 +11,21 @@ interface GraphResult {
   edges: Edge[];
 }
 
+/**
+ * Migration map for renamed handles (compound inputs refactor).
+ * Maps nodeType → { oldHandleId → newHandleId }.
+ */
+const HANDLE_MIGRATION: Record<string, Record<string, string>> = {
+  Sum:                          { InputA: "Inputs[0]", InputB: "Inputs[1]" },
+  "Curve:Blend":                { InputA: "Inputs[0]", InputB: "Inputs[1]" },
+  "Material:NoiseSelectorMaterial": { InputA: "Inputs[0]", InputB: "Inputs[1]" },
+  "Material:NoiseSelector":     { InputA: "Inputs[0]", InputB: "Inputs[1]" },
+};
+
+function migrateHandle(nodeType: string, handle: string): string {
+  return HANDLE_MIGRATION[nodeType]?.[handle] ?? handle;
+}
+
 /** Fields that are known to contain nested V2 assets (density functions, etc.) */
 // const NESTED_ASSET_FIELDS = [
 //   // Density inputs
@@ -146,7 +161,7 @@ export function jsonToGraph(json: V2Asset, startX = 0, startY = 0, idPrefix = "g
           source: childId,
           sourceHandle: "output",
           target: nodeId,
-          targetHandle: key,
+          targetHandle: migrateHandle(nodeType, key),
         });
         childIndex++;
       } else if (

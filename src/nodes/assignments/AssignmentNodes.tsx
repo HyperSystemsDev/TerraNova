@@ -3,6 +3,7 @@ import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { assignmentInput, assignmentOutput, densityInput, propInput } from "@/nodes/shared/handles";
 import { safeDisplay } from "@/nodes/shared/displayUtils";
+import { useCompoundHandles } from "@/hooks/useCompoundHandles";
 
 // ── Hoisted handle arrays ───────────────────────────────────────────────
 const CONSTANT_ASSIGNMENT_HANDLES = [propInput("Prop", "Prop"), assignmentOutput()];
@@ -15,11 +16,6 @@ const FIELD_FUNCTION_ASSIGNMENT_HANDLES = [
 const SANDWICH_ASSIGNMENT_HANDLES = [
   assignmentInput("Top", "Top"),
   assignmentInput("Bottom", "Bottom"),
-  assignmentOutput(),
-];
-const WEIGHTED_ASSIGNMENT_HANDLES = [
-  assignmentInput("Entries[0]", "Entry 0"),
-  assignmentInput("Entries[1]", "Entry 1"),
   assignmentOutput(),
 ];
 const ASSIGNMENT_OUTPUT_HANDLES = [assignmentOutput()];
@@ -65,11 +61,12 @@ export const SandwichAssignmentNode = memo(function SandwichAssignmentNode(props
 });
 
 export const WeightedAssignmentNode = memo(function WeightedAssignmentNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "Assignment:Weighted");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.Assignment}
-      handles={WEIGHTED_ASSIGNMENT_HANDLES}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">Weighted</div>
     </BaseNode>

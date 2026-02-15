@@ -3,6 +3,7 @@ import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { positionInput, positionOutput, densityInput } from "@/nodes/shared/handles";
 import { safeDisplay } from "@/nodes/shared/displayUtils";
+import { useCompoundHandles } from "@/hooks/useCompoundHandles";
 
 // ── Hoisted handle arrays ───────────────────────────────────────────────
 const POSITION_OUTPUT_HANDLES = [positionOutput()];
@@ -10,11 +11,6 @@ const POSITION_PASSTHROUGH_HANDLES = [positionInput("PositionProvider", "Positio
 const FIELD_FUNCTION_POSITION_HANDLES = [
   densityInput("FieldFunction", "Field Fn"),
   positionInput("PositionProvider", "Positions"),
-  positionOutput(),
-];
-const UNION_POSITION_HANDLES = [
-  positionInput("Providers[0]", "Provider A"),
-  positionInput("Providers[1]", "Provider B"),
   positionOutput(),
 ];
 const CONDITIONAL_POSITION_HANDLES = [
@@ -133,11 +129,12 @@ export const OffsetPositionNode = memo(function OffsetPositionNode(props: TypedN
 });
 
 export const UnionPositionNode = memo(function UnionPositionNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "Position:Union");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.PositionProvider}
-      handles={UNION_POSITION_HANDLES}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">Union</div>
     </BaseNode>

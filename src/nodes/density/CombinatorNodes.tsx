@@ -3,6 +3,7 @@ import { BaseNode, type TypedNodeProps } from "@/nodes/shared/BaseNode";
 import { AssetCategory } from "@/schema/types";
 import { densityInput, densityOutput, curveInput } from "@/nodes/shared/handles";
 import { safeDisplay } from "@/nodes/shared/displayUtils";
+import { useCompoundHandles } from "@/hooks/useCompoundHandles";
 
 const CONDITIONAL_HANDLES = [
   densityInput("Condition", "Condition"),
@@ -10,7 +11,6 @@ const CONDITIONAL_HANDLES = [
   densityInput("FalseInput", "False"),
   densityOutput(),
 ];
-const SWITCH_HANDLES = [densityInput("Inputs[0]", "Case 0"), densityInput("Inputs[1]", "Case 1"), densityOutput()];
 const BLEND_HANDLES = [
   densityInput("InputA", "Input A"),
   densityInput("InputB", "Input B"),
@@ -24,7 +24,6 @@ const BLEND_CURVE_HANDLES = [
   curveInput("Curve", "Curve"),
   densityOutput(),
 ];
-const AB_INPUT_HANDLES = [densityInput("Inputs[0]", "Input A"), densityInput("Inputs[1]", "Input B"), densityOutput()];
 
 export const ConditionalNode = memo(function ConditionalNode(props: TypedNodeProps) {
   const data = props.data;
@@ -43,11 +42,12 @@ export const ConditionalNode = memo(function ConditionalNode(props: TypedNodePro
 });
 
 export const SwitchNode = memo(function SwitchNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "Switch");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.Density}
-      handles={SWITCH_HANDLES}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">Switch</div>
     </BaseNode>
@@ -79,11 +79,12 @@ export const BlendCurveNode = memo(function BlendCurveNode(props: TypedNodeProps
 });
 
 export const MinFunctionNode = memo(function MinFunctionNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "MinFunction");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.Density}
-      handles={AB_INPUT_HANDLES}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">min(A, B)</div>
     </BaseNode>
@@ -91,11 +92,12 @@ export const MinFunctionNode = memo(function MinFunctionNode(props: TypedNodePro
 });
 
 export const MaxFunctionNode = memo(function MaxFunctionNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "MaxFunction");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.Density}
-      handles={AB_INPUT_HANDLES}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">max(A, B)</div>
     </BaseNode>
@@ -103,11 +105,12 @@ export const MaxFunctionNode = memo(function MaxFunctionNode(props: TypedNodePro
 });
 
 export const AverageFunctionNode = memo(function AverageFunctionNode(props: TypedNodeProps) {
+  const handles = useCompoundHandles(props.id, "AverageFunction");
   return (
     <BaseNode
       {...props}
       category={AssetCategory.Density}
-      handles={AB_INPUT_HANDLES}
+      handles={handles}
     >
       <div className="text-tn-text-muted text-center py-1">avg(A, B)</div>
     </BaseNode>
