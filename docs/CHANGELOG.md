@@ -16,6 +16,7 @@ All notable changes to [TerraNova](https://github.com/HyperSystemsDev/TerraNova)
 
 ### Fixed
 
+- **Windows Preview Worker Compatibility** — Fixed density/volume preview showing flat terrain on Windows and production builds. Configured Vite to emit ES module workers matching the `{ type: "module" }` constructor, added `blob:` and `worker-src` CSP directives for WebView2 compatibility, and added worker error handling with automatic main-thread fallback and 30-second timeout
 - **Auto-Updater Relaunch** — Overhauled platform-specific relaunch logic with macOS bundle re-signing, Linux execute permission fix, and update loop prevention via localStorage version check
 - **SVG 1.1 Compliance** — Replaced rgba(), feDropShadow, 8-digit hex colors, and duplicate XML attributes in exported SVGs for strict parser compatibility (macOS Preview, Inkscape)
 - **Undo History Noise** — Node move operations removed from undo history; slider drags now produce exactly one entry on blur instead of spamming during drag
