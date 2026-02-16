@@ -1,0 +1,873 @@
+{
+  "$NodeId": "Biome-c755fef7-1cbc-451e-b55f-974adbd7ec97",
+  "EnvironmentProvider": {},
+  "MaterialProvider": {
+    "$NodeId": "SolidityMaterialProvider-c931281f-47a2-4ba6-93fc-7267b57aeefc",
+    "Empty": {
+      "$NodeId": "SimpleHorizontalMaterialProvider-632152cd-f0d0-4aeb-bb58-a5ad415f6dd7",
+      "BottomY": 0,
+      "Material": {
+        "$NodeId": "ConstantMaterialProvider-b58bd76f-fb50-4bc2-8265-d97f42330b7e",
+        "Material": {
+          "$NodeId": "Material-89e890f1-976c-4bcc-ab54-49caab5ce200",
+          "Fluid": "Water_Source"
+        },
+        "Type": "Constant"
+      },
+      "TopY": 73,
+      "Type": "SimpleHorizontal"
+    },
+    "Solid": {
+      "$NodeId": "QueueMaterialProvider-4376890d-235d-43dd-ac58-82b56b264458",
+      "Queue": [
+        {
+          "$NodeId": "SimpleHorizontalMaterialProvider-8682ce0f-1499-4539-b188-eb2219255649",
+          "BottomBaseHeight": "Bedrock",
+          "BottomY": 0,
+          "Material": {
+            "$NodeId": "FieldFunctionMaterialProvider-a86db763-265a-4a77-a983-bfa47cb352e3",
+            "Delimiters": [
+              {
+                "From": 0,
+                "Material": {
+                  "Material": {
+                    "Solid": "Soil_Sand_Red",
+                    "SolidBottomUp": false
+                  },
+                  "Type": "Constant"
+                },
+                "To": 15
+              }
+            ],
+            "FieldFunction": {
+              "$NodeId": "AngleDensityNode-dd32259f-ed8d-482b-8dfe-9a242dbc5b99",
+              "IsAxis": false,
+              "Skip": false,
+              "Type": "Angle",
+              "Vector": {
+                "$NodeId": "ConstantDensityNode-3942be17-9cdd-482d-82c6-a04265c42fb2",
+                "Skip": false,
+                "Type": "Constant",
+                "Value": {
+                  "x": 0,
+                  "y": -1,
+                  "z": 0
+                }
+              },
+              "VectorProvider": {
+                "$NodeId": "DensityGradientDensityNode-cb32da82-b6cd-4f37-b53d-4208cb3f1438",
+                "Density": {
+                  "$NodeId": "Imported.Density-8435dffd-48bb-4d38-b331-170e8d722c6e",
+                  "Name": "Gorge",
+                  "Skip": false,
+                  "Type": "Imported"
+                },
+                "Type": "DensityGradient"
+              }
+            },
+            "Type": "FieldFunction"
+          },
+          "TopBaseHeight": "Bedrock",
+          "TopY": 150,
+          "Type": "SimpleHorizontal"
+        },
+        {
+          "$NodeId": "SimpleHorizontalMaterialProvider-1d0b5d25-2099-4d05-acef-bd675c527d0b",
+          "BottomBaseHeight": "Bedrock",
+          "BottomY": 0,
+          "Material": {
+            "$NodeId": "FieldFunctionMaterialProvider-49c4f815-7b36-4f13-b3f5-b8e08aeafbc4",
+            "Delimiters": [
+              {
+                "From": 0,
+                "Material": {
+                  "Material": {
+                    "Solid": "Soil_Gravel_Sand_Red",
+                    "SolidBottomUp": false
+                  },
+                  "Type": "Constant"
+                },
+                "To": 35
+              }
+            ],
+            "FieldFunction": {
+              "$NodeId": "AngleDensityNode-772d972a-4dca-4b82-9110-52449c376fdd",
+              "IsAxis": false,
+              "Skip": false,
+              "Type": "Angle",
+              "Vector": {
+                "$NodeId": "ConstantDensityNode-d3e7d3a2-2cae-4ece-bd13-20d5c1a8eafe",
+                "Skip": false,
+                "Type": "Constant",
+                "Value": {
+                  "x": 0,
+                  "y": -1,
+                  "z": 0
+                }
+              },
+              "VectorProvider": {
+                "$NodeId": "DensityGradientDensityNode-f5286614-af9c-4821-99ac-3935cc7b0654",
+                "Density": {
+                  "$NodeId": "Imported.Density-c9fc7ee6-79be-403d-a6e9-cb08489967e7",
+                  "Name": "Gorge",
+                  "Skip": false,
+                  "Type": "Imported"
+                },
+                "Type": "DensityGradient"
+              }
+            },
+            "Type": "FieldFunction"
+          },
+          "TopBaseHeight": "Bedrock",
+          "TopY": 150,
+          "Type": "SimpleHorizontal"
+        },
+        {
+          "$NodeId": "ConstantMaterialProvider-56b10c6a-0307-4440-bc5c-04d8af9648a4",
+          "Material": {
+            "$NodeId": "Material-6343beed-bb14-4d6f-88cc-451eabbe5f77",
+            "Solid": "Rock_Sandstone_Red"
+          },
+          "Type": "Constant"
+        }
+      ],
+      "Type": "Queue"
+    },
+    "Type": "Solidity"
+  },
+  "Name": "Hills",
+  "Props": [],
+  "Terrain": {
+    "$NodeId": "Terrain-9d6a948d-e9f3-4c82-8e94-da6047b7f2bf",
+    "Density": {
+      "$NodeId": "Exported.Density-4d110ea1-f1a6-40ac-a02f-b5d8ed302e07",
+      "ExportAs": "Gorge",
+      "Inputs": [
+        {
+          "$NodeId": "Slider.Density-fc6bab2b-6e3b-439d-a4a3-17223a1e07cd",
+          "Inputs": [
+            {
+              "$NodeId": "Cache.Density-51c30173-f27d-4133-945b-8eac666ac8e2",
+              "Capacity": 1,
+              "Inputs": [
+                {
+                  "$NodeId": "SumDensityNode-9779e66b-6e4a-4094-abbc-d6c74f1e0213",
+                  "Inputs": [
+                    {
+                      "$NodeId": "SumDensityNode-88a04180-7017-4ba5-aced-85b9622514ad",
+                      "Inputs": [
+                        {
+                          "$NodeId": "MultiplierDensityNode-c2a649a5-ea03-443a-83a5-561b65b65d43",
+                          "Inputs": [
+                            {
+                              "$NodeId": "Mix.Density-355f66e4-d9e1-46ca-adb0-fae20af8b0eb",
+                              "Inputs": [
+                                {
+                                  "$NodeId": "ConstantDensityNode-997381d9-bffb-473f-accd-0a1eaa16b7d0",
+                                  "Skip": false,
+                                  "Type": "Constant",
+                                  "Value": 0
+                                },
+                                {
+                                  "$NodeId": "SumDensityNode-44f6b053-fc32-421c-a13e-93a3188b744b",
+                                  "Inputs": [
+                                    {
+                                      "$NodeId": "Pow.Density-1e50b924-c73e-451b-9213-39ae2ca3ae3e",
+                                      "Exponent": 2,
+                                      "Inputs": [
+                                        {
+                                          "$NodeId": "Mix.Density-d9ae3cf6-8db2-4397-b530-c06f84b3d909",
+                                          "Inputs": [
+                                            {
+                                              "$NodeId": "Rotator.Density-307b52a4-635c-48c8-b65a-1b8217b04133",
+                                              "Inputs": [
+                                                {
+                                                  "$NodeId": "Scale.Density-28c0173b-d165-47da-b762-db695448051a",
+                                                  "Inputs": [
+                                                    {
+                                                      "$NodeId": "NormalizerDensityNode-f1f72071-6b19-4e0f-9ee0-f04b3db8bc10",
+                                                      "FromMax": 1,
+                                                      "FromMin": 0,
+                                                      "Inputs": [
+                                                        {
+                                                          "$NodeId": "AbsDensityNode-a02abb6a-24ec-480b-b666-1cfcd9d3da78",
+                                                          "Inputs": [
+                                                            {
+                                                              "$NodeId": "SimplexNoise3DDensityNode-d8c8019e-44a4-4552-b7b6-cdcd20e90023",
+                                                              "Lacunarity": 4,
+                                                              "Octaves": 2,
+                                                              "Persistence": 0.4,
+                                                              "ScaleXZ": 45,
+                                                              "ScaleY": 45,
+                                                              "Seed": "B",
+                                                              "Skip": false,
+                                                              "Type": "SimplexNoise3D"
+                                                            }
+                                                          ],
+                                                          "Skip": false,
+                                                          "Type": "Abs"
+                                                        }
+                                                      ],
+                                                      "Skip": false,
+                                                      "ToMax": 1,
+                                                      "ToMin": -1,
+                                                      "Type": "Normalizer"
+                                                    }
+                                                  ],
+                                                  "ScaleX": 2,
+                                                  "ScaleY": 1,
+                                                  "ScaleZ": 1,
+                                                  "Skip": false,
+                                                  "Type": "Scale"
+                                                }
+                                              ],
+                                              "NewYAxis": {
+                                                "$NodeId": "Point3D-423bf4bd-f640-4036-b77e-395f82bf00f9",
+                                                "X": 0,
+                                                "Y": 1,
+                                                "Z": 0
+                                              },
+                                              "Skip": false,
+                                              "SpinAngle": 20,
+                                              "Type": "Rotator"
+                                            },
+                                            {
+                                              "$NodeId": "Rotator.Density-a45f1593-a77e-449b-8e0f-0868e40ef901",
+                                              "Inputs": [
+                                                {
+                                                  "$NodeId": "Scale.Density-65acc052-4574-4dee-9b19-cf18abe34ef6",
+                                                  "Inputs": [
+                                                    {
+                                                      "$NodeId": "NormalizerDensityNode-226f53e5-4bb1-4b23-963a-2a1a6f0b0e3e",
+                                                      "FromMax": 1,
+                                                      "FromMin": 0,
+                                                      "Inputs": [
+                                                        {
+                                                          "$NodeId": "AbsDensityNode-d9824a30-fceb-495a-960c-1a4074c18ce1",
+                                                          "Inputs": [
+                                                            {
+                                                              "$NodeId": "SimplexNoise3DDensityNode-f315e81b-eb13-486a-aed8-4b8de7901c15",
+                                                              "Lacunarity": 4,
+                                                              "Octaves": 2,
+                                                              "Persistence": 0.4,
+                                                              "ScaleXZ": 45,
+                                                              "ScaleY": 45,
+                                                              "Seed": "A",
+                                                              "Skip": false,
+                                                              "Type": "SimplexNoise3D"
+                                                            }
+                                                          ],
+                                                          "Skip": false,
+                                                          "Type": "Abs"
+                                                        }
+                                                      ],
+                                                      "Skip": false,
+                                                      "ToMax": 1,
+                                                      "ToMin": -1,
+                                                      "Type": "Normalizer"
+                                                    }
+                                                  ],
+                                                  "ScaleX": 2,
+                                                  "ScaleY": 1,
+                                                  "ScaleZ": 1,
+                                                  "Skip": false,
+                                                  "Type": "Scale"
+                                                }
+                                              ],
+                                              "NewYAxis": {
+                                                "$NodeId": "Point3D-6a56b7f8-51df-4420-811d-dd97c6f5d393",
+                                                "X": 0,
+                                                "Y": 1,
+                                                "Z": 0
+                                              },
+                                              "Skip": false,
+                                              "SpinAngle": 70,
+                                              "Type": "Rotator"
+                                            },
+                                            {
+                                              "$NodeId": "NormalizerDensityNode-41b3e9a4-39a4-46c0-846b-a5f2fa7ef56c",
+                                              "FromMax": 0.3,
+                                              "FromMin": -0.3,
+                                              "Inputs": [
+                                                {
+                                                  "$NodeId": "SimplexNoise2DDensityNode-3a75bf02-933e-4b54-a3b5-5f9201c2147e",
+                                                  "Lacunarity": 2,
+                                                  "Octaves": 1,
+                                                  "Persistence": 0.5,
+                                                  "Scale": 1000,
+                                                  "Seed": "U",
+                                                  "Skip": false,
+                                                  "Type": "SimplexNoise2D"
+                                                }
+                                              ],
+                                              "Skip": false,
+                                              "ToMax": 1,
+                                              "ToMin": 0,
+                                              "Type": "Normalizer"
+                                            }
+                                          ],
+                                          "Skip": false,
+                                          "Type": "Mix"
+                                        }
+                                      ],
+                                      "Skip": false,
+                                      "Type": "Pow"
+                                    }
+                                  ],
+                                  "Skip": false,
+                                  "Type": "Sum"
+                                },
+                                {
+                                  "$NodeId": "NormalizerDensityNode-90f7d029-f9e7-479d-b202-d3cd2b52985a",
+                                  "FromMax": 45,
+                                  "FromMin": 10,
+                                  "Inputs": [
+                                    {
+                                      "$NodeId": "AngleDensityNode-83f9b65b-4553-4d8a-9386-d395eb8791e7",
+                                      "IsAxis": false,
+                                      "Skip": false,
+                                      "Type": "Angle",
+                                      "Vector": {
+                                        "$NodeId": "ConstantDensityNode-3a33b62b-2391-497c-9c9d-668cb9748e95",
+                                        "Skip": false,
+                                        "Type": "Constant",
+                                        "Value": {
+                                          "x": 0,
+                                          "y": 1,
+                                          "z": 0
+                                        }
+                                      },
+                                      "VectorProvider": {
+                                        "$NodeId": "DensityGradientDensityNode-0cd00474-8033-4b74-9032-cf0edf6cdfa3",
+                                        "Density": {
+                                          "$NodeId": "Imported.Density-a647404b-dde0-4061-a380-21f75015d830",
+                                          "Name": "pewpewmuddafukka",
+                                          "Skip": false,
+                                          "Type": "Imported"
+                                        },
+                                        "Type": "DensityGradient"
+                                      }
+                                    }
+                                  ],
+                                  "Skip": false,
+                                  "ToMax": 1,
+                                  "ToMin": 0,
+                                  "Type": "Normalizer"
+                                }
+                              ],
+                              "Skip": false,
+                              "Type": "Mix"
+                            },
+                            {
+                              "$NodeId": "ConstantDensityNode-06e157b3-5631-497a-a7c9-135a8cadc66b",
+                              "Skip": false,
+                              "Type": "Constant",
+                              "Value": 0.05
+                            }
+                          ],
+                          "Skip": false,
+                          "Type": "Multiplier"
+                        },
+                        {
+                          "$NodeId": "MaxDensityNode-5b08ebdf-7462-4883-b011-7ba906b7fa4e",
+                          "ExportAs": "pewpewmuddafukka",
+                          "Inputs": [
+                            {
+                              "$NodeId": "MinDensityNode-9721fcae-6926-4034-923f-2191271ea193",
+                              "Inputs": [
+                                {
+                                  "$NodeId": "SumDensityNode-0909d4e2-5d31-47f1-b87a-36fe8d0e55f9",
+                                  "Inputs": [
+                                    {
+                                      "$NodeId": "NormalizerDensityNode-8768f7be-bcb4-4f13-b311-4e715323930f",
+                                      "FromMax": 1,
+                                      "FromMin": -1,
+                                      "Inputs": [
+                                        {
+                                          "$NodeId": "SimplexNoise2DDensityNode-9a2540cf-b9e4-4948-8c6e-9a5b5e70212e",
+                                          "ExportAs": "River-Boulders-Mask",
+                                          "Lacunarity": 3,
+                                          "Octaves": 1,
+                                          "Persistence": 0.125,
+                                          "Scale": 22,
+                                          "Seed": "A",
+                                          "Skip": false,
+                                          "Type": "SimplexNoise2D"
+                                        }
+                                      ],
+                                      "Skip": false,
+                                      "ToMax": 0.04,
+                                      "ToMin": 0,
+                                      "Type": "Normalizer"
+                                    },
+                                    {
+                                      "$NodeId": "NormalizerDensityNode-20ba334a-9f4e-4997-8821-a10108b96cc0",
+                                      "ExportAs": "Riverbank-test2",
+                                      "FromMax": 1,
+                                      "FromMin": -1,
+                                      "Inputs": [
+                                        {
+                                          "$NodeId": "InverterDensityNode-22723a16-6a9d-4555-9f24-b514f4749964",
+                                          "Inputs": [
+                                            {
+                                              "$NodeId": "YOverride.Density-e91fd657-3e66-4f68-9390-cbf7c6b34bc3",
+                                              "Inputs": [
+                                                {
+                                                  "$NodeId": "Cache.Density-ecf87bac-77a6-4910-975e-fbe9f7f31371",
+                                                  "Capacity": 1,
+                                                  "Inputs": [
+                                                    {
+                                                      "$NodeId": "InverterDensityNode-c9be18e1-c44c-4725-a566-924a7d05e766",
+                                                      "Inputs": [
+                                                        {
+                                                          "$NodeId": "NormalizerDensityNode-cc60b9bd-ffec-46de-890e-758387af5d1a",
+                                                          "FromMax": 1,
+                                                          "FromMin": 0,
+                                                          "Inputs": [
+                                                            {
+                                                              "$NodeId": "AbsDensityNode-9c8640e5-5a0d-4d8c-9c5c-39bd3b91fa57",
+                                                              "Inputs": [
+                                                                {
+                                                                  "$NodeId": "SumDensityNode-448ed02b-c3f1-4531-8fa5-3eadc95dc843",
+                                                                  "Inputs": [
+                                                                    {
+                                                                      "$NodeId": "NormalizerDensityNode-6f8c96b0-f51b-4a92-9220-090656c3f1b2",
+                                                                      "FromMax": 1,
+                                                                      "FromMin": -1,
+                                                                      "Inputs": [
+                                                                        {
+                                                                          "$NodeId": "SimplexNoise2DDensityNode-ba01e775-94f5-4852-b7bd-a934cded979e",
+                                                                          "Lacunarity": 8,
+                                                                          "Octaves": 1,
+                                                                          "Persistence": 0.1,
+                                                                          "Scale": 800,
+                                                                          "Seed": "G",
+                                                                          "Skip": false,
+                                                                          "Type": "SimplexNoise2D"
+                                                                        }
+                                                                      ],
+                                                                      "Skip": false,
+                                                                      "ToMax": 0.85,
+                                                                      "ToMin": -0.85,
+                                                                      "Type": "Normalizer"
+                                                                    },
+                                                                    {
+                                                                      "$NodeId": "NormalizerDensityNode-6f02d708-c3cc-4f4c-867a-48d9d07cbfe2",
+                                                                      "FromMax": 1,
+                                                                      "FromMin": -1,
+                                                                      "Inputs": [
+                                                                        {
+                                                                          "$NodeId": "SimplexNoise2DDensityNode-bbd9cd3b-d39d-4171-bcea-d9c4d5a57472",
+                                                                          "Lacunarity": 8,
+                                                                          "Octaves": 1,
+                                                                          "Persistence": 0.1,
+                                                                          "Scale": 90,
+                                                                          "Seed": "B",
+                                                                          "Skip": false,
+                                                                          "Type": "SimplexNoise2D"
+                                                                        }
+                                                                      ],
+                                                                      "Skip": false,
+                                                                      "ToMax": 0.1,
+                                                                      "ToMin": -0.1,
+                                                                      "Type": "Normalizer"
+                                                                    },
+                                                                    {
+                                                                      "$NodeId": "NormalizerDensityNode-6b203efc-4838-4a05-9d99-ed9f0d6ea658",
+                                                                      "FromMax": 1,
+                                                                      "FromMin": -1,
+                                                                      "Inputs": [
+                                                                        {
+                                                                          "$NodeId": "SimplexNoise2DDensityNode-4f3cc564-29d9-495a-b3cd-a56a71e7d757",
+                                                                          "Lacunarity": 8,
+                                                                          "Octaves": 1,
+                                                                          "Persistence": 0.1,
+                                                                          "Scale": 80,
+                                                                          "Seed": "C",
+                                                                          "Skip": false,
+                                                                          "Type": "SimplexNoise2D"
+                                                                        }
+                                                                      ],
+                                                                      "Skip": false,
+                                                                      "ToMax": 0.05,
+                                                                      "ToMin": -0.05,
+                                                                      "Type": "Normalizer"
+                                                                    }
+                                                                  ],
+                                                                  "Skip": false,
+                                                                  "Type": "Sum"
+                                                                }
+                                                              ],
+                                                              "Skip": false,
+                                                              "Type": "Abs"
+                                                            }
+                                                          ],
+                                                          "Skip": false,
+                                                          "ToMax": 1,
+                                                          "ToMin": -1,
+                                                          "Type": "Normalizer"
+                                                        }
+                                                      ],
+                                                      "Skip": false,
+                                                      "Type": "Inverter"
+                                                    }
+                                                  ],
+                                                  "Skip": false,
+                                                  "Type": "Cache"
+                                                }
+                                              ],
+                                              "Skip": false,
+                                              "Type": "YOverride",
+                                              "Value": 0
+                                            }
+                                          ],
+                                          "Skip": false,
+                                          "Type": "Inverter"
+                                        }
+                                      ],
+                                      "Skip": false,
+                                      "ToMax": 0.98,
+                                      "ToMin": -1,
+                                      "Type": "Normalizer"
+                                    },
+                                    {
+                                      "$NodeId": "CurveMapper.Density-8a8cb014-fe90-4067-9de1-1407ff1f2eb5",
+                                      "Curve": {
+                                        "$NodeId": "ManualCurve-f0ad2960-b160-4bf8-a277-3e729eab42d5",
+                                        "ExportAs": "RiverbanksCurve",
+                                        "Points": [
+                                          {
+                                            "$NodeId": "CurvePoint-690bd39c-3416-43a9-89a7-c9f650c640f1",
+                                            "In": -26,
+                                            "Out": 0.98
+                                          },
+                                          {
+                                            "$NodeId": "CurvePoint-47d9cae6-ef02-420e-9aff-65da280b4dfc",
+                                            "In": 0,
+                                            "Out": 0.8
+                                          },
+                                          {
+                                            "$NodeId": "CurvePoint-fd237bb3-a48a-4626-88d3-b7e04b05c586",
+                                            "In": 5,
+                                            "Out": 0.7
+                                          },
+                                          {
+                                            "$NodeId": "CurvePoint-85d344b5-fbee-42f5-b96b-10f41a86fc91",
+                                            "In": 32,
+                                            "Out": -1
+                                          }
+                                        ],
+                                        "Type": "Manual"
+                                      },
+                                      "Inputs": [
+                                        {
+                                          "$NodeId": "BaseHeight.Density-61f761b1-67a6-4192-aa92-af8aea567425",
+                                          "BaseHeightName": "Water",
+                                          "Distance": true,
+                                          "Skip": false,
+                                          "Type": "BaseHeight"
+                                        }
+                                      ],
+                                      "Skip": false,
+                                      "Type": "CurveMapper"
+                                    }
+                                  ],
+                                  "Skip": false,
+                                  "Type": "Sum"
+                                },
+                                {
+                                  "$NodeId": "SumDensityNode-c9103e3e-b8b6-4933-9f51-4171c66e849a",
+                                  "Inputs": [
+                                    {
+                                      "$NodeId": "NormalizerDensityNode-892d8e06-3b14-4c0c-bb2d-3533b5ac086a",
+                                      "FromMax": 1,
+                                      "FromMin": -1,
+                                      "Inputs": [
+                                        {
+                                          "$NodeId": "SimplexNoise2DDensityNode-d9d44351-2ceb-4333-bd3e-764187b9f785",
+                                          "ExportAs": "River-Boulders-Mask",
+                                          "Lacunarity": 3,
+                                          "Octaves": 1,
+                                          "Persistence": 0.125,
+                                          "Scale": 22,
+                                          "Seed": "A",
+                                          "Skip": false,
+                                          "Type": "SimplexNoise2D"
+                                        }
+                                      ],
+                                      "Skip": false,
+                                      "ToMax": 0.02,
+                                      "ToMin": 0,
+                                      "Type": "Normalizer"
+                                    },
+                                    {
+                                      "$NodeId": "NormalizerDensityNode-b848354b-431f-437f-9e9c-f9188df13fba",
+                                      "ExportAs": "Riverbank-test2",
+                                      "FromMax": 1,
+                                      "FromMin": -1,
+                                      "Inputs": [
+                                        {
+                                          "$NodeId": "InverterDensityNode-059798bd-19c6-4af8-93c9-e1adc955d057",
+                                          "Inputs": [
+                                            {
+                                              "$NodeId": "YOverride.Density-919e200c-d29f-41ea-95f4-91f22673be8f",
+                                              "Inputs": [
+                                                {
+                                                  "$NodeId": "Cache.Density-fd6ca3db-18e3-4422-8d87-bc2e06576ec0",
+                                                  "Capacity": 1,
+                                                  "Inputs": [
+                                                    {
+                                                      "$NodeId": "InverterDensityNode-9c6c9681-8f41-4051-bd84-b35a486d88d8",
+                                                      "Inputs": [
+                                                        {
+                                                          "$NodeId": "NormalizerDensityNode-77928fb7-1c0e-4530-bbfe-f22e8afaf497",
+                                                          "FromMax": 1,
+                                                          "FromMin": 0,
+                                                          "Inputs": [
+                                                            {
+                                                              "$NodeId": "AbsDensityNode-b7d9b473-644c-4248-9bb9-3fd68c683c73",
+                                                              "Inputs": [
+                                                                {
+                                                                  "$NodeId": "SumDensityNode-ab09a7f0-b021-478f-8d17-b74fcf4e6ed0",
+                                                                  "Inputs": [
+                                                                    {
+                                                                      "$NodeId": "NormalizerDensityNode-55b9ca20-da30-4987-8401-ff8151d869c2",
+                                                                      "FromMax": 1,
+                                                                      "FromMin": -1,
+                                                                      "Inputs": [
+                                                                        {
+                                                                          "$NodeId": "FastGradientWarp.Density-14ab5dea-1a3e-40bf-9383-ec3125ed97fa",
+                                                                          "Inputs": [
+                                                                            {
+                                                                              "$NodeId": "SimplexNoise2DDensityNode-44ffa2e3-d1fc-42d1-a411-dbbb4d838979",
+                                                                              "Lacunarity": 8,
+                                                                              "Octaves": 1,
+                                                                              "Persistence": 0.1,
+                                                                              "Scale": 400,
+                                                                              "Seed": "Z",
+                                                                              "Skip": false,
+                                                                              "Type": "SimplexNoise2D"
+                                                                            }
+                                                                          ],
+                                                                          "Seed": "A",
+                                                                          "Skip": false,
+                                                                          "Type": "FastGradientWarp",
+                                                                          "WarpFactor": 25,
+                                                                          "WarpLacunarity": 2,
+                                                                          "WarpOctaves": 1,
+                                                                          "WarpPersistence": 0.5,
+                                                                          "WarpScale": 1
+                                                                        }
+                                                                      ],
+                                                                      "Skip": false,
+                                                                      "ToMax": 0.85,
+                                                                      "ToMin": -0.85,
+                                                                      "Type": "Normalizer"
+                                                                    },
+                                                                    {
+                                                                      "$NodeId": "NormalizerDensityNode-fe7124eb-7738-41a8-9fcd-da1c634f1ed7",
+                                                                      "FromMax": 1,
+                                                                      "FromMin": -1,
+                                                                      "Inputs": [
+                                                                        {
+                                                                          "$NodeId": "SimplexNoise2DDensityNode-839d8e72-cab5-40d1-99f3-ca907a400903",
+                                                                          "Lacunarity": 8,
+                                                                          "Octaves": 1,
+                                                                          "Persistence": 0.1,
+                                                                          "Scale": 90,
+                                                                          "Seed": "B",
+                                                                          "Skip": false,
+                                                                          "Type": "SimplexNoise2D"
+                                                                        }
+                                                                      ],
+                                                                      "Skip": false,
+                                                                      "ToMax": 0.1,
+                                                                      "ToMin": -0.1,
+                                                                      "Type": "Normalizer"
+                                                                    },
+                                                                    {
+                                                                      "$NodeId": "NormalizerDensityNode-62858d93-150d-4ed2-a143-509e7bfbff2d",
+                                                                      "FromMax": 1,
+                                                                      "FromMin": -1,
+                                                                      "Inputs": [
+                                                                        {
+                                                                          "$NodeId": "SimplexNoise2DDensityNode-1182b0f3-dec5-45aa-a72d-0b5da6aea499",
+                                                                          "Lacunarity": 8,
+                                                                          "Octaves": 1,
+                                                                          "Persistence": 0.1,
+                                                                          "Scale": 80,
+                                                                          "Seed": "C",
+                                                                          "Skip": false,
+                                                                          "Type": "SimplexNoise2D"
+                                                                        }
+                                                                      ],
+                                                                      "Skip": false,
+                                                                      "ToMax": 0.05,
+                                                                      "ToMin": -0.05,
+                                                                      "Type": "Normalizer"
+                                                                    }
+                                                                  ],
+                                                                  "Skip": false,
+                                                                  "Type": "Sum"
+                                                                }
+                                                              ],
+                                                              "Skip": false,
+                                                              "Type": "Abs"
+                                                            }
+                                                          ],
+                                                          "Skip": false,
+                                                          "ToMax": 1,
+                                                          "ToMin": -1,
+                                                          "Type": "Normalizer"
+                                                        }
+                                                      ],
+                                                      "Skip": false,
+                                                      "Type": "Inverter"
+                                                    }
+                                                  ],
+                                                  "Skip": false,
+                                                  "Type": "Cache"
+                                                }
+                                              ],
+                                              "Skip": false,
+                                              "Type": "YOverride",
+                                              "Value": 0
+                                            }
+                                          ],
+                                          "Skip": false,
+                                          "Type": "Inverter"
+                                        }
+                                      ],
+                                      "Skip": false,
+                                      "ToMax": 0.98,
+                                      "ToMin": -1,
+                                      "Type": "Normalizer"
+                                    },
+                                    {
+                                      "$NodeId": "CurveMapper.Density-3c502ed1-b2ae-4543-8de5-fb2978258f93",
+                                      "Curve": {
+                                        "$NodeId": "ManualCurve-fcab28e1-cee6-4731-be8a-a7ecb3365715",
+                                        "ExportAs": "RiverbanksCurve",
+                                        "Points": [
+                                          {
+                                            "$NodeId": "CurvePoint-f62d4f8b-7224-46c6-b68f-b6e7b0b40822",
+                                            "In": -26,
+                                            "Out": 0.93
+                                          },
+                                          {
+                                            "$NodeId": "CurvePoint-ebe80625-5635-4dd0-a674-0eef60cb340a",
+                                            "In": -20,
+                                            "Out": 0.88
+                                          },
+                                          {
+                                            "$NodeId": "CurvePoint-96c3ffb1-1d90-4c6e-b50d-ea35c0c53b03",
+                                            "In": -15,
+                                            "Out": 0.8
+                                          },
+                                          {
+                                            "$NodeId": "CurvePoint-5b407517-f771-4a89-9b8f-414a8a777894",
+                                            "In": 5,
+                                            "Out": 2
+                                          }
+                                        ],
+                                        "Type": "Manual"
+                                      },
+                                      "Inputs": [
+                                        {
+                                          "$NodeId": "BaseHeight.Density-57120413-e3e8-46c1-9888-fc18e7253e21",
+                                          "BaseHeightName": "Water",
+                                          "Distance": true,
+                                          "Skip": false,
+                                          "Type": "BaseHeight"
+                                        }
+                                      ],
+                                      "Skip": false,
+                                      "Type": "CurveMapper"
+                                    }
+                                  ],
+                                  "Skip": false,
+                                  "Type": "Sum"
+                                }
+                              ],
+                              "Skip": false,
+                              "Type": "Min"
+                            },
+                            {
+                              "$NodeId": "SumDensityNode-9c1e9904-cfb0-45fd-a24f-316e4a716583",
+                              "Inputs": [
+                                {
+                                  "$NodeId": "SimplexNoise2DDensityNode-fd9bd7f4-3ff9-4f49-bfe7-845a40192c1f",
+                                  "Lacunarity": 7,
+                                  "Octaves": 2,
+                                  "Persistence": 0.1,
+                                  "Scale": 150,
+                                  "Seed": "A",
+                                  "Skip": false,
+                                  "Type": "SimplexNoise2D"
+                                },
+                                {
+                                  "$NodeId": "CurveMapper.Density-02940405-ceeb-41d3-a7ef-c290c4668657",
+                                  "Curve": {
+                                    "$NodeId": "ManualCurve-4490785a-72aa-4628-a34d-c0ae567c894e",
+                                    "Points": [
+                                      {
+                                        "$NodeId": "CurvePoint-c04fd0f4-f44d-4003-89d3-b853328619f7",
+                                        "In": -67,
+                                        "Out": 1
+                                      },
+                                      {
+                                        "$NodeId": "CurvePoint-99188217-eb30-4697-97a6-f8c8132c4bc9",
+                                        "In": -60,
+                                        "Out": -1
+                                      }
+                                    ],
+                                    "Type": "Manual"
+                                  },
+                                  "Inputs": [
+                                    {
+                                      "$NodeId": "BaseHeight.Density-646a54f7-75dc-4c5c-a543-68c8fc2ebe3c",
+                                      "BaseHeightName": "Water",
+                                      "Distance": true,
+                                      "Skip": false,
+                                      "Type": "BaseHeight"
+                                    }
+                                  ],
+                                  "Skip": false,
+                                  "Type": "CurveMapper"
+                                }
+                              ],
+                              "Skip": false,
+                              "Type": "Sum"
+                            }
+                          ],
+                          "Skip": false,
+                          "Type": "Max"
+                        }
+                      ],
+                      "Skip": false,
+                      "Type": "Sum"
+                    }
+                  ],
+                  "Skip": false,
+                  "Type": "Sum"
+                }
+              ],
+              "Skip": false,
+              "Type": "Cache"
+            }
+          ],
+          "Skip": false,
+          "SlideX": 0,
+          "SlideY": 100,
+          "SlideZ": 0,
+          "Type": "Slider"
+        }
+      ],
+      "SingleInstance": true,
+      "Skip": false,
+      "Type": "Exported"
+    },
+    "Type": "DAOTerrain"
+  },
+  "TintProvider": {}
+}

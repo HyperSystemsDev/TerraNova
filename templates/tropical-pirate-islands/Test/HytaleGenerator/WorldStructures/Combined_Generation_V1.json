@@ -1,0 +1,808 @@
+{
+  "$Description": "Combined resolver built from the safe all-biomes weighted map so every valid biome can generate without experimental/example entries.",
+  "$NodeEditorMetadata": {
+    "Comments": [],
+    "FloatingNodes": [],
+    "Groups": [],
+    "Links": [],
+    "Positions": {
+      "graph_1": {
+        "x": 0,
+        "y": 0
+      }
+    }
+  },
+  "$NodeId": "NoiseRangeDensityNode-cdc364e6-a9dc-4122-b7e0-3a3b57d89b82",
+  "$Title": "Combined Generation V1 – All Biomes (Weighted, Safe)",
+  "Biomes": [
+    {
+      "Biome": "Plains1_Zone2_Transition",
+      "Max": -0.782314326586042,
+      "Min": -1
+    },
+    {
+      "Biome": "Boreal1_Frostbloom",
+      "Max": -0.7126,
+      "Min": -0.7812428707667759
+    },
+    {
+      "Biome": "Boreal1_Henges",
+      "Max": -0.7011,
+      "Min": -0.7126
+    },
+    {
+      "Biome": "Volcanic1_Shore",
+      "Max": -0.6897,
+      "Min": -0.7011
+    },
+    {
+      "Biome": "Volcanic1_River",
+      "Max": -0.6782,
+      "Min": -0.6897
+    },
+    {
+      "Biome": "Volcanic1_Jungle",
+      "Max": -0.6667,
+      "Min": -0.6782
+    },
+    {
+      "Biome": "Volcanic1_Caldera",
+      "Max": -0.6552,
+      "Min": -0.6667
+    },
+    {
+      "Biome": "Skylands_SkyPlains",
+      "Max": -0.6437,
+      "Min": -0.6552
+    },
+    {
+      "Biome": "Skylands_Main",
+      "Max": -0.6322,
+      "Min": -0.6437
+    },
+    {
+      "Biome": "Skylands_Undertimed",
+      "Max": -0.6207,
+      "Min": -0.6322
+    },
+    {
+      "Biome": "Plains1_Zone3_High_Mountains",
+      "Max": -0.6092,
+      "Min": -0.6207
+    },
+    {
+      "Biome": "Plains1_Zone3_Mountains",
+      "Max": -0.5977,
+      "Min": -0.6092
+    },
+    {
+      "Biome": "Ocean1_Shallow",
+      "Max": -0.5862,
+      "Min": -0.5977
+    },
+    {
+      "Biome": "Ocean1_Reef",
+      "Max": -0.5747,
+      "Min": -0.5862
+    },
+    {
+      "Biome": "Ocean1_Deep",
+      "Max": -0.5632,
+      "Min": -0.5747
+    },
+    {
+      "Biome": "Plains1_Shore",
+      "Max": -0.5517,
+      "Min": -0.5632
+    },
+    {
+      "Biome": "Plains1_Zone1_Lowlands_Grassland",
+      "Max": -0.5402,
+      "Min": -0.5517
+    },
+    {
+      "Biome": "Plains1_Zone1_Lowlands_Wetland",
+      "Max": -0.5287,
+      "Min": -0.5402
+    },
+    {
+      "Biome": "Plains1_Zone1_Lowlands_Scrubland",
+      "Max": -0.5172,
+      "Min": -0.5287
+    },
+    {
+      "Biome": "Plains1_Zone1_Broad_Meadow",
+      "Max": -0.5057,
+      "Min": -0.5172
+    },
+    {
+      "Biome": "Plains1_River_Zone1",
+      "Max": -0.4943,
+      "Min": -0.5057
+    },
+    {
+      "Biome": "Plains1_Deeproot",
+      "Max": -0.4828,
+      "Min": -0.4943
+    },
+    {
+      "Biome": "Plains1_Zone1_Highlands",
+      "Max": -0.4713,
+      "Min": -0.4828
+    },
+    {
+      "Biome": "Plains1_Zone2_Transition",
+      "Max": -0.4598,
+      "Min": -0.4713
+    },
+    {
+      "Biome": "Plains1_Zone2_Plateaus",
+      "Max": -0.4483,
+      "Min": -0.4598
+    },
+    {
+      "Biome": "Desert1_Shore",
+      "Max": -0.4368,
+      "Min": -0.4483
+    },
+    {
+      "Biome": "Desert1_Dunes",
+      "Max": -0.4253,
+      "Min": -0.4368
+    },
+    {
+      "Biome": "Desert1_Dunes_Barren",
+      "Max": -0.4138,
+      "Min": -0.4253
+    },
+    {
+      "Biome": "Desert1_Rocky",
+      "Max": -0.4023,
+      "Min": -0.4138
+    },
+    {
+      "Biome": "Desert1_Rocky_Weathered",
+      "Max": -0.3908,
+      "Min": -0.4023
+    },
+    {
+      "Biome": "Desert1_Oasis",
+      "Max": -0.3793,
+      "Min": -0.3908
+    },
+    {
+      "Biome": "Desert1_River",
+      "Max": -0.3678,
+      "Min": -0.3793
+    },
+    {
+      "Biome": "Mesa1_MegaMesa",
+      "Max": -0.3563,
+      "Min": -0.3678
+    },
+    {
+      "Biome": "Taiga1_Shore",
+      "Max": -0.3448,
+      "Min": -0.3563
+    },
+    {
+      "Biome": "Taiga1_River",
+      "Max": -0.3333,
+      "Min": -0.3448
+    },
+    {
+      "Biome": "Taiga1_Redwood",
+      "Max": -0.3218,
+      "Min": -0.3333
+    },
+    {
+      "Biome": "Plains1_Zone3_Highlands",
+      "Max": -0.3103,
+      "Min": -0.3218
+    },
+    {
+      "Biome": "Taiga1_Mountains",
+      "Max": -0.2989,
+      "Min": -0.3103
+    },
+    {
+      "Biome": "Boreal1_Hedera",
+      "Max": -0.2874,
+      "Min": -0.2989
+    },
+    {
+      "Biome": "Boreal1_Frostbloom",
+      "Max": -0.2759,
+      "Min": -0.2874
+    },
+    {
+      "Biome": "Boreal1_Henges",
+      "Max": -0.2644,
+      "Min": -0.2759
+    },
+    {
+      "Biome": "Volcanic1_Shore",
+      "Max": -0.2529,
+      "Min": -0.2644
+    },
+    {
+      "Biome": "Volcanic1_River",
+      "Max": -0.2414,
+      "Min": -0.2529
+    },
+    {
+      "Biome": "Volcanic1_Jungle",
+      "Max": -0.2299,
+      "Min": -0.2414
+    },
+    {
+      "Biome": "Volcanic1_Caldera",
+      "Max": -0.2184,
+      "Min": -0.2299
+    },
+    {
+      "Biome": "Skylands_SkyPlains",
+      "Max": -0.2069,
+      "Min": -0.2184
+    },
+    {
+      "Biome": "Skylands_Main",
+      "Max": -0.1954,
+      "Min": -0.2069
+    },
+    {
+      "Biome": "Skylands_Undertimed",
+      "Max": -0.1839,
+      "Min": -0.1954
+    },
+    {
+      "Biome": "Plains1_Zone3_High_Mountains",
+      "Max": -0.1724,
+      "Min": -0.1839
+    },
+    {
+      "Biome": "Plains1_Zone3_Mountains",
+      "Max": -0.1609,
+      "Min": -0.1724
+    },
+    {
+      "Biome": "Ocean1_Shallow",
+      "Max": -0.1494,
+      "Min": -0.1609
+    },
+    {
+      "Biome": "Ocean1_Reef",
+      "Max": -0.1379,
+      "Min": -0.1494
+    },
+    {
+      "Biome": "Ocean1_Deep",
+      "Max": -0.1264,
+      "Min": -0.1379
+    },
+    {
+      "Biome": "Plains1_Shore",
+      "Max": -0.1149,
+      "Min": -0.1264
+    },
+    {
+      "Biome": "Plains1_Zone1_Lowlands_Grassland",
+      "Max": -0.1034,
+      "Min": -0.1149
+    },
+    {
+      "Biome": "Plains1_Zone1_Lowlands_Wetland",
+      "Max": -0.092,
+      "Min": -0.1034
+    },
+    {
+      "Biome": "Plains1_Zone1_Lowlands_Scrubland",
+      "Max": -0.0805,
+      "Min": -0.092
+    },
+    {
+      "Biome": "Plains1_Zone1_Broad_Meadow",
+      "Max": -0.069,
+      "Min": -0.0805
+    },
+    {
+      "Biome": "Plains1_River_Zone1",
+      "Max": -0.0575,
+      "Min": -0.069
+    },
+    {
+      "Biome": "Plains1_Deeproot",
+      "Max": -0.046,
+      "Min": -0.0575
+    },
+    {
+      "Biome": "Plains1_Zone1_Highlands",
+      "Max": -0.0345,
+      "Min": -0.046
+    },
+    {
+      "Biome": "Plains1_Zone2_Transition",
+      "Max": -0.023,
+      "Min": -0.0345
+    },
+    {
+      "Biome": "Plains1_Zone2_Plateaus",
+      "Max": -0.0115,
+      "Min": -0.023
+    },
+    {
+      "Biome": "Desert1_Shore",
+      "Max": 0,
+      "Min": -0.0115
+    },
+    {
+      "Biome": "Desert1_Dunes",
+      "Max": 0.0115,
+      "Min": 0
+    },
+    {
+      "Biome": "Desert1_Dunes_Barren",
+      "Max": 0.023,
+      "Min": 0.0115
+    },
+    {
+      "Biome": "Desert1_Rocky",
+      "Max": 0.0345,
+      "Min": 0.023
+    },
+    {
+      "Biome": "Desert1_Rocky_Weathered",
+      "Max": 0.046,
+      "Min": 0.0345
+    },
+    {
+      "Biome": "Desert1_Oasis",
+      "Max": 0.0575,
+      "Min": 0.046
+    },
+    {
+      "Biome": "Desert1_River",
+      "Max": 0.069,
+      "Min": 0.0575
+    },
+    {
+      "Biome": "Mesa1_MegaMesa",
+      "Max": 0.0805,
+      "Min": 0.069
+    },
+    {
+      "Biome": "Taiga1_Shore",
+      "Max": 0.092,
+      "Min": 0.0805
+    },
+    {
+      "Biome": "Taiga1_River",
+      "Max": 0.1034,
+      "Min": 0.092
+    },
+    {
+      "Biome": "Taiga1_Redwood",
+      "Max": 0.1149,
+      "Min": 0.1034
+    },
+    {
+      "Biome": "Plains1_Zone3_Highlands",
+      "Max": 0.1264,
+      "Min": 0.1149
+    },
+    {
+      "Biome": "Taiga1_Mountains",
+      "Max": 0.1379,
+      "Min": 0.1264
+    },
+    {
+      "Biome": "Boreal1_Hedera",
+      "Max": 0.1494,
+      "Min": 0.1379
+    },
+    {
+      "Biome": "Boreal1_Frostbloom",
+      "Max": 0.1609,
+      "Min": 0.1494
+    },
+    {
+      "Biome": "Boreal1_Henges",
+      "Max": 0.1724,
+      "Min": 0.1609
+    },
+    {
+      "Biome": "Volcanic1_Shore",
+      "Max": 0.1839,
+      "Min": 0.1724
+    },
+    {
+      "Biome": "Volcanic1_River",
+      "Max": 0.1954,
+      "Min": 0.1839
+    },
+    {
+      "Biome": "Volcanic1_Jungle",
+      "Max": 0.2069,
+      "Min": 0.1954
+    },
+    {
+      "Biome": "Volcanic1_Caldera",
+      "Max": 0.2184,
+      "Min": 0.2069
+    },
+    {
+      "Biome": "Skylands_SkyPlains",
+      "Max": 0.2299,
+      "Min": 0.2184
+    },
+    {
+      "Biome": "Skylands_Main",
+      "Max": 0.2414,
+      "Min": 0.2299
+    },
+    {
+      "Biome": "Skylands_Undertimed",
+      "Max": 0.2529,
+      "Min": 0.2414
+    },
+    {
+      "Biome": "Plains1_Zone3_High_Mountains",
+      "Max": 0.2644,
+      "Min": 0.2529
+    },
+    {
+      "Biome": "Plains1_Zone3_Mountains",
+      "Max": 0.2759,
+      "Min": 0.2644
+    },
+    {
+      "Biome": "Ocean1_Shallow",
+      "Max": 0.2874,
+      "Min": 0.2759
+    },
+    {
+      "Biome": "Ocean1_Reef",
+      "Max": 0.2989,
+      "Min": 0.2874
+    },
+    {
+      "Biome": "Ocean1_Deep",
+      "Max": 0.3103,
+      "Min": 0.2989
+    },
+    {
+      "Biome": "Basic",
+      "Max": 0.3218,
+      "Min": 0.3103
+    },
+    {
+      "Biome": "Boreal1_Twilight",
+      "Max": 0.3333,
+      "Min": 0.3218
+    },
+    {
+      "Biome": "Desert1_Badlands",
+      "Max": 0.3448,
+      "Min": 0.3333
+    },
+    {
+      "Biome": "Desert1_Badlands_Tuned",
+      "Max": 0.3563,
+      "Min": 0.3448
+    },
+    {
+      "Biome": "Desert1_Caves_Badlands",
+      "Max": 0.3678,
+      "Min": 0.3563
+    },
+    {
+      "Biome": "Desert1_Caves_Badlands_Crystal",
+      "Max": 0.3793,
+      "Min": 0.3678
+    },
+    {
+      "Biome": "Desert1_Caves_Dunes",
+      "Max": 0.3908,
+      "Min": 0.3793
+    },
+    {
+      "Biome": "Desert1_Caves_Dunes_Stalagmite",
+      "Max": 0.4023,
+      "Min": 0.3908
+    },
+    {
+      "Biome": "Desert1_Dunes_Barren_Dust",
+      "Max": 0.4138,
+      "Min": 0.4023
+    },
+    {
+      "Biome": "Desert1_Dunes_Barren_Hardpan",
+      "Max": 0.4253,
+      "Min": 0.4138
+    },
+    {
+      "Biome": "Desert1_Dunes_Oasis",
+      "Max": 0.4368,
+      "Min": 0.4253
+    },
+    {
+      "Biome": "Desert1_MegaMesa",
+      "Max": 0.4483,
+      "Min": 0.4368
+    },
+    {
+      "Biome": "Desert1_Pyramid",
+      "Max": 0.4598,
+      "Min": 0.4483
+    },
+    {
+      "Biome": "Desert1_Rocky_Jagged",
+      "Max": 0.4713,
+      "Min": 0.4598
+    },
+    {
+      "Biome": "Desert1_Stacks",
+      "Max": 0.4828,
+      "Min": 0.4713
+    },
+    {
+      "Biome": "Generaitve_Boulders_Sandstone",
+      "Max": 0.4943,
+      "Min": 0.4828
+    },
+    {
+      "Biome": "Generative_Arches",
+      "Max": 0.5057,
+      "Min": 0.4943
+    },
+    {
+      "Biome": "Generative_Boulders_Chalk",
+      "Max": 0.5172,
+      "Min": 0.5057
+    },
+    {
+      "Biome": "Generative_Buildings",
+      "Max": 0.5287,
+      "Min": 0.5172
+    },
+    {
+      "Biome": "Generative_Pillars_Marble_Large",
+      "Max": 0.5402,
+      "Min": 0.5287
+    },
+    {
+      "Biome": "Generative_Pillars_Marble_Small",
+      "Max": 0.5517,
+      "Min": 0.5402
+    },
+    {
+      "Biome": "Generative_Ruins",
+      "Max": 0.5632,
+      "Min": 0.5517
+    },
+    {
+      "Biome": "Generative_Veins",
+      "Max": 0.5747,
+      "Min": 0.5632
+    },
+    {
+      "Biome": "Mesa1_ErodedMesa",
+      "Max": 0.5862,
+      "Min": 0.5747
+    },
+    {
+      "Biome": "Mesa1_LayeredMesa",
+      "Max": 0.5977,
+      "Min": 0.5862
+    },
+    {
+      "Biome": "Mesa1_MegaMesa_Tuned",
+      "Max": 0.6092,
+      "Min": 0.5977
+    },
+    {
+      "Biome": "Mesa1_MesaOasis",
+      "Max": 0.6207,
+      "Min": 0.6092
+    },
+    {
+      "Biome": "Oceans",
+      "Max": 0.6322,
+      "Min": 0.6207
+    },
+    {
+      "Biome": "Plains1_Caves_High_Mountains",
+      "Max": 0.6437,
+      "Min": 0.6322
+    },
+    {
+      "Biome": "Plains1_Caves_Highlands",
+      "Max": 0.6552,
+      "Min": 0.6437
+    },
+    {
+      "Biome": "Plains1_Caves_Highlands_Glacial",
+      "Max": 0.6667,
+      "Min": 0.6552
+    },
+    {
+      "Biome": "Plains1_Gorges",
+      "Max": 0.6782,
+      "Min": 0.6667
+    },
+    {
+      "Biome": "Plains1_High_Mountains",
+      "Max": 0.6897,
+      "Min": 0.6782
+    },
+    {
+      "Biome": "Plains1_Highlands",
+      "Max": 0.7011,
+      "Min": 0.6897
+    },
+    {
+      "Biome": "Plains1_Mountains",
+      "Max": 0.7126,
+      "Min": 0.7011
+    },
+    {
+      "Biome": "Plains1_Oak",
+      "Max": 0.7241,
+      "Min": 0.7126
+    },
+    {
+      "Biome": "Plains1_River",
+      "Max": 0.7356,
+      "Min": 0.7241
+    },
+    {
+      "Biome": "Plains1_River_Zone2",
+      "Max": 0.7471,
+      "Min": 0.7356
+    },
+    {
+      "Biome": "Plains1_Wet_Meadow_Tuned",
+      "Max": 0.7586,
+      "Min": 0.7471
+    },
+    {
+      "Biome": "Plains1_Zone1_Birch_Groves",
+      "Max": 0.7701,
+      "Min": 0.7586
+    },
+    {
+      "Biome": "Plains1_Zone1_Dry_Steppe",
+      "Max": 0.7816,
+      "Min": 0.7701
+    },
+    {
+      "Biome": "Plains1_Zone1_Flower_Fields",
+      "Max": 0.7931,
+      "Min": 0.7816
+    },
+    {
+      "Biome": "Plains1_Zone1_Lowlands",
+      "Max": 0.8046,
+      "Min": 0.7931
+    },
+    {
+      "Biome": "Plains1_Zone1_Lowlands_Wetland_Lakeside",
+      "Max": 0.8161,
+      "Min": 0.8046
+    },
+    {
+      "Biome": "Plains1_Zone1_Lowlands_Wetland_Marsh",
+      "Max": 0.8276,
+      "Min": 0.8161
+    },
+    {
+      "Biome": "Plains1_Zone3_Alpine_Meadow",
+      "Max": 0.8391,
+      "Min": 0.8276
+    },
+    {
+      "Biome": "Plains1_Zone3_Highlands_Alpine",
+      "Max": 0.8506,
+      "Min": 0.8391
+    },
+    {
+      "Biome": "Plains1_Zone3_Highlands_Alpine_Peak",
+      "Max": 0.8621,
+      "Min": 0.8506
+    },
+    {
+      "Biome": "Plains1_Zone3_Highlands_Alpine_Valley",
+      "Max": 0.8736,
+      "Min": 0.8621
+    },
+    {
+      "Biome": "Plains1_Zone3_Highlands_Grassy",
+      "Max": 0.8851,
+      "Min": 0.8736
+    },
+    {
+      "Biome": "Plains1_Zone4_Sky_Ridges",
+      "Max": 0.8966,
+      "Min": 0.8851
+    },
+    {
+      "Biome": "Savanna1_SavannaPlains",
+      "Max": 0.908,
+      "Min": 0.8966
+    },
+    {
+      "Biome": "Skylands_DebrisFields",
+      "Max": 0.9195,
+      "Min": 0.908
+    },
+    {
+      "Biome": "Skylands_WindArches",
+      "Max": 0.931,
+      "Min": 0.9195
+    },
+    {
+      "Biome": "Taiga1_Foothills_Tuned",
+      "Max": 0.9425,
+      "Min": 0.931
+    },
+    {
+      "Biome": "Transition_Plains_to_Desert_Caves",
+      "Max": 0.954,
+      "Min": 0.9425
+    },
+    {
+      "Biome": "Void",
+      "Max": 0.9655,
+      "Min": 0.954
+    },
+    {
+      "Biome": "Void_Buffer",
+      "Max": 0.977,
+      "Min": 0.9655
+    },
+    {
+      "Biome": "Void_Buffer_Oasis",
+      "Max": 0.9885,
+      "Min": 0.977
+    },
+    {
+      "Biome": "Volcanic1_AshenFields_Tuned",
+      "Max": 1,
+      "Min": 0.9885
+    }
+  ],
+  "ContentFields": [
+    {
+      "$NodeId": "BaseHeight.Density-d46cd10d-afc1-4622-8c16-3aaf13875eee",
+      "Name": "Base",
+      "Skip": false,
+      "Type": "BaseHeight",
+      "Y": 100
+    },
+    {
+      "$NodeId": "BaseHeight.Density-9ac6be03-cff1-453c-9d9b-d066687e6f08",
+      "Name": "Water",
+      "Skip": false,
+      "Type": "BaseHeight",
+      "Y": 70
+    },
+    {
+      "$NodeId": "BaseHeight.Density-8fd5e5c8-e79e-4cd3-b6ed-ca24ed51bd90",
+      "Name": "Bedrock",
+      "Skip": false,
+      "Type": "BaseHeight",
+      "Y": -64
+    }
+  ],
+  "DefaultBiome": "Plains1_Zone1_Lowlands_Grassland",
+  "DefaultTransitionDistance": 8,
+  "Density": {
+    "$NodeId": "Imported.Density-aca84ebd-b318-46ca-b619-bd5801634c13",
+    "Name": "Biome-Map-Tiles",
+    "Skip": false,
+    "Type": "Imported"
+  },
+  "MaxBiomeEdgeDistance": 12,
+  "Skip": false,
+  "Type": "NoiseRange"
+}
