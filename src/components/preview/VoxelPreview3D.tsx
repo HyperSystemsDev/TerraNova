@@ -9,6 +9,7 @@ import { FluidPlane } from "./FluidPlane";
 import { MaterialLegend } from "./MaterialLegend";
 import { EdgeOutlineEffect } from "./EdgeOutlineEffect";
 import { HytaleSky, HytaleFog, GroundShadow } from "./SceneEnvironment";
+import { PreviewHUD } from "./PreviewControls";
 import type { VoxelData } from "@/utils/voxelExtractor";
 import type { VoxelMeshData } from "@/utils/voxelMeshBuilder";
 import { BufferGeometry, BufferAttribute, Vector2 } from "three";
@@ -139,6 +140,11 @@ const VoxelScene = memo(function VoxelScene({ wireframe }: { wireframe: boolean 
   const showWaterPlane = usePreviewStore((s) => s.showWaterPlane);
   const showFog3D = usePreviewStore((s) => s.showFog3D);
   const showSky3D = usePreviewStore((s) => s.showSky3D);
+  const ambientSkyColor = usePreviewStore((s) => s.ambientSkyColor);
+  const ambientGroundColor = usePreviewStore((s) => s.ambientGroundColor);
+  const ambientIntensity = usePreviewStore((s) => s.ambientIntensity);
+  const sunColor = usePreviewStore((s) => s.sunColor);
+  const sunIntensity = usePreviewStore((s) => s.sunIntensity);
   const voxelMeshData = usePreviewStore((s) => s.voxelMeshData);
   const enableShadows = useConfigStore((s) => s.enableShadows);
   const shadowMapSize = useConfigStore((s) => s.shadowMapSize);
@@ -146,11 +152,11 @@ const VoxelScene = memo(function VoxelScene({ wireframe }: { wireframe: boolean 
   return (
     <>
       {/* Hytale-style lighting */}
-      <hemisphereLight args={["#87CEEB", "#8B7355", 0.4]} />
+      <hemisphereLight args={[ambientSkyColor ?? "#87CEEB", ambientGroundColor ?? "#8B7355", ambientIntensity ?? 0.4]} />
       <directionalLight
         position={[15, 30, 10]}
-        intensity={0.8}
-        color="#fff5e0"
+        intensity={sunIntensity ?? 0.8}
+        color={sunColor ?? "#fff5e0"}
         castShadow={enableShadows}
         shadow-mapSize-width={shadowMapSize}
         shadow-mapSize-height={shadowMapSize}
@@ -203,6 +209,9 @@ export function VoxelPreview3D({ onCanvasRef }: { onCanvasRef?: (el: HTMLCanvasE
         <VoxelScene wireframe={showVoxelWireframe} />
         {onCanvasRef && <CanvasRefCapture onCanvas={onCanvasRef} />}
       </Canvas>
+
+      {/* HUD must be rendered outside the three.js Canvas so it isn't part of the WebGL scene */}
+      <PreviewHUD />
 
       {/* Loading indicator */}
       {isVoxelLoading && (

@@ -23,25 +23,7 @@ function roundTrip(hytaleInput: Record<string, unknown>): Record<string, unknown
   return internalToHytale(internalJson as { Type: string; [key: string]: unknown });
 }
 
-/** Import Hytale-native biome → internal → export Hytale-native biome */
-function roundTripBiome(hytaleInput: Record<string, unknown>): Record<string, unknown> {
-  const { wrapper } = hytaleToInternalBiome(hytaleInput);
-  return internalToHytaleBiome(wrapper);
-}
-
-/** Check that a value is structurally equivalent, ignoring $NodeId values */
-function stripNodeIds(obj: unknown): unknown {
-  if (Array.isArray(obj)) return obj.map(stripNodeIds);
-  if (obj && typeof obj === "object") {
-    const result: Record<string, unknown> = {};
-    for (const [k, v] of Object.entries(obj as Record<string, unknown>)) {
-      if (k === "$NodeId") continue;
-      result[k] = stripNodeIds(v);
-    }
-    return result;
-  }
-  return obj;
-}
+// (removed unused helpers: roundTripBiome, stripNodeIds)
 
 // ---------------------------------------------------------------------------
 // 1. Example-Biome format round-trip

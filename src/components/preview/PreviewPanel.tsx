@@ -7,6 +7,10 @@ import { usePositionOverlay } from "@/hooks/usePositionOverlay";
 import { Heatmap2D } from "./Heatmap2D";
 import { ThresholdedHeatmap } from "./ThresholdedHeatmap";
 import { PreviewControls } from "./PreviewControls";
+import { SharedControls } from "./controls/SharedControls";
+import FloatingBox from "@/components/common/FloatingBox";
+import DockZone from "@/components/common/DockZone";
+import { useUIStore } from "@/stores/uiStore";
 import { StatisticsPanel } from "./StatisticsPanel";
 import { CrossSectionPlot } from "./CrossSectionPlot";
 
@@ -46,6 +50,8 @@ export function PreviewPanel() {
 
   const isSplitMode = viewMode === "split";
   const [controlsCollapsed, setControlsCollapsed] = useState(isSplitMode);
+  const floatingPreviewControls = useUIStore((s) => s.floatingPreviewControls);
+  const floatingSharedControls = useUIStore((s) => s.floatingSharedControls);
 
   // Auto-collapse/expand when switching between split and full preview
   useEffect(() => {
@@ -64,6 +70,8 @@ export function PreviewPanel() {
     : mode === "voxel"
       ? !!voxelDensities
       : !!values;
+  const detached = useUIStore((s) => s.previewDetachedWindow);
+  const setDetached = useUIStore((s) => s.setPreviewDetachedWindow);
 
   return (
     <div className="flex h-full overflow-hidden bg-tn-bg">
@@ -83,8 +91,10 @@ export function PreviewPanel() {
               <path d="M6 3l5 5-5 5" />
             </svg>
           </button>
-        ) : (
+          ) : (
           <div className="h-full flex flex-col overflow-y-auto">
+            {/* Dock zone for preview controls so floated controls can re-dock into this sidebar */}
+            <DockZone id="preview-controls-dock" className="h-full" />
             <button
               onClick={() => setControlsCollapsed(true)}
               className="shrink-0 flex items-center justify-end px-2 py-1 hover:bg-white/5 transition-colors"
@@ -94,7 +104,17 @@ export function PreviewPanel() {
                 <path d="M10 3l-5 5 5 5" />
               </svg>
             </button>
-            <PreviewControls canvasRef={canvasRef} />
+            {!floatingPreviewControls && (
+              <>
+                <div className="flex items-center justify-between px-2">
+                  <div />
+                  <div>
+                    <button title="Detach controls" className="w-6 h-6 rounded bg-tn-panel-darker flex items-center justify-center text-xs mr-1" onClick={() => useUIStore.getState().setFloatingPreviewControls(true)}>⇱</button>
+                  </div>
+                </div>
+                <PreviewControls canvasRef={canvasRef} hideSharedControls={floatingSharedControls} />
+              </>
+            )}
             {mode !== "voxel" && mode !== "world" && <StatisticsPanel />}
           </div>
         )}
@@ -103,12 +123,50 @@ export function PreviewPanel() {
       {/* Main preview area */}
       <div className="flex-1 min-w-0 flex flex-col">
         <div className="flex-1 min-h-0 relative">
+
+          {/* Floating Shared Controls when enabled */}
+          {floatingSharedControls && (
+            <FloatingBox id="shared-controls" defaultAnchor="top-left">
+              <SharedControls canvasRef={canvasRef} />
+            </FloatingBox>
+          )}
+          {floatingPreviewControls && (
+            <FloatingBox id="preview-controls" defaultAnchor="top-left">
+              <PreviewControls canvasRef={canvasRef} />
+            </FloatingBox>
+          )}
           {anyLoading && (
             <div className="absolute top-2 right-2 z-10 flex items-center gap-1.5 px-2 py-1 bg-tn-panel/90 rounded text-xs text-tn-text-muted">
               <span className="inline-block w-3 h-3 border-2 border-tn-accent border-t-transparent rounded-full animate-spin" />
               Evaluating...
             </div>
           )}
+          {/* Detach / Reattach preview (use compact icons to avoid showing the word "dock") */}
+          <div className="absolute top-2 right-10 z-10">
+            <button
+              title={detached ? "Reattach preview" : "Detach preview"}
+              aria-label={detached ? "Reattach preview" : "Detach preview"}
+              className="px-2 py-1 bg-tn-panel/90 rounded text-xs hover:bg-tn-panel-darker flex items-center justify-center"
+              onClick={(e) => { e.stopPropagation(); setDetached(!detached); }}
+            >
+              {detached ? (
+                // Reattach icon (arrow into box)
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                  <path d="M16 8l-8 8" />
+                  <path d="M8 8h8v8" />
+                </svg>
+              ) : (
+                // Detach icon (arrow out of box)
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                  <path d="M8 16l8-8" />
+                  <path d="M16 16V8H8" />
+                </svg>
+              )}
+            </button>
+          </div>
+          {/* Preview detach button removed — preview remains docked */}
           {fidelityScore < 100 && hasData && (
             <div
               className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded text-[10px] font-medium"

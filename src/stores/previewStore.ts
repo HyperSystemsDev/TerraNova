@@ -114,6 +114,21 @@ interface PreviewState {
   linkCameras3D: boolean;
 
   splitDirection: SplitDirection;
+  
+  // Visual preview parameters (used by Visuals preview adapter)
+  fogColor: string;
+  fogDensity: number;
+  ambientSkyColor: string;
+  ambientGroundColor: string;
+  ambientIntensity: number;
+  sunColor: string;
+  sunIntensity: number;
+  timeOfDay: number;
+  // exposure for HDR/tonemapping
+  exposure: number;
+
+  // Debug mapping of which node produced the visual values
+  visualDebugSources: Record<string, string | undefined>;
 
   fidelityScore: number;
 
@@ -203,8 +218,25 @@ interface PreviewState {
   setLinkCameras3D: (link: boolean) => void;
 
   setSplitDirection: (dir: SplitDirection) => void;
+  
+  // Visual preview setters
+  setFogParams: (color: string, density: number) => void;
+  setAmbientParams: (skyColor: string, groundColor: string, intensity: number) => void;
+  setSunParams: (color: string, intensity: number) => void;
+  setTimeOfDay: (time: number) => void;
 
   setFidelityScore: (score: number) => void;
+  // exposure control
+  setExposure: (exposure: number) => void;
+
+  // Visual presets
+  saveVisualPreset: (name: string) => void;
+  loadVisualPreset: (name: string) => void;
+  listVisualPresets: () => string[];
+  removeVisualPreset: (name: string) => void;
+
+  // Debug sources setter
+  setVisualDebugSources: (sources: Record<string, string | undefined>) => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -237,6 +269,8 @@ const PERSIST_MAP: Record<string, string> = {
   showSSAO: "tn-showSSAO",
   showEdgeOutline: "tn-showEdgeOutline",
   showHillShade: "tn-showHillShade",
+  exposure: "tn-exposure",
+  // Visual preset storage managed separately
   autoFitYEnabled: "tn-autoFitYEnabled",
   worldCenterX: "tn-worldCenterX",
   worldCenterZ: "tn-worldCenterZ",
@@ -303,6 +337,7 @@ function hydratePersistedState() {
     showSSAO: getStoredBool("tn-showSSAO", false),
     showEdgeOutline: getStoredBool("tn-showEdgeOutline", false),
     showHillShade: getStoredBool("tn-showHillShade", true),
+
     autoFitYEnabled: getStoredBool("tn-autoFitYEnabled", true),
     worldCenterX: getStoredFloat("tn-worldCenterX", 0),
     worldCenterZ: getStoredFloat("tn-worldCenterZ", 0),
@@ -323,6 +358,24 @@ function hydratePersistedState() {
     compareModeB: (getStored("tn-compareModeB") as PreviewMode | null) ?? "2d",
     linkCameras3D: getStoredBool("tn-linkCameras3D", true),
     splitDirection: (getStored("tn-splitDirection") as SplitDirection | null) ?? "horizontal",
+    // Visual preview persisted (optional)
+    fogColor: getStored("tn-fogColor") ?? "#c0d8f0",
+    fogDensity: getStoredFloat("tn-fogDensity", 0.008),
+    ambientSkyColor: getStored("tn-ambientSkyColor") ?? "#87CEEB",
+    ambientGroundColor: getStored("tn-ambientGroundColor") ?? "#8B7355",
+    ambientIntensity: getStoredFloat("tn-ambientIntensity", 0.4),
+    sunColor: getStored("tn-sunColor") ?? "#fff5e0",
+    sunIntensity: getStoredFloat("tn-sunIntensity", 0.8),
+    timeOfDay: getStoredFloat("tn-timeOfDay", 12),
+    exposure: getStoredFloat("tn-exposure", 1.0),
+    // debug sources
+    visualDebugSources: (() => {
+      try {
+        return JSON.parse(getStored("tn-visualDebugSources") || "{}");
+      } catch {
+        return {};
+      }
+    })(),
   };
 }
 
@@ -390,6 +443,19 @@ export const usePreviewStore = create<PreviewState>((originalSet) => {
     // Hydrated persisted values
     ...hydrated,
 
+    // Default visual preview params (if not present in hydrated)
+    fogColor: (hydrated as any).fogColor ?? "#c0d8f0",
+    fogDensity: (hydrated as any).fogDensity ?? 0.008,
+    ambientSkyColor: (hydrated as any).ambientSkyColor ?? "#87CEEB",
+    ambientGroundColor: (hydrated as any).ambientGroundColor ?? "#8B7355",
+    ambientIntensity: (hydrated as any).ambientIntensity ?? 0.4,
+    sunColor: (hydrated as any).sunColor ?? "#fff5e0",
+    sunIntensity: (hydrated as any).sunIntensity ?? 0.8,
+    timeOfDay: (hydrated as any).timeOfDay ?? 12,
+  
+    // Debug info about which node IDs produced the resolved visuals
+    visualDebugSources: (hydrated as any).visualDebugSources ?? {},
+
     // ── Actions ──
     setMode: (mode) => originalSet({ mode }),
     setResolution: (resolution) => originalSet({ resolution }),
@@ -449,6 +515,63 @@ export const usePreviewStore = create<PreviewState>((originalSet) => {
     setShowSSAO: (showSSAO) => persistedSet({ showSSAO }),
     setShowEdgeOutline: (showEdgeOutline) => persistedSet({ showEdgeOutline }),
     setShowHillShade: (showHillShade) => persistedSet({ showHillShade }),
+    setExposure: (exposure: number) => persistedSet({ exposure }),
+
+    // Presets - stored in localStorage under tn-visual-presets
+    saveVisualPreset: (name: string) => {
+      const state = usePreviewStore.getState();
+      const presetsRaw = localStorage.getItem("tn-visual-presets");
+      const presets = presetsRaw ? JSON.parse(presetsRaw) as Record<string, unknown> : {};
+      presets[name] = {
+        fogColor: state.fogColor,
+        fogDensity: state.fogDensity,
+        ambientSkyColor: state.ambientSkyColor,
+        ambientGroundColor: state.ambientGroundColor,
+        ambientIntensity: state.ambientIntensity,
+        sunColor: state.sunColor,
+        sunIntensity: state.sunIntensity,
+        timeOfDay: state.timeOfDay,
+        exposure: state.exposure,
+        showFog3D: state.showFog3D,
+        showSky3D: state.showSky3D,
+      };
+      localStorage.setItem("tn-visual-presets", JSON.stringify(presets));
+    },
+    loadVisualPreset: (name: string) => {
+      const presetsRaw = localStorage.getItem("tn-visual-presets");
+      if (!presetsRaw) return;
+      const presets = JSON.parse(presetsRaw) as Record<string, any>;
+      const p = presets[name];
+      if (!p) return;
+      originalSet({
+        fogColor: p.fogColor,
+        fogDensity: p.fogDensity,
+        ambientSkyColor: p.ambientSkyColor,
+        ambientGroundColor: p.ambientGroundColor,
+        ambientIntensity: p.ambientIntensity,
+        sunColor: p.sunColor,
+        sunIntensity: p.sunIntensity,
+        timeOfDay: p.timeOfDay,
+        exposure: p.exposure ?? 1.0,
+        showFog3D: p.showFog3D ?? true,
+        showSky3D: p.showSky3D ?? true,
+      });
+    },
+    listVisualPresets: () => {
+      const presetsRaw = localStorage.getItem("tn-visual-presets");
+      if (!presetsRaw) return [] as string[];
+      return Object.keys(JSON.parse(presetsRaw));
+    },
+    removeVisualPreset: (name: string) => {
+      const presetsRaw = localStorage.getItem("tn-visual-presets");
+      if (!presetsRaw) return;
+      const presets = JSON.parse(presetsRaw) as Record<string, unknown>;
+      delete presets[name];
+      localStorage.setItem("tn-visual-presets", JSON.stringify(presets));
+    },
+
+    // Debug sources setter
+    setVisualDebugSources: (sources: Record<string, string | undefined>) => persistedSet({ visualDebugSources: sources }),
     setAutoFitYEnabled: (autoFitYEnabled) => persistedSet({ autoFitYEnabled }),
     setWorldCenterX: (worldCenterX) => persistedSet({ worldCenterX }),
     setWorldCenterZ: (worldCenterZ) => persistedSet({ worldCenterZ }),
@@ -470,5 +593,10 @@ export const usePreviewStore = create<PreviewState>((originalSet) => {
     setLinkCameras3D: (linkCameras3D) => persistedSet({ linkCameras3D }),
 
     setSplitDirection: (splitDirection) => persistedSet({ splitDirection }),
+    // Visual preview setters
+    setFogParams: (color, density) => persistedSet({ fogColor: color, fogDensity: density }),
+    setAmbientParams: (skyColor, groundColor, intensity) => persistedSet({ ambientSkyColor: skyColor, ambientGroundColor: groundColor, ambientIntensity: intensity }),
+    setSunParams: (color, intensity) => persistedSet({ sunColor: color, sunIntensity: intensity }),
+    setTimeOfDay: (time) => persistedSet({ timeOfDay: time }),
   };
 });

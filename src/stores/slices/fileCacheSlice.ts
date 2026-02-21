@@ -94,4 +94,21 @@ export const createFileCacheSlice: SliceCreator<FileCacheSliceState> = (set, get
     set({ fileCache: newCache });
     return cached;
   },
+  removeCachedFile: (filePath: string) => {
+    const { fileCache } = get();
+    const next = new Map(fileCache);
+    next.delete(filePath);
+    set({ fileCache: next });
+  },
+  // Reorder cached files. `orderRecentFirst` is the UI order (most-recent first).
+  reorderCachedFiles: (orderRecentFirst: string[]) => {
+    const { fileCache } = get();
+    const next = new Map<string, FileGraphCache>();
+    // Map insertion order should be oldest->newest, so iterate reversed UI order
+    for (const k of orderRecentFirst.slice().reverse()) {
+      const v = fileCache.get(k);
+      if (v) next.set(k, v);
+    }
+    set({ fileCache: next });
+  },
 });

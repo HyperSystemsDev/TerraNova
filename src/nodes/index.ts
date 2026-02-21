@@ -113,6 +113,11 @@ import {
   ConstantEnvironmentNode, DensityDelimitedEnvironmentNode,
   DensityDelimitedTintNode, RandomDirectionalityNode, PatternDirectionalityNode,
 } from "./environment";
+import {
+  FogVisualNode,
+  AmbientVisualNode,
+  TimeOfDayVisualNode,
+} from "./visuals/VisualNodes";
 
 // ── Groups ────────────────────────────────────────────────────────────
 import { GroupNode } from "./GroupNode";
@@ -381,6 +386,10 @@ export const nodeTypes: Record<string, ComponentType<any>> = {
   "Tint:DensityDelimited": DensityDelimitedTintNode,
   "Tint:Imported": ImportedTintNode,
   "Tint:Exported": ExportedTintNode,
+  // Visuals (Fog / Ambient / TimeOfDay)
+  "Visual:Fog": FogVisualNode,
+  "Visual:Ambient": AmbientVisualNode,
+  "Visual:TimeOfDay": TimeOfDayVisualNode,
 
   // ── Block Mask ───────────────────────────────────────────────────────
   "BlockMask:All": AllBlockMaskNode,

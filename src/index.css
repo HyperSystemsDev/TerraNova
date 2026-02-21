@@ -117,3 +117,29 @@ body,
     stroke-dashoffset: -12;
   }
 }
+
+/* Dock zone highlight for drag-and-drop */
+.tn-dock-zone {
+  transition: box-shadow 0.12s ease, border-color 0.12s ease, background-color 0.12s ease;
+  position: relative;
+}
+.tn-dock-zone--highlight {
+  box-shadow: 0 6px 18px rgba(86, 115, 255, 0.12), inset 0 0 0 2px rgba(86, 115, 255, 0.14);
+  border-radius: 6px;
+  background-color: rgba(86, 115, 255, 0.03);
+}
+.tn-dock-zone-title {
+  margin-left: 2px;
+}
+
+/* Compact placeholder for empty dock zones */
+.tn-dock-zone-empty {
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tn-dock-zone-empty--highlight > div {
+  border-color: rgba(86,115,255,0.6);
+  background-color: rgba(86,115,255,0.03);
+}

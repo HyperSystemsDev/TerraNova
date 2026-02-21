@@ -25,6 +25,9 @@ import { useToastStore } from "@/stores/toastStore";
 import type { SvgExportOptions } from "@/utils/exportSvg";
 import { useReactFlow } from "@xyflow/react";
 import { useGlobalKeyboardShortcuts } from "@/hooks/useGlobalKeyboardShortcuts";
+import DetachedWindowPortal from "@/components/common/DetachedWindowPortal";
+import { PreviewPanel } from "@/components/preview/PreviewPanel";
+import { startVisualsShallowWatcher } from "@/preview/visualsShallowEvaluator";
 
 type PendingAction = "window-close" | "close-project";
 
@@ -240,6 +243,10 @@ function ProjectEditor({
     onExportSvg: () => setShowExportSvg(true),
   });
 
+  useEffect(() => {
+    return startVisualsShallowWatcher();
+  }, []);
+
   return (
     <>
       <div className="flex flex-col h-screen bg-tn-bg text-tn-text">
@@ -256,7 +263,12 @@ function ProjectEditor({
         </ErrorBoundary>
         <StatusBar />
       </div>
+        {/* Handle tab drops onto dock zones globally: attach once per editor mount */}
+        <GlobalTabDropHandler />
       <DragGhost />
+      <DetachedWindowPortal id="preview-panel">
+        <PreviewPanel />
+      </DetachedWindowPortal>
       <Toast />
       {dialog}
       <NewProjectDialog open={showNewProject} onClose={() => setShowNewProject(false)} />
@@ -266,6 +278,34 @@ function ProjectEditor({
       <ExportSvgDialogWrapper open={showExportSvg} onClose={() => setShowExportSvg(false)} />
     </>
   );
+}
+
+function GlobalTabDropHandler() {
+  const setDockAssignment = useUIStore((s) => s.setDockAssignment);
+  const setFloatingPanelById = useUIStore((s) => s.setFloatingPanelById);
+  const setDockZoneActivePanel = useUIStore((s) => s.setDockZoneActivePanel);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      try {
+        const ce = e as CustomEvent;
+        const detail = ce.detail as { zoneId?: string | null; key?: string | null } | undefined;
+        if (!detail) return;
+        const zoneId = detail.zoneId ?? null;
+        const key = detail.key ?? null;
+        if (!key) return;
+        // assign dock, make sure it's not floating, and set active panel
+        try { setDockAssignment(key, zoneId); } catch {}
+        try { setFloatingPanelById(key, false); } catch {}
+        if (zoneId) try { setDockZoneActivePanel(zoneId, key); } catch {}
+      } catch {}
+    };
+
+    window.addEventListener("tn-tab-dropped-on-zone", handler as EventListener);
+    return () => window.removeEventListener("tn-tab-dropped-on-zone", handler as EventListener);
+  }, [setDockAssignment, setFloatingPanelById, setDockZoneActivePanel]);
+
+  return null;
 }
 
 function ExportSvgDialogWrapper({ open, onClose }: { open: boolean; onClose: () => void }) {

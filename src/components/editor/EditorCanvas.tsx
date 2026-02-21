@@ -129,6 +129,43 @@ export function EditorCanvas() {
   const mousePosRef = useRef({ x: 0, y: 0 });
   const canvasContainerRef = useRef<HTMLDivElement>(null);
 
+  // Ensure React Flow gets a valid container size before attempting to fit view.
+  // Sometimes the ReactFlow mount happens before layout has computed sizes (especially
+  // when panels are floating/docked), which leads to the "parent container needs a
+  // width and a height" warning. Poll the container briefly and call fitView once
+  // a non-zero size is observed.
+  useEffect(() => {
+    const el = canvasContainerRef.current;
+    if (!el) return;
+
+    const tryFit = () => {
+      const w = el.clientWidth;
+      const h = el.clientHeight;
+      if (w > 0 && h > 0) {
+        try {
+          reactFlowInstance.fitView();
+        } catch {}
+        if (import.meta.env.DEV) console.log("EditorCanvas: container size", w, h);
+        return true;
+      }
+      return false;
+    };
+
+    if (!tryFit()) {
+      let cancelled = false;
+      const id = window.setInterval(() => {
+        if (cancelled) return;
+        if (tryFit()) {
+          window.clearInterval(id);
+        }
+      }, 100);
+      return () => {
+        cancelled = true;
+        window.clearInterval(id);
+      };
+    }
+  }, [reactFlowInstance]);
+
   // ── Ctrl+scroll → vertical pan, Alt+scroll → horizontal pan ──────────
   useEffect(() => {
     const el = canvasContainerRef.current;
@@ -547,6 +584,56 @@ export function EditorCanvas() {
       className="w-full h-full"
       style={knifeActive ? { cursor: "crosshair" } : undefined}
       onMouseUp={handleMouseUp}
+      onDragOver={(e) => {
+        // Allow dropping material palette items
+        try { e.preventDefault(); } catch {}
+      }}
+      onDrop={(e: React.DragEvent) => {
+        try {
+          e.preventDefault();
+          // Try application/json first (MaterialLegend sets this)
+          const json = e.dataTransfer.getData("application/json");
+          const text = e.dataTransfer.getData("text/plain");
+          let material: any = null;
+          if (json) {
+            try { material = JSON.parse(json); } catch {}
+          } else if (text) {
+            try {
+              const parsed = JSON.parse(text);
+              if (parsed && parsed.type === "material") {
+                // try reading companion application/json if available
+                material = parsed;
+              }
+            } catch {}
+          }
+
+          if (!material) return;
+
+          // Create a new Imported Material node at the drop position
+          const pos = reactFlowInstance.screenToFlowPosition({ x: e.clientX, y: e.clientY });
+          const nodeId = crypto.randomUUID();
+          // Align to schema: use ImportedMaterial node which expects fields.Name
+          const fields: Record<string, any> = {
+            Name: material.name ?? material.Name ?? "",
+          };
+          // Preserve helpful properties if available
+          if (material.color) fields.Color = material.color;
+          if (material.roughness != null) fields.Roughness = material.roughness;
+          if (material.metalness != null) fields.Metalness = material.metalness;
+          if (material.emissive != null) fields.Emissive = material.emissive;
+
+          useEditorStore.getState().addNode({
+            id: nodeId,
+            type: "Material:Imported",
+            position: pos,
+            data: { type: "Imported", fields },
+          });
+
+          useProjectStore.getState().setDirty(true);
+        } catch (err) {
+          if (import.meta.env.DEV) console.error("Material drop failed:", err);
+        }
+      }}
       onMouseMove={(e) => {
         mousePosRef.current = { x: e.clientX, y: e.clientY };
         // Palette drag → check for interjection target

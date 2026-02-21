@@ -3,6 +3,8 @@ import { useReactFlow } from "@xyflow/react";
 import { useTauriIO } from "@/hooks/useTauriIO";
 import { useEditorStore } from "@/stores/editorStore";
 import { BridgeDialog } from "@/components/dialogs/BridgeDialog";
+import UISettingsDialog from "@/components/dialogs/UISettingsDialog";
+import { useUIStore } from "@/stores/uiStore";
 import { saveRef } from "@/utils/saveRef";
 import { handleAutoLayout, handleAutoLayoutSelected, handleTidyUp } from "@/utils/layoutActions";
 
@@ -59,9 +61,19 @@ export function Toolbar() {
         </div>
 
         <div className="flex-1" />
+        <div className="flex items-center gap-2">
+          <button
+            className="px-2 py-1 text-[11px] hover:bg-tn-surface rounded text-tn-text-muted"
+            onClick={() => useUIStore.getState().setSettingsOpen(true)}
+            title="UI Settings"
+          >
+            ⚙ UI
+          </button>
+        </div>
       </div>
 
       <BridgeDialog />
+      <UISettingsDialog />
     </>
   );
 }

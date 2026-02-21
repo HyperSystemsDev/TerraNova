@@ -391,6 +391,11 @@ export const HANDLE_REGISTRY: Record<string, HandleDef[]> = {
   "Directionality:Pattern": [patternInput("Pattern", "Pattern"), directionalityOutput()],
   "Directionality:Imported": [directionalityOutput()],
 
+  // ── Visuals ───────────────────────────────────────────────────────────
+  "Visual:Fog": [tintOutput()],
+  "Visual:Ambient": [tintOutput()],
+  "Visual:TimeOfDay": [environmentOutput()],
+
   // ── Root ────────────────────────────────────────────────────────────
   Root: [densityInput("input", "Input")],
 };

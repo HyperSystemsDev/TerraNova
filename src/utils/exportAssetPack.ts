@@ -247,7 +247,7 @@ export async function exportCurrentJson(): Promise<void> {
     const currentFile = useProjectStore.getState().currentFile ?? "";
     const validationWarnings = validateExport(json, currentFile);
     if (validationWarnings.length > 0) {
-      addToast(`Export warnings: ${validationWarnings.join("; ")}`, "warning");
+      addToast(`Export warnings: ${validationWarnings.join("; ")}`, "info");
     }
 
     const exportPath = useSettingsStore.getState().exportPath;
@@ -431,7 +431,7 @@ export async function exportAssetPack(): Promise<void> {
     exportedCount++;
 
     if (failedFiles.length > 0) {
-      addToast(`Exported ${exportedCount} files (${failedFiles.length} copied without conversion: ${failedFiles.join(", ")})`, "warning");
+      addToast(`Exported ${exportedCount} files (${failedFiles.length} copied without conversion: ${failedFiles.join(", ")})`, "info");
     } else {
       addToast(`Exported ${exportedCount} files to ${modRoot}`, "success");
     }

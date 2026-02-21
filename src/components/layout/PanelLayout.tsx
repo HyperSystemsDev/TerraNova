@@ -8,6 +8,10 @@ import { PropertyPanel } from "@/components/properties/PropertyPanel";
 import { HistoryPanel } from "@/components/editor/HistoryPanel";
 import { ValidationPanel } from "@/components/editor/ValidationPanel";
 import { Toolbar } from "@/components/layout/Toolbar";
+import EditorControls from "@/components/editor/EditorControls";
+import FloatingBox from "@/components/common/FloatingBox";
+import DockZone from "@/components/common/DockZone";
+import SceneEnvironmentPanel from "@/components/preview/SceneEnvironmentPanel";
 import { useGraphDiagnostics } from "@/hooks/useGraphDiagnostics";
 import { useUIStore, type SidebarSectionId } from "@/stores/uiStore";
 import { useDiagnosticsStore } from "@/stores/diagnosticsStore";
@@ -266,9 +270,26 @@ export function PanelLayout() {
   const leftPanelVisible = useUIStore((s) => s.leftPanelVisible);
   const rightPanelVisible = useUIStore((s) => s.rightPanelVisible);
   const useAccordion = useUIStore((s) => s.useAccordionSidebar);
+  const dockAssignments = useUIStore((s) => s.dockAssignments);
+  const setDockAssignment = useUIStore((s) => s.setDockAssignment);
 
   // Drive diagnostics computation (debounced, pushes to diagnosticsStore)
   useGraphDiagnostics();
+
+  // Ensure toolbar is docked into the toolbar dock zone by default
+  useEffect(() => {
+    try {
+      if (!dockAssignments || !dockAssignments["toolbar"]) {
+        setDockAssignment("toolbar", "toolbar-zone");
+      }
+      if (!dockAssignments || !dockAssignments["left-sidebar"]) {
+        setDockAssignment("left-sidebar", "left-dock");
+      }
+      if (!dockAssignments || !dockAssignments["editor-controls"]) {
+        setDockAssignment("editor-controls", "right-dock");
+      }
+    } catch {}
+  }, []);
 
   // Persist widths to localStorage when they change
   useEffect(() => {
@@ -306,6 +327,18 @@ export function PanelLayout() {
 
   return (
     <div ref={containerRef} className="flex flex-1 overflow-hidden">
+      {/* Floating toolbar (will portal into toolbar-zone when docked) */}
+      <FloatingBox id="toolbar" defaultAnchor="top-left">
+        <Toolbar />
+      </FloatingBox>
+      {/* Floating left sidebar: allows undocking the whole left panel */}
+      <FloatingBox id="left-sidebar" defaultAnchor="top-left">
+        {useAccordion ? <AccordionSidebar /> : <TabSidebar />}
+      </FloatingBox>
+      {/* Floating editor controls (dockable into right-dock) */}
+      <FloatingBox id="editor-controls" defaultAnchor="bottom-right">
+        <EditorControls />
+      </FloatingBox>
       {/* Left sidebar */}
       {leftPanelVisible && (
         <>
@@ -313,7 +346,8 @@ export function PanelLayout() {
             className="flex flex-col bg-tn-surface border-r border-tn-border shrink-0 transition-all duration-150"
             style={{ width: leftWidth }}
           >
-            {useAccordion ? <AccordionSidebar /> : <TabSidebar />}
+            {/* Dock zone for left sidebar: left-sidebar FloatingBox will portal here when docked */}
+            <DockZone id="left-dock" className="h-full" />
           </div>
 
           {/* Left drag handle */}
@@ -326,7 +360,10 @@ export function PanelLayout() {
 
       {/* Center: editor canvas */}
       <div className="flex-1 min-w-0 flex flex-col">
-        <Toolbar />
+        {/* Dock zone for toolbar: FloatingBox will portal here when docked */}
+        <div className="shrink-0">
+          <DockZone id="toolbar-zone" className="w-full" />
+        </div>
         <CenterPanel />
       </div>
 
@@ -344,7 +381,11 @@ export function PanelLayout() {
             className="flex flex-col bg-tn-surface border-l border-tn-border overflow-y-auto shrink-0 transition-all duration-150"
             style={{ width: rightWidth }}
           >
+            {/* Dock zone for editor controls (will host editor-controls when docked) */}
+            <DockZone id="right-dock" className="px-2 py-2" />
             <PropertyPanel />
+            {/* Scene environment properties */}
+            <SceneEnvironmentPanel />
           </div>
         </>
       )}

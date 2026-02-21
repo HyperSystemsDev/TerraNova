@@ -5,6 +5,7 @@ node_modules/
 # Build output
 dist/
 build/
+*.tsbuildinfo
 src-tauri/target/
 
 # IDE
@@ -30,6 +31,9 @@ src-tauri/gen/
 
 # AI agent workspace
 .serena/
+
+# Local instructions file (ignored by default)
+instructions.md
 
 # Logs
 *.log

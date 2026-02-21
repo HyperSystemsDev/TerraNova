@@ -1694,6 +1694,25 @@ export function internalToHytaleBiome(
       continue;
     }
 
+    // Visuals wrapper: optional top-level visual graph entries
+    // Supports: Visuals: { Fog: <node>, Ambient: <node>, TimeOfDay: <node> }
+    // We reuse existing categories to leverage schema-driven handlers:
+    // - Fog/Ambient => tint (color outputs)
+    // - TimeOfDay => environment (lighting/sun outputs)
+    if (key === "Visuals" && value && typeof value === "object") {
+      const visuals = { ...(value as Record<string, unknown>) };
+      if (visuals.Fog && typeof visuals.Fog === "object" && "Type" in (visuals.Fog as Record<string, unknown>)) {
+        output.Fog = transformNode(visuals.Fog as V2Asset, { parentField: "Fog", category: "tint" });
+      }
+      if (visuals.Ambient && typeof visuals.Ambient === "object" && "Type" in (visuals.Ambient as Record<string, unknown>)) {
+        output.Ambient = transformNode(visuals.Ambient as V2Asset, { parentField: "Ambient", category: "tint" });
+      }
+      if (visuals.TimeOfDay && typeof visuals.TimeOfDay === "object" && "Type" in (visuals.TimeOfDay as Record<string, unknown>)) {
+        output.TimeOfDay = transformNode(visuals.TimeOfDay as V2Asset, { parentField: "TimeOfDay", category: "environment" });
+      }
+      continue;
+    }
+
     // FluidLevel/FluidMaterial/_originalEmptyBranch are consumed by MaterialProvider export — skip here
     if (key === "FluidLevel" || key === "FluidMaterial" || key === "_originalEmptyBranch") continue;
 

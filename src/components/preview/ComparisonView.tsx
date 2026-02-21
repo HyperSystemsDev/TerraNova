@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useRef } from "react";
 import { usePreviewStore, type PreviewMode } from "@/stores/previewStore";
+import { useUIStore } from "@/stores/uiStore";
 import { useEditorStore } from "@/stores/editorStore";
 import { useComparisonEvaluation } from "@/hooks/useComparisonEvaluation";
 import { Preview3D } from "./Preview3D";
@@ -258,6 +259,11 @@ export function ComparisonView() {
           />
           Link 3D Cameras
         </label>
+        <button
+          title="Detach comparison"
+          className="ml-2 w-7 h-7 rounded bg-tn-panel-darker flex items-center justify-center text-xs"
+          onClick={() => useUIStore.getState().setFloatingComparisonView(true)}
+        >⇱</button>
       </div>
 
       {/* Side-by-side panes */}
